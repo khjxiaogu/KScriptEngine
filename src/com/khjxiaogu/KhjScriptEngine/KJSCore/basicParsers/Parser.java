@@ -168,8 +168,12 @@ public class Parser {
     public static class Precedence {
         int value;
         boolean leftAssoc; // left associative
+        boolean single;//is single; 
         public Precedence(int v, boolean a) {
-            value = v; leftAssoc = a;
+            value = v; leftAssoc = a;single=false;
+        }
+        public Precedence(int v, boolean a,boolean s) {
+            value = v; leftAssoc = a;single=s;
         }
     }
 
@@ -178,6 +182,9 @@ public class Parser {
         public static boolean RIGHT = false;
         public void add(String name, int prec, boolean leftAssoc) {
             put(name, new Precedence(prec, leftAssoc));
+        }
+        public void add(String name, int prec, boolean leftAssoc,boolean isSingle) {
+            put(name, new Precedence(prec, leftAssoc,isSingle));
         }
     }
 
@@ -193,24 +200,31 @@ public class Parser {
             factor = exp;
         }
         public void parse(Lexer lexer, List<ASTree> res) throws ParseException {
-            ASTree right = factor.parse(lexer);
+        	
+            ASTree right=null;
             Precedence prec;
+            if((prec=nextOperator(lexer))!=null&&!prec.single&&!prec.leftAssoc)
+            right= factor.parse(lexer);
+
             while ((prec = nextOperator(lexer)) != null)
-                right = doShift(lexer, right, prec.value);
+                right = doShift(lexer, right, prec);
 
             res.add(right);
         }
-        private ASTree doShift(Lexer lexer, ASTree left, int prec)
+        private ASTree doShift(Lexer lexer, ASTree left,Precedence prec)
             throws ParseException
         {
             ArrayList<ASTree> list = new ArrayList<ASTree>();
             list.add(left);
             list.add(new ASTLeaf(lexer.read()));
-            ASTree right = factor.parse(lexer);
+            ASTree right=null;
             Precedence next;
+            if((next=nextOperator(lexer))!= null&&!prec.single&&!prec.leftAssoc)
+            	right=factor.parse(lexer);
+            
             while ((next = nextOperator(lexer)) != null
                    && rightIsExpr(prec, next))
-                right = doShift(lexer, right, next.value);
+                right = doShift(lexer, right, next);
 
             list.add(right);
             return factory.make(list);
@@ -222,11 +236,13 @@ public class Parser {
             else
                 return null;
         }
-        private static boolean rightIsExpr(int prec, Precedence nextPrec) {
-            if (nextPrec.leftAssoc)
-                return prec < nextPrec.value;
-            else
-                return prec <= nextPrec.value;
+        private static boolean rightIsExpr(Precedence prec, Precedence nextPrec) {
+            if (nextPrec.leftAssoc) {
+            	if(prec.single)
+            		return false;
+                return prec.value < nextPrec.value;
+            }else
+                return prec.value <= nextPrec.value;
         }
         protected boolean match(Lexer lexer) throws ParseException {
             return factor.match(lexer);
@@ -299,9 +315,13 @@ public class Parser {
     }
     public ASTree parse(Lexer lexer) throws ParseException {
         ArrayList<ASTree> results = new ArrayList<ASTree>();
+       // try {
         for (Element e: elements)
             e.parse(lexer, results);
-
+        /*}catch(Exception e) {
+        	e.printStackTrace();
+        }*/
+        
         return factory.make(results);
     }
     protected boolean match(Lexer lexer) throws ParseException {

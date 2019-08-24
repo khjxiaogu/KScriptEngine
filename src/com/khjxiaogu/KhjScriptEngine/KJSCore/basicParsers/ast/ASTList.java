@@ -9,10 +9,12 @@ public class ASTList extends ASTree {
     public int numChildren() { return children.size(); }
     public Iterator<ASTree> children() { return children.iterator(); }
     public String toString() {
+    	if(numChildren()==0)return "";
         StringBuilder builder = new StringBuilder();
         builder.append('(');
         String sep = "";
         for (ASTree t: children) {
+        	if(t==null)break;
             builder.append(sep);
             sep = " ";
             builder.append(t.toString());
