@@ -129,4 +129,10 @@ public class MapEnvironment implements KEnvironment {
 		
 	}
 
+	@Override
+	public void Continue() throws KSException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

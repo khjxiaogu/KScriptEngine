@@ -1,10 +1,10 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
-import com.khjxiaogu.scriptengine.core.TypeConvert.Converter;
-import com.khjxiaogu.scriptengine.core.TypeConvert.ConvertionException;
-import com.khjxiaogu.scriptengine.core.TypeConvert.ConvertionManager;
-import com.khjxiaogu.scriptengine.core.TypeConvert.TypeInfo;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
+import com.khjxiaogu.scriptengine.core.typeconvert.Converter;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionManager;
+import com.khjxiaogu.scriptengine.core.typeconvert.TypeInfo;
 
 /**
  * @author khjxiaogu

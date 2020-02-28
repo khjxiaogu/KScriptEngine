@@ -188,9 +188,9 @@ public class TokenDecider implements ASTParser{
 					return new Equals();
 			}else if(next=='>') {
 				reader.eat();
-			 	return new Equals();
+			 	return new Equal();
 			}else
-				return new Equals();
+				return new Equal();
 		case '>':
 			if(next=='>') {
 				char ch=reader.eat();
@@ -273,7 +273,48 @@ public class TokenDecider implements ASTParser{
 		do {
 			sb.append(ch);
 		}while(Character.isJavaIdentifierPart(ch=reader.eat())&&ch!='$'&&ch!=0);
-		return new LiteralNode(sb.toString());
+		String lite=sb.toString();
+		if(lite.equals("break"))
+			return new Break();
+		else if(lite.equals("continue"))
+			return new Continue();
+		else if(lite.equals("delete"))
+			return new DeleteMember();
+		else if(lite.equals("false"))
+			return new NumberNode(0);
+		else if(lite.equals("incontextof"))
+			return new InContextOf();
+		else if(lite.equals("Infinity"))
+			return new NumberNode(Double.POSITIVE_INFINITY);
+		else if(lite.equals("invalidate"))
+			return new Invalidate();
+		else if(lite.equals("instanceof"))
+			return new InstanceOf();
+		else if(lite.equals("isvalid"))
+			return new IsValid();
+		else if(lite.equals("int"))
+			return new TypeConvertion("Integer");
+		else if(lite.equals("if"))
+			return new If();
+		else if(lite.equals("NaN"))
+			return new NumberNode(Double.NaN);
+		else if(lite.equals("null"))
+			return new LiteralNode(null);
+		else if(lite.equals("return"))
+			return new Return();
+		else if(lite.equals("real"))
+			return new TypeConvertion("real");
+		else if(lite.equals("string"))
+			return new TypeConvertion("String");
+		else if(lite.equals("typeof"))
+			return new TypeOf();
+		else if(lite.equals("throw"))
+			return new Throw();
+		else if(lite.equals("true"))
+			return new NumberNode(1);
+		else if(lite.equals("void"))
+			return new NumberNode();
+		return new LiteralNode(lite);
 	}
 	public CodeNode parseArray(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub

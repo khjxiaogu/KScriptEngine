@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.TypeConvert;
+package com.khjxiaogu.scriptengine.core.typeconvert;
 
 public class TypeConverter<From, To> {
 	TypeConvertionFunction<From, To> func;

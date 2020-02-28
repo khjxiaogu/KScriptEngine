@@ -3,11 +3,11 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
-import com.khjxiaogu.scriptengine.core.TypeConvert.Converter;
-import com.khjxiaogu.scriptengine.core.TypeConvert.ConvertionException;
-import com.khjxiaogu.scriptengine.core.TypeConvert.ConvertionManager;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
+import com.khjxiaogu.scriptengine.core.typeconvert.Converter;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionManager;
 
 /**
  * @author khjxiaogu

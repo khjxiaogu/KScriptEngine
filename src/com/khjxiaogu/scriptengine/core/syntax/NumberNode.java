@@ -4,7 +4,7 @@ import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
-import com.khjxiaogu.scriptengine.core.TypeConvert.ConvertionException;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
 
 /**
  * @author khjxiaogu
@@ -21,6 +21,14 @@ public class NumberNode implements ASTParser, CodeNode {
 		// TODO Auto-generated constructor stub
 	}
 
+	public NumberNode(int i) throws ConvertionException {
+		// TODO Auto-generated constructor stub
+		number.setNumber((double) i);
+	}
+	public NumberNode(double i) throws ConvertionException {
+		// TODO Auto-generated constructor stub
+		number.setNumber(i);
+	}
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub

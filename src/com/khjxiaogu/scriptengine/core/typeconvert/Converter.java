@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.TypeConvert;
+package com.khjxiaogu.scriptengine.core.typeconvert;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.TypeConvert;
+package com.khjxiaogu.scriptengine.core.typeconvert;
 
 import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 

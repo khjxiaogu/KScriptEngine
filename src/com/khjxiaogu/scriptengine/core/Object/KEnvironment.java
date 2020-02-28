@@ -19,4 +19,5 @@ public interface KEnvironment {
 	public KVariant getMemberByNameEnsure(String name) throws KSException;
 	public void Break() throws KSException;
 	public void Return(KVariant val) throws KSException;
+	public void Continue() throws KSException;
 }
