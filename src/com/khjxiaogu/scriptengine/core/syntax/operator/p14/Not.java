@@ -8,9 +8,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorNot.java
- * !x
+ * @time 2020年2月16日 file:OperatorNot.java !x
  */
 public class Not extends SingleOperator {
 
@@ -24,7 +22,7 @@ public class Not extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant((super.Child.eval(env).getNumber())!=0?0:1);
+		return new KVariant(super.Child.eval(env).getNumber() != 0 ? 0 : 1);
 	}
 
 	@Override
@@ -38,8 +36,9 @@ public class Not extends SingleOperator {
 		// TODO Auto-generated method stub
 		return Associative.LEFT;
 	}
+
 	@Override
 	public String toString() {
-		return "(!"+super.Child.toString()+")";
+		return "(!" + super.Child.toString() + ")";
 	}
 }

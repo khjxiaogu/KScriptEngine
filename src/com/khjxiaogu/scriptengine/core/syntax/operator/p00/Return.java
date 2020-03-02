@@ -1,15 +1,16 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p00;
 
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlockEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月21日
- * file:Return.java
+ * @time 2020年2月21日 file:Return.java
  */
 public class Return extends SingleOperator {
 
@@ -23,8 +24,10 @@ public class Return extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		env.Return(super.Child.eval(env));
-		return null;
+		if (env instanceof CodeBlockEnvironment) {
+			((CodeBlockEnvironment) env).Return(super.Child.eval(env));
+		}
+		throw new ScriptException("错误的return语句");
 	}
 
 	@Override

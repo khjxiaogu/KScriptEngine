@@ -3,14 +3,11 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p13;
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
-import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorMultiplu.java
- * x*x
+ * @time 2020年2月16日 file:OperatorMultiplu.java x*x
  */
 public class Multiply extends DoubleOperator {
 
@@ -32,6 +29,7 @@ public class Multiply extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 13;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

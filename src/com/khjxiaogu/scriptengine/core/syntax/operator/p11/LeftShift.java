@@ -7,9 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月18日
- * file:LeftShift.java
- * x<<x
+ * @time 2020年2月18日 file:LeftShift.java x<<x
  */
 public class LeftShift extends DoubleOperator {
 
@@ -31,6 +29,7 @@ public class LeftShift extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 11;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

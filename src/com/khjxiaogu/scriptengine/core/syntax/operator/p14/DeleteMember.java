@@ -10,14 +10,11 @@ import com.khjxiaogu.scriptengine.core.Object.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
-import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperationDeleteMember.java
- * delete x
+ * @time 2020年2月16日 file:OperationDeleteMember.java delete x
  */
 public class DeleteMember extends SingleOperator {
 
@@ -31,18 +28,18 @@ public class DeleteMember extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if(super.Child instanceof LiteralNode)
-			return new KVariant(Integer.valueOf(env.deleteMemberByName(((LiteralNode)super.Child).getToken())?1:0),"Integer");
-		else if(super.Child instanceof MemberOperator) {
-			List<String> path=new ArrayList<String>();
-			((MemberOperator)super.Child).getClassPath(env,path);
-			KVariant ret=new KVariant(Integer.valueOf(env.deleteMemberByPath(path)?1:0),"Integer");
+		if (super.Child instanceof LiteralNode) {
+			return new KVariant(Integer.valueOf(env.deleteMemberByName(((LiteralNode) super.Child).getToken()) ? 1 : 0),
+					"Integer");
+		} else if (super.Child instanceof MemberOperator) {
+			List<String> path = new ArrayList<>();
+			KVariant ret = new KVariant();
 			path.clear();
 			return ret;
 		}
 		throw new MemberNotFoundException(super.Child.toString());
-		//CodeNode parent=
-		//while()
+		// CodeNode parent=
+		// while()
 	}
 
 	@Override
@@ -56,8 +53,9 @@ public class DeleteMember extends SingleOperator {
 		// TODO Auto-generated method stub
 		return Associative.LEFT;
 	}
+
 	@Override
 	public String toString() {
-		return "(delete "+super.Child.toString()+")";
+		return "(delete " + super.Child.toString() + ")";
 	}
 }

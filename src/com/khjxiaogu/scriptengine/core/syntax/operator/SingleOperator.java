@@ -8,12 +8,16 @@ import com.khjxiaogu.scriptengine.core.syntax.SyntaxError;
 
 public abstract class SingleOperator implements Operator {
 	protected CodeNode Child;
+
 	public SingleOperator() {
 	}
+
 	@Override
 	public abstract KVariant eval(KEnvironment env) throws KSException;
+
 	@Override
 	public abstract int getPriority();
+
 	@Override
 	public abstract Associative getAssociative();
 
@@ -24,16 +28,20 @@ public abstract class SingleOperator implements Operator {
 
 	@Override
 	public void setChildren(CodeNode... codeNodes) throws KSException {
-		if(codeNodes[0]!=null)
-			if(getAssociative()==Associative.RIGHT)
-				Child=codeNodes[0];
-			else
+		if (codeNodes[0] != null) {
+			if (getAssociative() == Associative.RIGHT) {
+				Child = codeNodes[0];
+			} else {
 				throw new SyntaxError("Unexpected 'operator' position,expected ';'");
-		if(codeNodes.length>1&&codeNodes[1]!=null)
-			if(getAssociative()==Associative.LEFT)
-				Child=codeNodes[1];
-			else
+			}
+		}
+		if (codeNodes.length > 1 && codeNodes[1] != null) {
+			if (getAssociative() == Associative.LEFT) {
+				Child = codeNodes[1];
+			} else {
 				throw new SyntaxError("Unexpected 'operator' position,expected ';'");
+			}
+		}
 	}
 
 }

@@ -8,9 +8,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorDecodeChar.java
- * $x
+ * @time 2020年2月16日 file:OperatorDecodeChar.java $x
  */
 public class EncodeChar extends SingleOperator {
 
@@ -24,7 +22,7 @@ public class EncodeChar extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(String.valueOf((char)(int)(double)super.Child.eval(env).getNumber()),"String");
+		return new KVariant(String.valueOf((char) (int) (double) super.Child.eval(env).getNumber()), "String");
 	}
 
 	@Override
@@ -38,8 +36,9 @@ public class EncodeChar extends SingleOperator {
 		// TODO Auto-generated method stub
 		return Associative.LEFT;
 	}
+
 	@Override
 	public String toString() {
-		return "($"+super.Child.toString()+")";
+		return "($" + super.Child.toString() + ")";
 	}
 }

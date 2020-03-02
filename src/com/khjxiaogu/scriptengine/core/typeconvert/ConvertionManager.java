@@ -14,18 +14,36 @@ public class ConvertionManager {
 	}
 
 	static {
-		new TypeConverter<>(Integer.class, Double.class, (obj) -> {return (double) obj;});
-		new TypeConverter<>(Integer.class, String.class, (obj) -> {return Integer.toString(obj);});
-		new TypeConverter<>(Double.class, Integer.class, (obj) -> {return (int) (double) obj;});
-		new TypeConverter<>(Double.class, String.class, (obj) -> {return Double.toString(obj);});
-		new TypeConverter<>(Void.class, Integer.class, (obj) -> {return 0;});
-		new TypeConverter<>(Void.class, Double.class, (obj) -> {return 0D;});
-		new TypeConverter<>(Void.class, String.class, (obj) -> {return "";});
-		new TypeConverter<>(Void.class, KObject.class, (obj) -> {return null;});
-		new TypeConverter<>(Void.class, byte[].class, (obj) -> {return new byte[0];});
+		new TypeConverter<>(Integer.class, Double.class, (obj) -> {
+			return (double) obj;
+		});
+		new TypeConverter<>(Integer.class, String.class, (obj) -> {
+			return Integer.toString(obj);
+		});
+		new TypeConverter<>(Double.class, Integer.class, (obj) -> {
+			return (int) (double) obj;
+		});
+		new TypeConverter<>(Double.class, String.class, (obj) -> {
+			return Double.toString(obj);
+		});
+		new TypeConverter<>(Void.class, Integer.class, (obj) -> {
+			return 0;
+		});
+		new TypeConverter<>(Void.class, Double.class, (obj) -> {
+			return 0D;
+		});
+		new TypeConverter<>(Void.class, String.class, (obj) -> {
+			return "";
+		});
+		new TypeConverter<>(Void.class, KObject.class, (obj) -> {
+			return null;
+		});
+		new TypeConverter<>(Void.class, byte[].class, (obj) -> {
+			return new byte[0];
+		});
 		new TypeConverter<>(String.class, Integer.class, (obj) -> {
 			try {
-				return (int)Double.parseDouble(obj);
+				return (int) Double.parseDouble(obj);
 			} catch (NumberFormatException e) {
 				return 0;
 			}
@@ -41,31 +59,36 @@ public class ConvertionManager {
 			return obj.getBytes();
 		});
 		new TypeConverter<>(KObject.class, String.class, (obj) -> {
-			if (obj instanceof KProperty)
+			if (obj instanceof KProperty) {
 				return (String) ((KProperty) obj).getProp().toType("String");
+			}
 			return obj.toString();
 		});
 		new TypeConverter<>(KObject.class, Integer.class, (obj) -> {
-			if (obj instanceof KProperty)
+			if (obj instanceof KProperty) {
 				return (Integer) ((KProperty) obj).getProp().toType("Integer");
+			}
 			throw new ConvertionException("Object", "Integer");
 		});
 		new TypeConverter<>(KObject.class, Double.class, (obj) -> {
-			if (obj instanceof KProperty)
+			if (obj instanceof KProperty) {
 				return (Double) ((KProperty) obj).getProp().toType("Real");
+			}
 			throw new ConvertionException("Object", "Real");
 		});
 		new TypeConverter<>(KObject.class, byte[].class, (obj) -> {
-			if (obj instanceof KProperty)
+			if (obj instanceof KProperty) {
 				return (byte[]) ((KProperty) obj).getProp().toType("Octet");
+			}
 			throw new ConvertionException("Object", "Octet");
 		});
 		new TypeConverter<>(byte[].class, String.class, (obj) -> {
 			StringBuilder sb = new StringBuilder("<% ");
-			for (int i = 0; i < obj.length; i++) {
-				if (obj[i] < 0x10)
+			for (byte element : obj) {
+				if (element < 0x10) {
 					sb.append("0");
-				sb.append(Integer.toHexString(obj[i]));
+				}
+				sb.append(Integer.toHexString(element));
 				sb.append(" ");
 			}
 			sb.append("%>");

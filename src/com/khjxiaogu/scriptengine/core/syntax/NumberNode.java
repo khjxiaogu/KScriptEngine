@@ -8,15 +8,15 @@ import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:NumberNode.java
+ * @time 2020年2月19日 file:NumberNode.java
  */
 public class NumberNode implements ASTParser, CodeNode {
 
 	/**
 	 * 
 	 */
-	KVariant number=new KVariant();
+	KVariant number = new KVariant();
+
 	public NumberNode() {
 		// TODO Auto-generated constructor stub
 	}
@@ -25,10 +25,12 @@ public class NumberNode implements ASTParser, CodeNode {
 		// TODO Auto-generated constructor stub
 		number.setNumber((double) i);
 	}
+
 	public NumberNode(double i) throws ConvertionException {
 		// TODO Auto-generated constructor stub
 		number.setNumber(i);
 	}
+
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
@@ -37,28 +39,30 @@ public class NumberNode implements ASTParser, CodeNode {
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
-		Double value=0.0D;
-		Double dot=1D;
-		boolean dotted=false;
-		char c=reader.read();
-		while(true) {
-			if(c>='0'&&c<='9') 	{
-				value*=10;
-				value+=c-'0';
-				if(dotted) {
-					dot*=10;
+		Double value = 0.0D;
+		Double dot = 1D;
+		boolean dotted = false;
+		char c = reader.read();
+		while (true) {
+			if (c >= '0' && c <= '9') {
+				value *= 10;
+				value += c - '0';
+				if (dotted) {
+					dot *= 10;
 				}
-			}else if(c=='.') {
-				dotted=true;
-			}else
+			} else if (c == '.') {
+				dotted = true;
+			} else {
 				break;
-			c=reader.eat();
+			}
+			c = reader.eat();
 		}
-		value/=dot;
+		value /= dot;
 		number.setNumber(value);
 		// TODO Auto-generated method stub
 		return this;
 	}
+
 	@Override
 	public String toString() {
 		return number.toString();

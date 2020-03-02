@@ -2,11 +2,11 @@ package com.khjxiaogu.scriptengine.core.Object;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:BasicProperty.java
+ * @time 2020年2月16日 file:BasicProperty.java
  */
 public class BasicProperty implements KProperty {
 	Object value;
+
 	/**
 	 * 
 	 */
@@ -17,12 +17,14 @@ public class BasicProperty implements KProperty {
 	@Override
 	public void setProp(KVariant x) {
 		// TODO Auto-generated method stub
-		value=x.getValue();
+		value = x.getValue();
 	}
+
 	public void setProp(Object x) {
 		// TODO Auto-generated method stub
-		value=x;
+		value = x;
 	}
+
 	@Override
 	public KVariant getProp() {
 		// TODO Auto-generated method stub

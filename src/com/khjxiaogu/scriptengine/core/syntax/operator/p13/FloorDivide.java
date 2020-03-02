@@ -7,9 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:FloorDivide.java
- * x\x
+ * @time 2020年2月16日 file:FloorDivide.java x\x
  */
 public class FloorDivide extends DoubleOperator {
 
@@ -31,6 +29,7 @@ public class FloorDivide extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 13;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:Exchange.java
+ * @time 2020年2月19日 file:Exchange.java
  */
 public class Exchange extends DoubleOperator {
 
@@ -22,9 +21,9 @@ public class Exchange extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		KVariant left=super.left.eval(env);
-		KVariant right=super.right.eval(env);
-		KVariant temp=new KVariant(left); 
+		KVariant left = super.left.eval(env);
+		KVariant right = super.right.eval(env);
+		KVariant temp = new KVariant(left);
 		left.setValue(right);
 		right.setValue(temp);
 		return new KVariant();
@@ -35,6 +34,7 @@ public class Exchange extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 2;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

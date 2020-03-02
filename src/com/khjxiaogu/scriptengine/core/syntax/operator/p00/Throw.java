@@ -8,8 +8,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月21日
- * file:Throw.java
+ * @time 2020年2月21日 file:Throw.java
  */
 public class Throw extends SingleOperator {
 

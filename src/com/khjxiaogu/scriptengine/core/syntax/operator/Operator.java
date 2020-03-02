@@ -8,8 +8,12 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 public interface Operator extends CodeNode {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException;
+
 	public int getPriority();
+
 	public Associative getAssociative();
+
 	public int getOperandCount();
-	public void setChildren(CodeNode...codeNodes) throws KSException;
+
+	public void setChildren(CodeNode... codeNodes) throws KSException;
 }

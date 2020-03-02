@@ -4,8 +4,7 @@ import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:SyntaxError.java
+ * @time 2020年2月16日 file:SyntaxError.java
  */
 public class SyntaxError extends ScriptException {
 
@@ -18,7 +17,7 @@ public class SyntaxError extends ScriptException {
 	 * @param describe
 	 */
 	public SyntaxError(String describe) {
-		super("语法错误："+describe);
+		super("语法错误：" + describe);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,8 +28,12 @@ public class SyntaxError extends ScriptException {
 	 * @param col
 	 */
 	public SyntaxError(String describe, String file, int lin, int col) {
-		super("语法错误："+describe, file, lin, col);
+		super("语法错误：" + describe, file, lin, col);
 		// TODO Auto-generated constructor stub
+	}
+
+	public SyntaxError() {
+		super("语法错误");
 	}
 
 }

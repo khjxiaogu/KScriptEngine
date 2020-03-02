@@ -8,9 +8,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorByteInvert.java
- * ~x
+ * @time 2020年2月16日 file:OperatorByteInvert.java ~x
  */
 public class ByteInvert extends SingleOperator {
 
@@ -24,7 +22,7 @@ public class ByteInvert extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(~((int)(double)(super.Child.eval(env).getNumber())));
+		return new KVariant(~((int) (double) super.Child.eval(env).getNumber()));
 	}
 
 	@Override
@@ -38,8 +36,9 @@ public class ByteInvert extends SingleOperator {
 		// TODO Auto-generated method stub
 		return Associative.LEFT;
 	}
+
 	@Override
 	public String toString() {
-		return "(~"+super.Child.toString()+")";
+		return "(~" + super.Child.toString() + ")";
 	}
 }

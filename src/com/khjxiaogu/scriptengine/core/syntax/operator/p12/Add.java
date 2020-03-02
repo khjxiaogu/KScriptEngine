@@ -7,11 +7,10 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:Add.java
+ * @time 2020年2月16日 file:Add.java
  */
 public class Add extends DoubleOperator {
-	
+
 	/**
 	 * 
 	 */
@@ -30,6 +29,7 @@ public class Add extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 12;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

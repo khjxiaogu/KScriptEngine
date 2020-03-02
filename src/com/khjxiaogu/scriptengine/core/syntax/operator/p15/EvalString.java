@@ -9,9 +9,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorEvalString.java
- * x!
+ * @time 2020年2月16日 file:OperatorEvalString.java x!
  */
 public class EvalString extends SingleOperator {
 
@@ -39,9 +37,10 @@ public class EvalString extends SingleOperator {
 		// TODO Auto-generated method stub
 		return Associative.RIGHT;
 	}
+
 	@Override
 	public String toString() {
-		return "("+super.Child.toString()+"!)";
+		return "(" + super.Child.toString() + "!)";
 	}
 
 }

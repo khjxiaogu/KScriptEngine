@@ -11,29 +11,32 @@ import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionManager;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorTypeConvertion.java
- * type(x) or (type)x
+ * @time 2020年2月16日 file:OperatorTypeConvertion.java type(x) or (type)x
  */
 public class TypeConvertion extends SingleOperator {
 	Converter converter;
+
 	public TypeConvertion(String Type) throws ConvertionException {
-		converter=ConvertionManager.getConvertion(Type);
+		converter = ConvertionManager.getConvertion(Type);
 	}
+
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		return converter.convert(super.Child.eval(env));
 	}
+
 	@Override
 	public int getPriority() {
 		return 15;
 	}
+
 	@Override
 	public Associative getAssociative() {
 		return Associative.LEFT;
 	}
+
 	@Override
 	public String toString() {
-		return "(("+converter.getOutTypeName()+")"+super.Child.toString()+")";
+		return "((" + converter.getOutTypeName() + ")" + super.Child.toString() + ")";
 	}
 }

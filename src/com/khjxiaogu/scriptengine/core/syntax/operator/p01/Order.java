@@ -7,9 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:Order.java
- * x,x
+ * @time 2020年2月19日 file:Order.java x,x
  */
 public class Order extends DoubleOperator {
 

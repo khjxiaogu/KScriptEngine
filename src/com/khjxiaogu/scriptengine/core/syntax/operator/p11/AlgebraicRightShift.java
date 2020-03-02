@@ -7,9 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月18日
- * file:AlgebraicRightShift.java
- * x>>>zx
+ * @time 2020年2月18日 file:AlgebraicRightShift.java x>>>zx
  */
 public class AlgebraicRightShift extends DoubleOperator {
 
@@ -31,6 +29,7 @@ public class AlgebraicRightShift extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 11;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

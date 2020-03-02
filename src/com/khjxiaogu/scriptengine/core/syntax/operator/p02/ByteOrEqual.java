@@ -3,14 +3,14 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p02;
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
-import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
+import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
+import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:OrEqual.java
+ * @time 2020年2月19日 file:OrEqual.java
  */
-public class ByteOrEqual extends DoubleOperator {
+public class ByteOrEqual extends Equal {
 
 	/**
 	 * 
@@ -22,14 +22,9 @@ public class ByteOrEqual extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return null;
+		return ((Assignable) super.left).assignOperation(env, super.right.eval(env), AssignOperation.BOR);
 	}
 
-	@Override
-	public int getPriority() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

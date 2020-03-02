@@ -8,8 +8,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:If.java
+ * @time 2020年2月19日 file:If.java
  */
 public class If extends DoubleOperator {
 
@@ -23,8 +22,9 @@ public class If extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if(super.right.eval(env).asBoolean())
+		if (super.right.eval(env).asBoolean()) {
 			super.left.eval(env);
+		}
 		return new KVariant();
 	}
 
@@ -33,6 +33,7 @@ public class If extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	@Override
 	public Associative getAssociative() {
 		return Associative.LEFT;
@@ -42,5 +43,5 @@ public class If extends DoubleOperator {
 	public String getToken() {
 		// TODO Auto-generated method stub
 		return "if";
-	};
+	}
 }

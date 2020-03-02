@@ -4,45 +4,47 @@ import com.khjxiaogu.scriptengine.core.Exception.KSException;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月20日
- * file:StringParseReader.java
+ * @time 2020年2月20日 file:StringParseReader.java
  */
 public class StringParseReader implements ParseReader {
 	String backed;
-	int pos=0;
+	int pos = 0;
 	String name;
+
 	/**
 	 * 
 	 */
 	public StringParseReader(String s) {
 		// TODO Auto-generated constructor stub
-		backed=s;
-		name="anoymous";
+		backed = s;
+		name = "anoymous";
 	}
-	public StringParseReader(String s,String name) {
+
+	public StringParseReader(String s, String name) {
 		// TODO Auto-generated constructor stub
-		backed=s;
-		this.name=name;
+		backed = s;
+		this.name = name;
 	}
+
 	@Override
 	public char read() throws KSException {
 		// TODO Auto-generated method stub
-		if(has())
+		if (has()) {
 			return backed.charAt(pos);
-		else
-			return 0;
+		}
+		return 0;
 	}
 
 	@Override
 	public char read(int off) throws KSException {
 		// TODO Auto-generated method stub
-		return backed.charAt(pos+off);
+		return backed.charAt(pos + off);
 	}
 
 	@Override
 	public char eat() throws KSException {
 		// TODO Auto-generated method stub
-		//System.out.print(backed.charAt(pos));
+		// System.out.print(backed.charAt(pos));
 		++pos;
 		return read();
 	}
@@ -50,7 +52,7 @@ public class StringParseReader implements ParseReader {
 	@Override
 	public void eat(int count) throws KSException {
 		// TODO Auto-generated method stub
-		pos+=count;
+		pos += count;
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class StringParseReader implements ParseReader {
 	@Override
 	public boolean has() {
 		// TODO Auto-generated method stub
-		return pos<=backed.length()-1;
+		return pos <= backed.length() - 1;
 	}
 
 	@Override

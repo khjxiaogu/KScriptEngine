@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:GreaterThan.java
+ * @time 2020年2月19日 file:GreaterThan.java
  */
 public class GreaterThan extends DoubleOperator {
 
@@ -30,6 +29,7 @@ public class GreaterThan extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 10;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

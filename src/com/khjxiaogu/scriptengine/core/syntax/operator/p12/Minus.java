@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月17日
- * file:Minus.java
+ * @time 2020年2月17日 file:Minus.java
  */
 public class Minus extends DoubleOperator {
 
@@ -30,6 +29,7 @@ public class Minus extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 12;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

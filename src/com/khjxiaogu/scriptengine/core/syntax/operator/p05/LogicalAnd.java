@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:LogicalAnd.java
+ * @time 2020年2月19日 file:LogicalAnd.java
  */
 public class LogicalAnd extends DoubleOperator {
 
@@ -22,7 +21,7 @@ public class LogicalAnd extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(super.left.eval(env).asBoolean()&&super.right.eval(env).asBoolean());
+		return new KVariant(super.left.eval(env).asBoolean() && super.right.eval(env).asBoolean());
 	}
 
 	@Override
@@ -30,6 +29,7 @@ public class LogicalAnd extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 5;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

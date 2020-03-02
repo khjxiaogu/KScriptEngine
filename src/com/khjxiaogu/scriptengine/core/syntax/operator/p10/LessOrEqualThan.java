@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:LessOrEqualThan.java
+ * @time 2020年2月19日 file:LessOrEqualThan.java
  */
 public class LessOrEqualThan extends DoubleOperator {
 
@@ -30,6 +29,7 @@ public class LessOrEqualThan extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 10;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

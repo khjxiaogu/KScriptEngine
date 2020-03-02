@@ -4,6 +4,6 @@ import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
 
-public interface CodeNode {
+public interface CodeNode extends Cloneable {
 	public KVariant eval(KEnvironment env) throws KSException;
 }

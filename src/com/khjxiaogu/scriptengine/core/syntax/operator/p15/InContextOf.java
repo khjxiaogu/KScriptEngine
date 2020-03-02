@@ -4,14 +4,11 @@ import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
-import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorInContextOf.java
- * x incontextof x
+ * @time 2020年2月16日 file:OperatorInContextOf.java x incontextof x
  */
 public class InContextOf extends DoubleOperator {
 

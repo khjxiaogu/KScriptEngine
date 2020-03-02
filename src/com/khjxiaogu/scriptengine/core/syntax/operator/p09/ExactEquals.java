@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:ExactEquals.java
+ * @time 2020年2月19日 file:ExactEquals.java
  */
 public class ExactEquals extends DoubleOperator {
 
@@ -30,6 +29,7 @@ public class ExactEquals extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 9;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

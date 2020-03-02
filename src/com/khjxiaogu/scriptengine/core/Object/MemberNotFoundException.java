@@ -4,8 +4,7 @@ import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:MemberNotFoundException.java
+ * @time 2020年2月16日 file:MemberNotFoundException.java
  */
 public class MemberNotFoundException extends ScriptException {
 
@@ -18,7 +17,7 @@ public class MemberNotFoundException extends ScriptException {
 	 * @param describe
 	 */
 	public MemberNotFoundException(String describe) {
-		super("无法找到成员"+describe);
+		super("无法找到成员" + describe);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,7 +28,7 @@ public class MemberNotFoundException extends ScriptException {
 	 * @param col
 	 */
 	public MemberNotFoundException(String describe, String file, int lin, int col) {
-		super("无法找到成员"+describe, file, lin, col);
+		super("无法找到成员" + describe, file, lin, col);
 		// TODO Auto-generated constructor stub
 	}
 

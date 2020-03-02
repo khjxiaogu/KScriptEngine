@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:ByteAnd.java
+ * @time 2020年2月19日 file:ByteAnd.java
  */
 public class ByteAnd extends DoubleOperator {
 
@@ -30,6 +29,7 @@ public class ByteAnd extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 8;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

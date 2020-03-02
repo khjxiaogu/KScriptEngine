@@ -5,7 +5,7 @@ public class TypeConverter<From, To> {
 	TypeInfo from;
 	TypeInfo to;
 
-	public TypeConverter(Class<From> from,Class<To> to,TypeConvertionFunction<From, To> func) {
+	public TypeConverter(Class<From> from, Class<To> to, TypeConvertionFunction<From, To> func) {
 		this.func = func;
 		this.from = TypeInfo.forType(from);
 		this.to = TypeInfo.forType(to);
@@ -23,5 +23,5 @@ public class TypeConverter<From, To> {
 
 	public TypeInfo getTo() {
 		return to;
-	};
+	}
 }

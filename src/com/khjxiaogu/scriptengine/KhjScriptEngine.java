@@ -2,8 +2,7 @@ package com.khjxiaogu.scriptengine;
 
 /**
  * @author khjxiaogu
- * @time 2019年8月23日
- * file:KhjScriptEngine.java
+ * @time 2019年8月23日 file:KhjScriptEngine.java
  */
 public class KhjScriptEngine {
 

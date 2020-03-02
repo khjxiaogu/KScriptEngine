@@ -22,6 +22,7 @@ public class Divide extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 13;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub

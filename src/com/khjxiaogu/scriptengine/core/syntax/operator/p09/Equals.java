@@ -7,8 +7,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日
- * file:Equal.java
+ * @time 2020年2月19日 file:Equal.java
  */
 public class Equals extends DoubleOperator {
 
@@ -30,9 +29,11 @@ public class Equals extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return 9;
 	}
+
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub
 		return "==";
 	}
+
 }

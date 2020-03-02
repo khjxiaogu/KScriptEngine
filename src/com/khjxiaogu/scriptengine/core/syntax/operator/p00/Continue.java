@@ -1,15 +1,16 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p00;
 
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlockEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月21日
- * file:Continue.java
+ * @time 2020年2月21日 file:Continue.java
  */
 public class Continue extends SingleOperator {
 
@@ -23,8 +24,10 @@ public class Continue extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		env.Continue();
-		return null;
+		if (env instanceof CodeBlockEnvironment) {
+			((CodeBlockEnvironment) env).Continue();
+		}
+		throw new ScriptException("错误的continue语句");
 	}
 
 	@Override

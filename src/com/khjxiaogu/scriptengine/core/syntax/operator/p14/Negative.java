@@ -8,9 +8,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月16日
- * file:OperatorNegative.java
- * -x
+ * @time 2020年2月16日 file:OperatorNegative.java -x
  */
 public class Negative extends SingleOperator {
 
@@ -38,8 +36,9 @@ public class Negative extends SingleOperator {
 		// TODO Auto-generated method stub
 		return Associative.LEFT;
 	}
+
 	@Override
 	public String toString() {
-		return "(-"+super.Child.toString()+")";
+		return "(-" + super.Child.toString() + ")";
 	}
 }

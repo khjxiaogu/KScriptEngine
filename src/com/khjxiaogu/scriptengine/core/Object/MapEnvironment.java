@@ -1,102 +1,132 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class MapEnvironment implements KEnvironment {
-	private Map<String,KVariant> map=new ConcurrentHashMap<>();
-	KEnvironment parent=null;
+	private Map<String, KVariant> map = new ConcurrentHashMap<>();
+	KEnvironment parent = null;
+
 	public MapEnvironment(KEnvironment parent) {
 		// TODO Auto-generated constructor stub
-		this.parent=parent;
+		this.parent = parent;
 	}
 
 	@Override
 	public KVariant getMemberByName(String name) throws KSException {
 		// TODO Auto-generated method stub
-		KVariant res=map.get(name);
-		if(res==null) {
-			if(parent!=null)
-				res=parent.getMemberByName(name);
+		KVariant res = map.get(name);
+		if (res == null) {
+			if (parent != null) {
+				res = parent.getMemberByName(name);
+			}
 		}
-		if(res==null)
+		if (res == null) {
 			return new KVariant();
+		}
 		return res;
 	}
+
 	@Override
 	public KVariant getMemberByNameEnsure(String name) throws KSException {
 		// TODO Auto-generated method stub
-		KVariant res=map.get(name);
-		if(res==null) {
-			if(parent!=null)
-				res=parent.getMemberByName(name);
+		KVariant res = map.get(name);
+		if (res == null) {
+			if (parent != null) {
+				res = parent.getMemberByName(name);
+			}
 		}
-		if(res==null)
+		if (res == null) {
 			throw new MemberNotFoundException(name);
+		}
 		return res;
 	}
+
 	@Override
 	public KVariant getMemberByNum(int num) throws KSException {
 		// TODO Auto-generated method stub
-		KVariant res=map.get(Integer.toString(num));
-		if(res==null) {
-			if(parent!=null)
-				res=parent.getMemberByNum(num);
+		KVariant res = map.get(Integer.toString(num));
+		if (res == null) {
+			if (parent != null) {
+				res = parent.getMemberByNum(num);
+			}
 		}
-		if(res==null)
+		if (res == null) {
 			return new KVariant();
+		}
 		return res;
 	}
 
 	@Override
 	public KVariant getMemberByVariant(KVariant var) throws KSException {
 		// TODO Auto-generated method stub
-		String name=(String) var.asType("String");
-		KVariant res=map.get(name);
-		if(res==null) {
-			if(parent!=null)
-				res=parent.getMemberByName(name);
+		KVariant res = null;
+		String name = (String) var.toType("String");
+		res = map.get(name);
+		if (res == null) {
+			if (parent != null) {
+				res = parent.getMemberByVariant(var);
+			} else {
+				res = new KVariant();
+			}
 		}
-		if(res==null)
-			return new KVariant();
 		return res;
-	}
-
-	@Override
-	public KVariant getMemberByPath(List<String> path) throws KSException {
-		// TODO Auto-generated method stub
-		String ot=path.remove(0);
-		KVariant ol=map.get(ot);
-		if(path.isEmpty())
-		return ol;
-		return ((KObject)ol.asType("Object")).getMemberByPath(path);
 	}
 
 	@Override
 	public KVariant setMemberByName(String name, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		return null;
+		if (map.containsKey(name)) {
+			map.put(name, val);
+			return val;
+		} else if (parent != null && parent.hasMemberByName(name)) {
+			return parent.setMemberByName(name, val);
+		}
+		map.put(name, val);
+		return val;
+	}
+
+	@Override
+	public KVariant setMemberByNameEnsure(String name, KVariant val) throws KSException {
+		if (map.containsKey(name)) {
+			map.put(name, val);
+			return val;
+		} else if (parent != null) {
+			return parent.setMemberByNameEnsure(name, val);
+		}
+		throw new MemberNotFoundException(name);
 	}
 
 	@Override
 	public KVariant setMemberByNum(int num, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		return null;
+		String name = Integer.toString(num);
+		if (map.containsKey(name)) {
+			map.put(name, val);
+			return val;
+		} else if (parent != null && parent.hasMemberByNum(num)) {
+			return parent.setMemberByNum(num, val);
+		}
+		map.put(name, val);
+		return val;
 	}
 
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public KVariant setMemberByPath(List<String> path, KVariant val) throws KSException {
-		// TODO Auto-generated method stub
-		return null;
+		String name = null;
+		name = (String) var.toType("String");
+		if (map.containsKey(name)) {
+			map.put(name, val);
+			return val;
+		} else if (parent != null && parent.hasMemberByVariant(var)) {
+			return parent.setMemberByVariant(var, val);
+		}
+		map.put(name, val);
+		return val;
 	}
 
 	@Override
@@ -112,27 +142,33 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public boolean deleteMemberByPath(List<String> path) {
-		// TODO Auto-generated method stub
-		return false;
+	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
+		return null;
 	}
 
 	@Override
-	public void Break() throws KSException {
-		// TODO Auto-generated method stub
-		
+	public KVariant DoOperatonByNum(AssignOperation op, int num, KVariant opr) throws KSException {
+		return null;
 	}
 
 	@Override
-	public void Return(KVariant val) throws KSException {
-		// TODO Auto-generated method stub
-		
+	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
+		return null;
 	}
 
 	@Override
-	public void Continue() throws KSException {
-		// TODO Auto-generated method stub
-		
+	public boolean hasMemberByName(String name) throws KSException {
+		return map.containsKey(name) || parent != null && parent.hasMemberByName(name);
+	}
+
+	@Override
+	public boolean hasMemberByNum(int num) throws KSException {
+		return map.containsKey(Integer.toString(num)) || parent != null && parent.hasMemberByNum(num);
+	}
+
+	@Override
+	public boolean hasMemberByVariant(KVariant var) throws KSException {
+		return map.containsKey(var.toType("String")) || parent != null && parent.hasMemberByVariant(var);
 	}
 
 }
