@@ -39,14 +39,6 @@ public class Member extends DoubleOperator implements MemberOperator {
 		return 15;
 	}
 
-	@Override
-	public void getClassPath(KEnvironment env, List<String> dest) throws KSException {
-		// TODO Auto-generated method stub
-		if (super.left instanceof MemberOperator) {
-			((MemberOperator) super.left).getClassPath(env, dest);
-		}
-		dest.add(((LiteralNode) super.right).getToken());
-	}
 
 	@Override
 	public String getToken() {

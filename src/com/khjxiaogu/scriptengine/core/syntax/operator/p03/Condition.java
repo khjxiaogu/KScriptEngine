@@ -19,13 +19,14 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 
 /**
  * @author khjxiaogu
- * @time 2020年2月19日 file:Conditon.java x?x:x
+ * @time 2020年2月19日
+ *  file:Conditon.java
+ *   x?x:x
  */
 public class Condition implements Operator, ASTParser, MemberOperator {
 	CodeNode cond;
 	CodeNode first;
 	CodeNode other;
-
 	/**
 	 * 
 	 */
@@ -83,22 +84,6 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 	@Override
 	public String toString() {
 		return "(" + cond.toString() + "?(" + first.toString() + "):(" + other.toString() + "))";
-	}
-
-	@Override
-	public void getClassPath(KEnvironment env, List<String> dest) throws KSException {
-		// TODO Auto-generated method stub
-		CodeNode cn;
-		if (cond.eval(env).asBoolean()) {
-			cn = first;
-		} else {
-			cn = other;
-		}
-		if (cn instanceof MemberOperator) {
-			((MemberOperator) cn).getClassPath(env, dest);
-		} else {
-			throw new ScriptException("无法把" + cn.toString() + "转换为对象");
-		}
 	}
 
 	@Override

@@ -61,12 +61,6 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 		// TODO Auto-generated method stub
 		return (KObject) env.getMemberByNameEnsure(getToken()).toType("KObject");
 	}
-
-	@Override
-	public void getClassPath(KEnvironment env, List<String> dest) throws KSException {
-		dest.add(getToken());
-	}
-
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
 		return env.DoOperatonByName(op, getToken(), val);

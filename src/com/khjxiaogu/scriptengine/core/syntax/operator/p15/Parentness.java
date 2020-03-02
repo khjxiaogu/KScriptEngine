@@ -47,17 +47,6 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	public String toString() {
 		return inner.toString();
 	}
-
-	@Override
-	public void getClassPath(KEnvironment env, List<String> dest) throws KSException {
-		// TODO Auto-generated method stub
-		if (inner instanceof MemberOperator) {
-			((MemberOperator) inner).getClassPath(env, dest);
-		} else {
-			throw new ScriptException("无法把" + inner.toString() + "转换为对象");
-		}
-	}
-
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub

@@ -1,13 +1,9 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator;
 
 import com.khjxiaogu.scriptengine.core.Exception.KSException;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KVariant;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 
 public interface Operator extends CodeNode {
-	@Override
-	public KVariant eval(KEnvironment env) throws KSException;
 
 	public int getPriority();
 

@@ -28,9 +28,6 @@ public class Var extends SingleOperator implements Assignable, MemberOperator {
 	public Var() {
 	}
 
-	@Override
-	public void getClassPath(KEnvironment env, List<String> dest) throws KSException {
-	}
 
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
