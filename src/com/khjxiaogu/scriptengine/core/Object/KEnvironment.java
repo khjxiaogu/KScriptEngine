@@ -9,7 +9,7 @@ public interface KEnvironment {
 	public KVariant getMemberByNum(int num) throws KSException;
 
 	public KVariant getMemberByVariant(KVariant var) throws KSException;
-
+	
 	public KVariant getMemberByNameEnsure(String name) throws KSException;
 
 	public KVariant setMemberByName(String name, KVariant val) throws KSException;

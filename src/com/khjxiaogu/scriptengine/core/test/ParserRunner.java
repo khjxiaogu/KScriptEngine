@@ -10,7 +10,7 @@ public class ParserRunner {
 		CodeDialog cd = new CodeDialog();
 		String s;
 		while ((s = cd.showDialog()) != null) {
-			System.out.println(s);
+			//System.out.println(s);
 			CodeNode cn = null;
 			try {
 				cn = p.parse(s);

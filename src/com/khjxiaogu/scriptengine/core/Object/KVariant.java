@@ -264,10 +264,10 @@ public class KVariant implements Cloneable {
 	}
 
 	public KVariant add(KVariant By) throws ConvertionException {
-		if (type.getType() != String.class) {
+		if (type.getType() != String.class&&By.getType().getType()!=String.class) {
 			return new KVariant(getNumber() + By.getNumber());
 		} else {
-			return new KVariant((String) value + By.toString());
+			return new KVariant(this.toString() + By.toString());
 		}
 	}
 

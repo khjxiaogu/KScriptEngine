@@ -339,23 +339,23 @@ public class TokenDecider implements ASTParser {
 		StringBuilder sb = new StringBuilder();
 		char ch = reader.read();
 		/*
-		 * break continue const catch class case
+		 **break *continue const catch class case
 		 * 
-		 * debugger default delete do extends export
+		 * debugger default *delete do extends export
 		 * 
-		 * enum else function finally false for
+		 * enum *else function finally *false for
 		 * 
-		 * global getter goto incontextof Infinity
+		 * *global getter goto *incontextof *Infinity
 		 * 
-		 * invalidate instanceof isvalid import int in
+		 * *invalidate *instanceof *isvalid import *int in
 		 * 
-		 * if NaN null new octet protected property
+		 * *if *NaN *null new *octet protected property
 		 * 
-		 * private public return real synchronized switch
+		 * private public *return *real synchronized switch
 		 * 
-		 * static setter string super typeof throw
+		 * static setter *string +super *typeof throw
 		 * 
-		 * this true try void var while with
+		 * +this *true try *void *var *while with
 		 */
 		do {
 			sb.append(ch);
@@ -382,7 +382,11 @@ public class TokenDecider implements ASTParser {
 		} else if (lite.equals("int")) {
 			return new TypeConvertion("Integer");
 		} else if (lite.equals("if")) {
+			if(last==null)
+				return new IfStatement().parse(reader);
 			return new If();
+		} else if (lite.equals("while")) {
+			return new WhileStatement().parse(reader);
 		} else if (lite.equals("NaN")) {
 			return new NumberNode(Double.NaN);
 		} else if (lite.equals("null")) {
@@ -425,11 +429,6 @@ public class TokenDecider implements ASTParser {
 		return null;
 	}
 
-	public CodeNode parseBlock(ParseReader reader) throws KSException {
-		// TODO Auto-generated method stub
-		char first = reader.read();
-		return null;
-	}
 
 	public CodeNode parseRegEx(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub

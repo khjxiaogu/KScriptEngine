@@ -8,7 +8,7 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class MapEnvironment implements KEnvironment {
 	private Map<String, KVariant> map = new ConcurrentHashMap<>();
-	KEnvironment parent = null;
+	protected KEnvironment parent = null;
 
 	public MapEnvironment(KEnvironment parent) {
 		// TODO Auto-generated constructor stub
@@ -19,11 +19,6 @@ public class MapEnvironment implements KEnvironment {
 	public KVariant getMemberByName(String name) throws KSException {
 		// TODO Auto-generated method stub
 		KVariant res = map.get(name);
-		if (res == null) {
-			if (parent != null) {
-				res = parent.getMemberByName(name);
-			}
-		}
 		if (res == null) {
 			return new KVariant();
 		}
@@ -50,11 +45,6 @@ public class MapEnvironment implements KEnvironment {
 		// TODO Auto-generated method stub
 		KVariant res = map.get(Integer.toString(num));
 		if (res == null) {
-			if (parent != null) {
-				res = parent.getMemberByNum(num);
-			}
-		}
-		if (res == null) {
 			return new KVariant();
 		}
 		return res;
@@ -67,11 +57,7 @@ public class MapEnvironment implements KEnvironment {
 		String name = (String) var.toType("String");
 		res = map.get(name);
 		if (res == null) {
-			if (parent != null) {
-				res = parent.getMemberByVariant(var);
-			} else {
-				res = new KVariant();
-			}
+			res = new KVariant();
 		}
 		return res;
 	}
@@ -79,12 +65,6 @@ public class MapEnvironment implements KEnvironment {
 	@Override
 	public KVariant setMemberByName(String name, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		if (map.containsKey(name)) {
-			map.put(name, val);
-			return val;
-		} else if (parent != null && parent.hasMemberByName(name)) {
-			return parent.setMemberByName(name, val);
-		}
 		map.put(name, val);
 		return val;
 	}
@@ -104,12 +84,6 @@ public class MapEnvironment implements KEnvironment {
 	public KVariant setMemberByNum(int num, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
 		String name = Integer.toString(num);
-		if (map.containsKey(name)) {
-			map.put(name, val);
-			return val;
-		} else if (parent != null && parent.hasMemberByNum(num)) {
-			return parent.setMemberByNum(num, val);
-		}
 		map.put(name, val);
 		return val;
 	}
@@ -119,12 +93,6 @@ public class MapEnvironment implements KEnvironment {
 		// TODO Auto-generated method stub
 		String name = null;
 		name = (String) var.toType("String");
-		if (map.containsKey(name)) {
-			map.put(name, val);
-			return val;
-		} else if (parent != null && parent.hasMemberByVariant(var)) {
-			return parent.setMemberByVariant(var, val);
-		}
 		map.put(name, val);
 		return val;
 	}
@@ -170,5 +138,7 @@ public class MapEnvironment implements KEnvironment {
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
 		return map.containsKey(var.toType("String")) || parent != null && parent.hasMemberByVariant(var);
 	}
+
+
 
 }

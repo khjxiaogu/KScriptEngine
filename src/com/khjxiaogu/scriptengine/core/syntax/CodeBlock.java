@@ -9,12 +9,11 @@ import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
 
-public class CodeBlock implements CodeNode, ASTParser {
+public class CodeBlock implements Block {
 	List<CodeNode> nodes = new ArrayList<>();
 	StatementParser parser = new StatementParser();
 	CodeBlockAttribute attr;
 	String name;
-
 	public CodeBlock(CodeBlockAttribute attr) {
 		// TODO Auto-generated constructor stub
 		this.attr = attr;
@@ -23,8 +22,9 @@ public class CodeBlock implements CodeNode, ASTParser {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, this);
+		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, this,attr);
 		int i = 0;
+		if(nodes.size()==0)return null;
 		try {
 			KVariant result = new KVariant();
 			for (; i < nodes.size(); i++) {
@@ -46,7 +46,7 @@ public class CodeBlock implements CodeNode, ASTParser {
 		} catch (ScriptException e) {
 			e.filename = name;
 			e.colume = 0;
-			e.line = i;
+			e.line = i+1;
 			throw e;
 		}
 		return null;
@@ -72,27 +72,34 @@ public class CodeBlock implements CodeNode, ASTParser {
 	public CodeNode parse(ParseReader reader) throws KSException {
 		name = reader.getName();
 		// TODO Auto-generated method stub
-		while (true) {
-			if (!reader.has()) {
-				break;
-			}
-			char c = reader.read();
-			while (Character.isWhitespace(c)) {
-				c = reader.eat();
-			}
-			if (!reader.has()) {
-				break;
-			}
-
-			if (c != '}') {
-				if (attr == CodeBlockAttribute.STATEMENT) {
-					put(parser.parseUntilOrEnd(reader, ';'));
-				} else {
-					put(parser.parseUntil(reader, ';'));
+		try {
+			while (true) {
+				if (!reader.has()) {
+					break;
 				}
-			} else {
-				break;
+				char c = reader.read();
+				while (Character.isWhitespace(c)) {
+					c = reader.eat();
+				}
+				if (!reader.has()) {
+					break;
+				}
+	
+				if (c != '}') {
+					if (attr == CodeBlockAttribute.STATEMENT) {
+						put(parser.parseUntilOrEnd(reader, ';'));
+					} else {
+						put(parser.parseUntil(reader, ';'));
+					}
+				} else {
+					break;
+				}
 			}
+		} catch (SyntaxError e) {
+			e.filename = name;
+			e.colume = 0;
+			e.line = nodes.size()+1;
+			throw e;
 		}
 		return this;
 	}

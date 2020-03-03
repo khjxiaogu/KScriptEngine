@@ -5,17 +5,16 @@ import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
 
-public class IfStatement implements Block {
+public class WhileStatement implements Block {
+
 	private CodeNode Condition;
-	private CodeNode If;
-	private CodeNode Else;
-	public IfStatement() {
+	private CodeNode Body;
+	public WhileStatement() {
 	}
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser = new StatementParser();
-		boolean iselse=false;
 		while (true) {
 			if (!reader.has()) {
 				break;
@@ -35,52 +34,30 @@ public class IfStatement implements Block {
 				Condition=parser.parseUntil(reader, ')');
 			}else if (c == '{') {
 				if(Condition==null)
-					throw new SyntaxError("错误的if表达式");
+					throw new SyntaxError("错误的while表达式");
 				c=reader.eat();
-				if(iselse) {
-					Else=new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
-					break;
-				}else {
-					if(If==null)
-						If=new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
-					else
-						break;
-				}
-				c=reader.eat();
-			} else if(c=='e'&&reader.reads(0,4).equals("else")){
-				reader.eat();
-				reader.eat();
-				reader.eat();
-				reader.eat();
-				iselse=true;
+				Body=new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);
+				break;
 			}else if(Condition!=null) {
 				parser.clear();
-				if(iselse) {
-					Else=parser.parseUntil(reader,';');
-					break;
-				}else
-					if(If==null)
-						If=parser.parseUntil(reader,';');
-					else
-						break;
+				Body=parser.parseUntil(reader,';');
+				break;
 			}
 		}
-		if(Condition==null||If==null)
-			throw new SyntaxError("错误的if表达式");
+		if(Condition==null||Body==null)
+			throw new SyntaxError("错误的while表达式");
 		return this;
 	}
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		if(Condition.eval(env).asBoolean())
-			If.eval(env);
-		else if(Else!=null)
-			Else.eval(env);
+		while(Condition.eval(env).asBoolean())
+			Body.eval(env);
 		return null;
 	}
 	@Override
 	public String toString() {
-		return "if("+Condition.toString()+")\n"+If.toString()+((Else!=null)?"\nelse\n"+Else.toString():"");
+		return "while("+Condition.toString()+")\n"+Body.toString();
 	}
 
 }

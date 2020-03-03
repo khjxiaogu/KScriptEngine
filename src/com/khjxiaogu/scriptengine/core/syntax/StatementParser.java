@@ -18,17 +18,18 @@ public class StatementParser {
 	 */
 	ArrayList<CodeNode> nodes = new ArrayList<>();
 	TokenDecider td = new TokenDecider();
-
+	CodeNode last=null;
 	public StatementParser() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public void put(CodeNode node) {
-		nodes.add(node);
+		nodes.add(last=node);
 	}
 
 	public void clear() {
 		nodes.clear();
+		td.reset();
 	}
 
 	public CodeNode parseTree() throws KSException {// 1+2*3+4*5
@@ -64,7 +65,7 @@ public class StatementParser {
 			} else if (last == null) {
 				last = current;
 			} else {
-				throw new SyntaxError("unexpected '" + current.toString() + "', excpected operator.");
+				throw new SyntaxError("unexpected '" + current.toString()+"after"+last.toString() + "', excpected operator.");
 			}
 		}
 		if (last != null) {
@@ -115,6 +116,8 @@ public class StatementParser {
 			} else {
 				break;
 			}
+			if(last instanceof Block)
+				break;
 		}
 		CodeNode ret = parseTree();
 		reader.eat();

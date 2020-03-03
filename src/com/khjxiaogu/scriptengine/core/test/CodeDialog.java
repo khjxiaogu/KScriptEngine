@@ -25,10 +25,10 @@ public class CodeDialog {
 
 	public CodeDialog() {
 		// TODO Auto-generated constructor stub
-		area = new JTextArea(15, 20);
+		area = new JTextArea(15, 40);
 		JScrollPane pane = new JScrollPane(area);
 		// pane.setPreferredSize(new Dimension(200,200));
-		JTextArea oarea = new JTextArea(5, 20);
+		JTextArea oarea = new JTextArea(15, 40);
 		JScrollPane opane = new JScrollPane(oarea);
 		// opane.setPreferredSize(new Dimension(200,200));
 		mpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);

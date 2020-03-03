@@ -10,7 +10,7 @@ public class StringParseReader implements ParseReader {
 	String backed;
 	int pos = 0;
 	String name;
-
+	
 	/**
 	 * 
 	 */
@@ -83,6 +83,11 @@ public class StringParseReader implements ParseReader {
 	public int getCol() {
 		// TODO Auto-generated method stub
 		return pos;
+	}
+
+	@Override
+	public String reads(int off, int count) throws KSException {
+		return backed.substring(pos+off,pos+off+count);
 	}
 
 }

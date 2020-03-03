@@ -58,7 +58,7 @@ public class Var extends SingleOperator implements Assignable, MemberOperator {
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		super.setChildren(codeNodes);
 		if (super.Child != null && !(super.Child instanceof LiteralNode)) {
-			throw new SyntaxError();
+			throw new SyntaxError(super.Child.toString());
 		}
 	}
 

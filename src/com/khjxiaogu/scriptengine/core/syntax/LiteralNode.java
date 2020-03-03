@@ -32,7 +32,7 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return env.getMemberByName(token);
+		return env.getMemberByNameEnsure(token);
 	}
 
 	public String getToken() {
