@@ -97,7 +97,11 @@ public class KVariant implements Cloneable {
 		value = ref.value;
 		return this;
 	}
-
+	public KVariant set(Object ref) {
+		type = TypeInfo.forType(ref.getClass());
+		value = ref;
+		return this;
+	}
 	public TypeInfo asNumber() throws ConvertionException {
 		if (value instanceof Integer || value instanceof Double) {
 			return type;
@@ -145,7 +149,10 @@ public class KVariant implements Cloneable {
 			type = TypeInfo.forName("Real");
 		}
 	}
-
+	public void setNumber(int val) {
+		value=val;
+		type = TypeInfo.forName("Integer");
+	}
 	/**
 	 * get the variant to specific type,changes the original variant
 	 * 
@@ -353,7 +360,67 @@ public class KVariant implements Cloneable {
 		}
 		return value != null;
 	}
+	public KVariant multiplyby(KVariant By) throws ConvertionException {
+		setNumber(getNumber() * By.getNumber());
+		return this;
+	}
 
+	public KVariant modby(KVariant By) throws ConvertionException {
+		setNumber(Math.floorMod(getInt(), By.getInt()));
+		return this;
+	}
+	public KVariant floorDivideby(KVariant By) throws ConvertionException {
+		setNumber(Math.floorDiv(getInt(), By.getInt()));
+		return this;
+	}
+
+	public KVariant divideby(KVariant By) throws ConvertionException {
+		setNumber(getNumber() / By.getNumber());
+		return this;
+	}
+
+	public KVariant addby(KVariant By) throws ConvertionException {
+		if (type.getType() != String.class&&By.getType().getType()!=String.class) {
+			setNumber(getNumber() + By.getNumber());
+			return this;
+		} else {
+			value=this.asString() + By.toString();
+			return this;
+		}
+	}
+	public KVariant minusby(KVariant By) throws ConvertionException {
+		setNumber(getNumber() - By.getNumber());
+		return this;
+	}
+
+	public KVariant RSHby(int by) throws ConvertionException {
+		setNumber(getInt() >> by);
+		return this;
+	}
+
+	public KVariant LSHby(int by) throws ConvertionException {
+		setNumber(getInt() << by);
+		return this;
+	}
+
+	public KVariant ARSHby(int by) throws ConvertionException {
+		setNumber(getInt() >>> by);
+		return this;
+	}
+	public KVariant BANDby(KVariant by) throws ConvertionException {
+		setNumber(getInt() & by.getInt());
+		return this;
+	}
+
+	public KVariant BORby(KVariant by) throws ConvertionException {
+		setNumber(getInt() | by.getInt());
+		return this;
+	}
+
+	public KVariant BXORby(KVariant by) throws ConvertionException {
+		setNumber(getInt() ^ by.getInt());
+		return this;
+	}
 	@Override
 	public boolean equals(Object another) {
 		if (another == this) {
@@ -375,7 +442,10 @@ public class KVariant implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		return value.hashCode();
+		if(value!=null)
+			return value.hashCode();
+		else
+			return 0;
 	}
 
 	@Override
@@ -385,5 +455,8 @@ public class KVariant implements Cloneable {
 		} catch (ConvertionException e) {
 			return "(" + type.getName() + ")" + hashCode();
 		}
+	}
+	public String asString() throws ConvertionException {
+		return (String) asType("String");
 	}
 }

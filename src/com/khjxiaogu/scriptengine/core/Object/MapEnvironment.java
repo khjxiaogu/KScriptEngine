@@ -111,7 +111,27 @@ public class MapEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		return null;
+		KVariant v=map.get(name);
+		if(v==null)
+			throw new MemberNotFoundException(name);
+		switch(op) {
+		case ADD:v.addby(opr);break;
+		case ARSH:v.ARSHby(opr.getInt());break;
+		case BAND:v.BANDby(opr);break;
+		case BOR:v.BOR(opr);break;
+		case BXOR:v.BXORby(opr);break;
+		case DIV:v.divideby(opr);break;
+		case EQ:v.setValue(opr);break;
+		case FDIV:v.floorDivideby(opr);break;
+		case LAND:v.set(v.asBoolean() && opr.asBoolean());break;
+		case LOR:v.set(v.asBoolean() || opr.asBoolean());break;
+		case LSH:v.LSHby(opr.getInt());break;
+		case MIN:v.minusby(opr);break;
+		case MOD:v.modby(opr);break;
+		case MUL:v.multiplyby(opr);break;
+		case RSH:v.RSHby(opr.getInt());break;
+		}
+		return v;
 	}
 
 	@Override
