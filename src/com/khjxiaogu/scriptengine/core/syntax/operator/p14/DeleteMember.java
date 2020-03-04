@@ -3,10 +3,10 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p14;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
@@ -29,6 +29,10 @@ public class DeleteMember extends SingleOperator {
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		if (super.Child instanceof LiteralNode) {
+			if(((LiteralNode) super.Child).isLocal()) {
+				return new KVariant(Integer.valueOf(env.deleteMemberByNum(((LiteralNode) super.Child).getLocalToken()) ? 1 : 0),
+						"Integer");
+			}else
 			return new KVariant(Integer.valueOf(env.deleteMemberByName(((LiteralNode) super.Child).getToken()) ? 1 : 0),
 					"Integer");
 		} else if (super.Child instanceof MemberOperator) {

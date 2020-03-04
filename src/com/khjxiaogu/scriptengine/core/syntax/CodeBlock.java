@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
-import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 
-public class CodeBlock implements Block {
+public class CodeBlock implements Block,Visitable {
 	List<CodeNode> nodes = new ArrayList<>();
 	StatementParser parser = new StatementParser();
 	CodeBlockAttribute attr;
 	String name;
+	int off;
+	int siz;
 	public CodeBlock(CodeBlockAttribute attr) {
 		// TODO Auto-generated constructor stub
 		this.attr = attr;
@@ -22,7 +25,7 @@ public class CodeBlock implements Block {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, this,attr);
+		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env,off,siz, this,attr);
 		int i = 0;
 		if(nodes.size()==0)return null;
 		try {
@@ -37,7 +40,7 @@ public class CodeBlock implements Block {
 				return result;
 			} else if (attr == CodeBlockAttribute.RETURNABLE) {
 				return cbenv.ret;
-			} else if (attr == CodeBlockAttribute.BREAKABLE) {
+			} else if (attr == CodeBlockAttribute.BREAKABLE||attr==CodeBlockAttribute.SWITCH) {
 				if (cbenv.stopped) {
 					return null;
 				}
@@ -51,7 +54,32 @@ public class CodeBlock implements Block {
 		}
 		return null;
 	}
-
+	/**
+	 * for class object,wont run Function
+	 * @param env
+	 * @return
+	 * @throws KSException
+	 */
+	public void init(KEnvironment env) throws KSException {
+		// TODO Auto-generated method stub
+		int i = 0;
+		if(nodes.size()==0)return;
+		try {
+			for (; i < nodes.size(); i++) {
+				CodeNode cn;
+				cn = nodes.get(i);
+				if(cn instanceof CodeBlock) {
+					((CodeBlock) cn).attr=CodeBlockAttribute.OBJECT;
+					((CodeBlock) cn).init(env);
+				}
+			}
+		} catch (ScriptException e) {
+			e.filename = name;
+			e.colume = 0;
+			e.line = i+1;
+			throw e;
+		}
+	}
 	public void put(CodeNode node) {
 		nodes.add(node);
 	}
@@ -92,6 +120,7 @@ public class CodeBlock implements Block {
 						put(parser.parseUntil(reader, ';'));
 					}
 				} else {
+					reader.eat();
 					break;
 				}
 			}
@@ -102,6 +131,17 @@ public class CodeBlock implements Block {
 			throw e;
 		}
 		return this;
+	}
+
+	@Override
+	public void Visit(List<String> parentMap) {
+		off=parentMap.size();
+		List<String> curmap=new ArrayList<>(parentMap);
+		for(int i=0;i<nodes.size();i++) {
+			CodeNode node=nodes.get(i);
+				Visitable.Visit(node,curmap);
+		}
+		siz=curmap.size()-off;
 	}
 
 }

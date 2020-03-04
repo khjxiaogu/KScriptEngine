@@ -1,16 +1,17 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
-import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
+import com.khjxiaogu.scriptengine.core.Object.ArrayEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.MapEnvironment;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 
 /**
  * @author khjxiaogu
  * @time 2020年2月20日 file:CodeBlockEnvironment.java
  */
-public class CodeBlockEnvironment extends MapEnvironment {
+public class CodeBlockEnvironment extends ArrayEnvironment {
 	CodeBlock block;
 	boolean stopped = false;
 	boolean skipped = false;
@@ -19,8 +20,8 @@ public class CodeBlockEnvironment extends MapEnvironment {
 	/**
 	 * @param parent
 	 */
-	public CodeBlockEnvironment(KEnvironment parent, CodeBlock block,CodeBlockAttribute attr) {
-		super(parent);
+	public CodeBlockEnvironment(KEnvironment parent,int offset,int size ,CodeBlock block,CodeBlockAttribute attr) {
+		super(parent, offset, size);
 		this.block = block;
 		this.attr=attr;
 		// TODO Auto-generated constructor stub

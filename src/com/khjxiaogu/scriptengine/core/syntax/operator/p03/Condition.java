@@ -3,16 +3,17 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p03;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
-import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
@@ -137,5 +138,17 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		throw new ScriptException("条件运算符不能使用在delete以后");
+	}
+
+	@Override
+	public void Visit(List<String> parentMap) {
+		Visitable.Visit(cond,parentMap);
+		Visitable.Visit(first,parentMap);
+		Visitable.Visit(other,parentMap);
+	}
+
+	@Override
+	public void VisitAsChild(List<String> parentMap) {
+		Visit(parentMap);
 	}
 }

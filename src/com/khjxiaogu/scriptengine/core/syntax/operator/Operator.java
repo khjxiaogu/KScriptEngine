@@ -1,9 +1,10 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
-public interface Operator extends CodeNode {
+public interface Operator extends CodeNode,Visitable {
 
 	public int getPriority();
 

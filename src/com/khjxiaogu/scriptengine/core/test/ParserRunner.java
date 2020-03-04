@@ -1,7 +1,11 @@
 package com.khjxiaogu.scriptengine.core.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.khjxiaogu.scriptengine.core.Parser;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 
 public class ParserRunner {
@@ -11,9 +15,11 @@ public class ParserRunner {
 		String s;
 		while ((s = cd.showDialog()) != null) {
 			//System.out.println(s);
-			CodeNode cn = null;
+			CodeBlock cn = null;
 			try {
-				cn = p.parse(s);
+				cn = (CodeBlock) p.parse(s);
+				List<String> li;
+				cn.Visit(li=new ArrayList<String>());
 				System.out.println("AST Parse result");
 				System.out.println(cn.toString());
 				System.out.println("result of expression in null context:");

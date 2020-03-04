@@ -1,6 +1,4 @@
-package com.khjxiaogu.scriptengine.core.syntax;
-
-import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
+package com.khjxiaogu.scriptengine.core.exceptions;
 
 /**
  * @author khjxiaogu

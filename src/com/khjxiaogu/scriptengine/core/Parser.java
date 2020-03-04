@@ -1,6 +1,6 @@
 package com.khjxiaogu.scriptengine.core;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;

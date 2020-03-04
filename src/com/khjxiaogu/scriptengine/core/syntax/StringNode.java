@@ -1,9 +1,9 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 public class StringNode implements CodeNode, ASTParser {
 	String variant;
@@ -18,6 +18,8 @@ public class StringNode implements CodeNode, ASTParser {
 		StringBuilder sb = new StringBuilder();
 		char start = reader.read();
 		char c = reader.eat();
+		//System.out.println(c);
+		//System.out.println(start);
 		while (c != start) {
 			if (c == '\\') {
 				switch (c) {

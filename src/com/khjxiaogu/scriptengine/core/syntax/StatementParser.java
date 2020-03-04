@@ -3,7 +3,8 @@ package com.khjxiaogu.scriptengine.core.syntax;
 import java.util.ArrayList;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 
@@ -90,6 +91,8 @@ public class StatementParser {
 				put(td.parse(reader));
 			} else {
 				CodeNode ret = parseTree();
+				if(ret==null)
+					ret=new Nop();
 				reader.eat();
 				td.reset();
 				clear();
@@ -113,14 +116,15 @@ public class StatementParser {
 			}
 			if (c != until) {
 				put(td.parse(reader));
+				if(last instanceof Block)
+					break;
 			} else {
 				break;
 			}
-			if(last instanceof Block)
-				break;
 		}
 		CodeNode ret = parseTree();
-		reader.eat();
+		if(reader.has()&&reader.read()==until)
+			reader.eat();
 		td.reset();
 		clear();
 		return ret;

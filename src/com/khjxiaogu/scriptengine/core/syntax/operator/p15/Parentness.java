@@ -3,16 +3,18 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
-import com.khjxiaogu.scriptengine.core.Exception.ScriptException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 /**
@@ -81,6 +83,19 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((MemberOperator) inner).getPointing(env);
+	}
+	@Override
+	public void Visit(List<String> parentMap) {
+		Visitable.Visit(inner,parentMap);
+	}
+	@Override
+	public void VisitAsChild(List<String> parentMap) {
+		if(!(inner instanceof LiteralNode)) {
+			if(inner instanceof MemberOperator)
+				((MemberOperator)inner).VisitAsChild(parentMap);
+			else
+				Visitable.Visit(inner,parentMap);
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public interface KEnvironment {

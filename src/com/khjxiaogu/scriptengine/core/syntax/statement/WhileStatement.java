@@ -1,9 +1,18 @@
-package com.khjxiaogu.scriptengine.core.syntax;
+package com.khjxiaogu.scriptengine.core.syntax.statement;
+
+import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.Block;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
+import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 public class WhileStatement implements Block {
 
@@ -58,6 +67,16 @@ public class WhileStatement implements Block {
 	@Override
 	public String toString() {
 		return "while("+Condition.toString()+")\n"+Body.toString();
+	}
+
+	@Override
+	public void Visit(List<String> parentMap) {
+		Visitable.Visit(Condition,parentMap);
+		Visitable.Visit(Body,parentMap);
+	}
+
+	@Override
+	public void init(KEnvironment env) throws KSException {
 	}
 
 }

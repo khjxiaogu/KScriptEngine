@@ -1,9 +1,9 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 public interface Assignable {
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException;

@@ -3,7 +3,7 @@ package com.khjxiaogu.scriptengine.core.Object;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class MapEnvironment implements KEnvironment {
@@ -43,18 +43,13 @@ public class MapEnvironment implements KEnvironment {
 	@Override
 	public KVariant getMemberByNum(int num) throws KSException {
 		// TODO Auto-generated method stub
-		KVariant res = map.get(Integer.toString(num));
-		if (res == null) {
-			return new KVariant();
-		}
-		return res;
+		throw new MemberNotFoundException("%"+num);
 	}
-
 	@Override
 	public KVariant getMemberByVariant(KVariant var) throws KSException {
 		// TODO Auto-generated method stub
 		KVariant res = null;
-		String name = (String) var.toType("String");
+		String name = var.toString();
 		res = map.get(name);
 		if (res == null) {
 			res = new KVariant();
@@ -92,7 +87,7 @@ public class MapEnvironment implements KEnvironment {
 	public KVariant setMemberByVariant(KVariant var, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
 		String name = null;
-		name = (String) var.toType("String");
+		name = var.toString();
 		map.put(name, val);
 		return val;
 	}
@@ -100,20 +95,23 @@ public class MapEnvironment implements KEnvironment {
 	@Override
 	public boolean deleteMemberByName(String name) throws KSException {
 		// TODO Auto-generated method stub
-		return false;
+		return map.remove(name) != null||parent.deleteMemberByName(name);
 	}
 
 	@Override
-	public boolean deleteMemberByNum(int num) {
+	public boolean deleteMemberByNum(int num) throws KSException {
 		// TODO Auto-generated method stub
-		return false;
+		throw new MemberNotFoundException("%"+num);
 	}
 
 	@Override
 	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
 		KVariant v=map.get(name);
-		if(v==null)
+		if(v==null) {
+			if((v=parent.DoOperatonByName(op, name, opr) )!= null)
+				return v;
 			throw new MemberNotFoundException(name);
+		}
 		switch(op) {
 		case ADD:v.addby(opr);break;
 		case ARSH:v.ARSHby(opr.getInt());break;
@@ -136,12 +134,12 @@ public class MapEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant DoOperatonByNum(AssignOperation op, int num, KVariant opr) throws KSException {
-		return null;
+		throw new MemberNotFoundException("%"+num);
 	}
 
 	@Override
 	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
-		return null;
+		return DoOperatonByName(op,var.toString(),opr);
 	}
 
 	@Override
@@ -151,12 +149,12 @@ public class MapEnvironment implements KEnvironment {
 
 	@Override
 	public boolean hasMemberByNum(int num) throws KSException {
-		return map.containsKey(Integer.toString(num)) || parent != null && parent.hasMemberByNum(num);
+		throw new MemberNotFoundException("%"+num);
 	}
 
 	@Override
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
-		return map.containsKey(var.toType("String")) || parent != null && parent.hasMemberByVariant(var);
+		return map.containsKey(var.toString()) || parent != null && parent.hasMemberByVariant(var);
 	}
 
 

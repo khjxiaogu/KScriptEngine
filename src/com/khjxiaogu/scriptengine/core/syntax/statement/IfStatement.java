@@ -1,9 +1,18 @@
-package com.khjxiaogu.scriptengine.core.syntax;
+package com.khjxiaogu.scriptengine.core.syntax.statement;
+
+import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.Block;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
+import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 public class IfStatement implements Block {
 	private CodeNode Condition;
@@ -46,7 +55,7 @@ public class IfStatement implements Block {
 					else
 						break;
 				}
-				c=reader.eat();
+				//c=reader.eat();
 			} else if(c=='e'&&reader.reads(0,4).equals("else")){
 				reader.eat();
 				reader.eat();
@@ -81,6 +90,17 @@ public class IfStatement implements Block {
 	@Override
 	public String toString() {
 		return "if("+Condition.toString()+")\n"+If.toString()+((Else!=null)?"\nelse\n"+Else.toString():"");
+	}
+
+	@Override
+	public void Visit(List<String> parentMap) {
+		Visitable.Visit(Condition,parentMap);
+		Visitable.Visit(If,parentMap);
+		Visitable.Visit(Else,parentMap);
+	}
+
+	@Override
+	public void init(KEnvironment env) throws KSException {
 	}
 
 }

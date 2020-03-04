@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.Exception;
+package com.khjxiaogu.scriptengine.core.exceptions;
 
 public class KSException extends Exception {
 

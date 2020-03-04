@@ -1,9 +1,12 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import java.util.List;
+
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 public abstract class DoubleOperator implements Operator {
 	protected CodeNode left;
@@ -46,6 +49,12 @@ public abstract class DoubleOperator implements Operator {
 		if (codeNodes.length > 1 && codeNodes[1] != null) {
 			right = codeNodes[1];
 		}
+	}
+
+	@Override
+	public void Visit(List<String> parentMap) {
+		Visitable.Visit(left,parentMap);
+		Visitable.Visit(right,parentMap);
 	}
 
 }

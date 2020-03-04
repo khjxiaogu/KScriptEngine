@@ -1,10 +1,13 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import java.util.List;
+
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 public abstract class SingleOperator implements Operator {
 	protected CodeNode Child;
@@ -42,6 +45,11 @@ public abstract class SingleOperator implements Operator {
 				throw new SyntaxError("Unexpected 'operator' position,expected ';'");
 			}
 		}
+	}
+
+	@Override
+	public void Visit(List<String> parentMap) {
+		Visitable.Visit(Child,parentMap);
 	}
 
 }

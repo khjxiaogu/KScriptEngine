@@ -1,6 +1,7 @@
 package com.khjxiaogu.scriptengine.core;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 
 /**
  * @author khjxiaogu
@@ -31,8 +32,7 @@ public class StringParseReader implements ParseReader {
 		// TODO Auto-generated method stub
 		if (has()) {
 			return backed.charAt(pos);
-		}
-		return 0;
+		}throw new SyntaxError("unexpected end");
 	}
 
 	@Override
@@ -46,7 +46,10 @@ public class StringParseReader implements ParseReader {
 		// TODO Auto-generated method stub
 		// System.out.print(backed.charAt(pos));
 		++pos;
-		return read();
+		if(has())
+			return read();
+		else
+			return 0;
 	}
 
 	@Override

@@ -2,15 +2,16 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 
 import java.util.List;
 
-import com.khjxiaogu.scriptengine.core.Exception.KSException;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
-import com.khjxiaogu.scriptengine.core.syntax.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
@@ -82,5 +83,21 @@ public class Member extends DoubleOperator implements MemberOperator {
 	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((LiteralNode) super.right).getPointing(env);
+	}
+	@Override
+	public void Visit(List<String> parentMap) {
+		Visitable.Visit(super.left,parentMap);
+		if(!(super.right instanceof LiteralNode)) {
+			Visitable.Visit(super.right,parentMap);
+		}
+	}
+	@Override
+	public void VisitAsChild(List<String> parentMap) {
+		if(!(super.right instanceof LiteralNode)) {
+			if(super.right instanceof MemberOperator)
+				((MemberOperator) super.right).VisitAsChild(parentMap);
+			else
+				Visitable.Visit(super.right,parentMap);
+		}
 	}
 }
