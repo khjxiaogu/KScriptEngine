@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class DecodeChar extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public DecodeChar() {
 		// TODO Auto-generated constructor stub

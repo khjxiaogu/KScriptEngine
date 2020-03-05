@@ -21,15 +21,16 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 /**
  * @author khjxiaogu
  * @time 2020年2月19日
- *  file:Conditon.java
- *   x?x:x
+ *       file:Conditon.java
+ *       x?x:x
  */
 public class Condition implements Operator, ASTParser, MemberOperator {
 	CodeNode cond;
 	CodeNode first;
 	CodeNode other;
+
 	/**
-	 * 
+	 *
 	 */
 	public Condition() {
 		// TODO Auto-generated constructor stub
@@ -38,11 +39,10 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if (cond.eval(env).asBoolean()) {
+		if (cond.eval(env).asBoolean())
 			return first.eval(env);
-		} else {
+		else
 			return other.eval(env);
-		}
 	}
 
 	@Override
@@ -96,9 +96,8 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 		} else {
 			cn = other;
 		}
-		if (cn instanceof Assignable) {
+		if (cn instanceof Assignable)
 			return ((MemberOperator) cn).assign(env, val);
-		}
 		throw new ScriptException("错误的赋值表达式");
 	}
 
@@ -110,9 +109,8 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 		} else {
 			cn = other;
 		}
-		if (cn instanceof Assignable) {
+		if (cn instanceof Assignable)
 			return ((MemberOperator) cn).getObject(env);
-		}
 		throw new ScriptException("错误的赋值表达式");
 	}
 
@@ -124,9 +122,8 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 		} else {
 			cn = other;
 		}
-		if (cn instanceof Assignable) {
+		if (cn instanceof Assignable)
 			return ((MemberOperator) cn).assignOperation(env, val, op);
-		}
 		throw new ScriptException("错误的赋值表达式");
 	}
 
@@ -142,9 +139,9 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(cond,parentMap);
-		Visitable.Visit(first,parentMap);
-		Visitable.Visit(other,parentMap);
+		Visitable.Visit(cond, parentMap);
+		Visitable.Visit(first, parentMap);
+		Visitable.Visit(other, parentMap);
 	}
 
 	@Override

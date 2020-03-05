@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class GreaterOrEqualThan extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public GreaterOrEqualThan() {
 		// TODO Auto-generated constructor stub

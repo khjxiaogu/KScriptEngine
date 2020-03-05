@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Positive extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Positive() {
 		// TODO Auto-generated constructor stub

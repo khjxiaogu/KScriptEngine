@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
 public class CodeDialog {
 	JSplitPane mpane;
 	JTextArea area;
-	
+
 	public CodeDialog() {
 		// TODO Auto-generated constructor stub
 		area = new JTextArea(15, 40);
@@ -39,7 +39,7 @@ public class CodeDialog {
 		area.setText("enter your code here...");
 		// oarea.setText("here is the console\n");
 		PrintStream con = new PrintStream(new TextAreaOutputStream(oarea));
-		
+
 		System.setOut(con);
 	}
 
@@ -49,9 +49,9 @@ public class CodeDialog {
 	public int read(char[] cbuf, int off, int len) throws IOException {
 		if (buffer == null) {
 			String in = showDialog();
-			if (in == null) {
+			if (in == null)
 				return -1;
-			} else {
+			else {
 				print(in);
 				buffer = in + "\n";
 				pos = 0;
@@ -82,20 +82,18 @@ public class CodeDialog {
 				JOptionPane.PLAIN_MESSAGE, null, null, null);
 		String ret = area.getText();
 		// area.setText("");
-		if (result == JOptionPane.OK_OPTION) {
+		if (result == JOptionPane.OK_OPTION)
 			return ret;
-		} else {
+		else
 			return null;
-		}
 	}
 
 	public static Reader file() throws FileNotFoundException {
 		JFileChooser chooser = new JFileChooser();
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 			return new BufferedReader(new FileReader(chooser.getSelectedFile()));
-		} else {
+		else
 			throw new FileNotFoundException("no file specified");
-		}
 	}
 }
 
@@ -104,7 +102,7 @@ class TextAreaOutputStream extends OutputStream {
 // *************************************************************************************************
 // INSTANCE MEMBERS
 // *************************************************************************************************
-	PrintStream dout=System.out;
+	PrintStream dout = System.out;
 	private byte[] oneByte; // array for write(int val);
 	private Appender appender; // most recent action
 
@@ -113,10 +111,9 @@ class TextAreaOutputStream extends OutputStream {
 	}
 
 	public TextAreaOutputStream(JTextArea txtara, int maxlin) {
-		if (maxlin < 1) {
+		if (maxlin < 1)
 			throw new IllegalArgumentException(
 					"TextAreaOutputStream maximum lines must be positive (value=" + maxlin + ")");
-		}
 		oneByte = new byte[1];
 		appender = new Appender(txtara, maxlin);
 	}
@@ -153,8 +150,8 @@ class TextAreaOutputStream extends OutputStream {
 	@Override
 	public synchronized void write(byte[] ba, int str, int len) {
 		if (appender != null) {
-			appender.append(bytesToString(ba, str, len));
-			dout.write(ba,str, len);
+			appender.append(TextAreaOutputStream.bytesToString(ba, str, len));
+			dout.write(ba, str, len);
 		}
 	}
 
@@ -218,7 +215,7 @@ class TextAreaOutputStream extends OutputStream {
 			}
 			for (String val : values) {
 				curLength += val.length();
-				if (val.endsWith(EOL1) || val.endsWith(EOL2)) {
+				if (val.endsWith(Appender.EOL1) || val.endsWith(Appender.EOL2)) {
 					if (lengths.size() >= maxLines) {
 						textArea.replaceRange("", 0, lengths.removeFirst());
 					}
@@ -233,7 +230,7 @@ class TextAreaOutputStream extends OutputStream {
 		}
 
 		static private final String EOL1 = "\n";
-		static private final String EOL2 = System.getProperty("line.separator", EOL1);
+		static private final String EOL2 = System.getProperty("line.separator", Appender.EOL1);
 	}
 
 } /* END PUBLIC CLASS */

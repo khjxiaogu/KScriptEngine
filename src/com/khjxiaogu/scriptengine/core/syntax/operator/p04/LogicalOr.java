@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class LogicalOr extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public LogicalOr() {
 		// TODO Auto-generated constructor stub

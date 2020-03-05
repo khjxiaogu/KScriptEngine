@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class Add extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Add() {
 		// TODO Auto-generated constructor stub

@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 public class ByteAndEqual extends Equal {
 
 	/**
-	 * 
+	 *
 	 */
 	public ByteAndEqual() {
 		// TODO Auto-generated constructor stub

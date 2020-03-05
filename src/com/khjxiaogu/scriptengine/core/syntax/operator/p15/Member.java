@@ -22,7 +22,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 public class Member extends DoubleOperator implements MemberOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Member() {
 		// TODO Auto-generated constructor stub
@@ -39,7 +39,6 @@ public class Member extends DoubleOperator implements MemberOperator {
 		// TODO Auto-generated method stub
 		return 15;
 	}
-
 
 	@Override
 	public String getToken() {
@@ -64,9 +63,8 @@ public class Member extends DoubleOperator implements MemberOperator {
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
-		if (!(super.left instanceof Assignable && super.right instanceof LiteralNode)) {
+		if (!(super.left instanceof Assignable && super.right instanceof LiteralNode))
 			throw new SyntaxError("错误的表达式");
-		}
 	}
 
 	@Override
@@ -84,20 +82,23 @@ public class Member extends DoubleOperator implements MemberOperator {
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((LiteralNode) super.right).getPointing(env);
 	}
+
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(super.left,parentMap);
-		if(!(super.right instanceof LiteralNode)) {
-			Visitable.Visit(super.right,parentMap);
+		Visitable.Visit(super.left, parentMap);
+		if (!(super.right instanceof LiteralNode)) {
+			Visitable.Visit(super.right, parentMap);
 		}
 	}
+
 	@Override
 	public void VisitAsChild(List<String> parentMap) {
-		if(!(super.right instanceof LiteralNode)) {
-			if(super.right instanceof MemberOperator)
+		if (!(super.right instanceof LiteralNode)) {
+			if (super.right instanceof MemberOperator) {
 				((MemberOperator) super.right).VisitAsChild(parentMap);
-			else
-				Visitable.Visit(super.right,parentMap);
+			} else {
+				Visitable.Visit(super.right, parentMap);
+			}
 		}
 	}
 }

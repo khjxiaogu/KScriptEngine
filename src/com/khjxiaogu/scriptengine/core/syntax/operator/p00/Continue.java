@@ -15,7 +15,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Continue extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Continue() {
 		// TODO Auto-generated constructor stub

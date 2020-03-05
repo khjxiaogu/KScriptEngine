@@ -7,7 +7,7 @@ package com.khjxiaogu.scriptengine.core.exceptions;
 public class SyntaxError extends ScriptException {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

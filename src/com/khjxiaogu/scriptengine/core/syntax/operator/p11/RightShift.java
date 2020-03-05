@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class RightShift extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public RightShift() {
 		// TODO Auto-generated constructor stub

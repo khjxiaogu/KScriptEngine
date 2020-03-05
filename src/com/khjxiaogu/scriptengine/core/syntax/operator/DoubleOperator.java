@@ -53,8 +53,8 @@ public abstract class DoubleOperator implements Operator {
 
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(left,parentMap);
-		Visitable.Visit(right,parentMap);
+		Visitable.Visit(left, parentMap);
+		Visitable.Visit(right, parentMap);
 	}
 
 }

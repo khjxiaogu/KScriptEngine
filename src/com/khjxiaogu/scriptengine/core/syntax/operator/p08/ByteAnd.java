@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class ByteAnd extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public ByteAnd() {
 		// TODO Auto-generated constructor stub

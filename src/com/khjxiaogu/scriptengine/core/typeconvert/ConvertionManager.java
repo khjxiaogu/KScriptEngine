@@ -59,27 +59,23 @@ public class ConvertionManager {
 			return obj.getBytes();
 		});
 		new TypeConverter<>(KObject.class, String.class, (obj) -> {
-			if (obj instanceof KProperty) {
+			if (obj instanceof KProperty)
 				return (String) ((KProperty) obj).getProp().toType("String");
-			}
 			return obj.toString();
 		});
 		new TypeConverter<>(KObject.class, Integer.class, (obj) -> {
-			if (obj instanceof KProperty) {
+			if (obj instanceof KProperty)
 				return (Integer) ((KProperty) obj).getProp().toType("Integer");
-			}
 			throw new ConvertionException("Object", "Integer");
 		});
 		new TypeConverter<>(KObject.class, Double.class, (obj) -> {
-			if (obj instanceof KProperty) {
+			if (obj instanceof KProperty)
 				return (Double) ((KProperty) obj).getProp().toType("Real");
-			}
 			throw new ConvertionException("Object", "Real");
 		});
 		new TypeConverter<>(KObject.class, byte[].class, (obj) -> {
-			if (obj instanceof KProperty) {
+			if (obj instanceof KProperty)
 				return (byte[]) ((KProperty) obj).getProp().toType("Octet");
-			}
 			throw new ConvertionException("Object", "Octet");
 		});
 		new TypeConverter<>(byte[].class, String.class, (obj) -> {
@@ -98,61 +94,55 @@ public class ConvertionManager {
 
 	public static void registConvertion(TypeConverter<?, ?> typeConverter) {
 		TypeInfo toType = typeConverter.getTo();
-		Converter converter = convertionTable.get(toType);
+		Converter converter = ConvertionManager.convertionTable.get(toType);
 		if (converter == null) {
 			converter = new Converter(toType);
-			convertionTable.put(toType, converter);
+			ConvertionManager.convertionTable.put(toType, converter);
 		}
 		converter.registConvert(typeConverter.getFrom(), typeConverter);
 	}
 
 	public static TypeConverter<?, ?> getConvertion(TypeInfo fromType, TypeInfo toType) throws ConvertionException {
-		Converter converter = convertionTable.get(toType);
-		if (converter == null) {
+		Converter converter = ConvertionManager.convertionTable.get(toType);
+		if (converter == null)
 			throw new ConvertionException(fromType, toType);
-		}
 		return converter.getConvertionEnsure(fromType);
 	}
 
 	public static TypeConverter<?, ?> getConvertion(String fromType, String toType) throws ConvertionException {
-		Converter converter = convertionTable.get(TypeInfo.forName(toType));
-		if (converter == null) {
+		Converter converter = ConvertionManager.convertionTable.get(TypeInfo.forName(toType));
+		if (converter == null)
 			throw new ConvertionException(fromType, toType);
-		}
 		return converter.getConvertionEnsure(TypeInfo.forName(fromType));
 	}
 
 	public static Converter getConvertion(TypeInfo toType) throws ConvertionException {
-		Converter converter = convertionTable.get(toType);
-		if (converter == null) {
+		Converter converter = ConvertionManager.convertionTable.get(toType);
+		if (converter == null)
 			throw new ConvertionException(toType);
-		}
 		return converter;
 	}
 
 	public static Converter getConvertion(String name) throws ConvertionException {
 		TypeInfo toType = TypeInfo.forName(name);
-		Converter converter = convertionTable.get(toType);
-		if (converter == null) {
+		Converter converter = ConvertionManager.convertionTable.get(toType);
+		if (converter == null)
 			throw new ConvertionException(toType);
-		}
 		return converter;
 	}
 
 	public static Converter getConvertion(Class<?> type) throws ConvertionException {
 		TypeInfo toType = TypeInfo.forType(type);
-		Converter converter = convertionTable.get(toType);
-		if (converter == null) {
+		Converter converter = ConvertionManager.convertionTable.get(toType);
+		if (converter == null)
 			throw new ConvertionException(toType);
-		}
 		return converter;
 	}
 
 	public static boolean canConvert(TypeInfo fromType, TypeInfo toType) {
-		Converter converter = convertionTable.get(toType);
-		if (converter == null) {
+		Converter converter = ConvertionManager.convertionTable.get(toType);
+		if (converter == null)
 			return false;
-		}
 		return converter.hasConvertion(fromType);
 	}
 }

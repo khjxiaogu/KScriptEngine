@@ -14,7 +14,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class IsValid extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public IsValid() {
 		// TODO Auto-generated constructor stub

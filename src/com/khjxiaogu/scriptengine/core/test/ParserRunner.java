@@ -6,7 +6,6 @@ import java.util.List;
 import com.khjxiaogu.scriptengine.core.Parser;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
-import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 
 public class ParserRunner {
 	public static void main(String[] args) throws KSException {
@@ -14,12 +13,12 @@ public class ParserRunner {
 		CodeDialog cd = new CodeDialog();
 		String s;
 		while ((s = cd.showDialog()) != null) {
-			//System.out.println(s);
+			// System.out.println(s);
 			CodeBlock cn = null;
 			try {
 				cn = (CodeBlock) p.parse(s);
 				List<String> li;
-				cn.Visit(li=new ArrayList<String>());
+				cn.Visit(li = new ArrayList<String>());
 				System.out.println("AST Parse result");
 				System.out.println(cn.toString());
 				System.out.println("result of expression in null context:");

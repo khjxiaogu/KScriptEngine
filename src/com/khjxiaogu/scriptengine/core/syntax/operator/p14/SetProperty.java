@@ -14,7 +14,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class SetProperty extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public SetProperty() {
 		// TODO Auto-generated constructor stub

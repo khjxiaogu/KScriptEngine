@@ -23,18 +23,20 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Var extends SingleOperator implements Assignable, MemberOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Var() {
 	}
-	int itoken=-1;
-	//List<String> tokens;
+
+	int itoken = -1;
+	// List<String> tokens;
 	String token;
+
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		if(itoken!=-1)
+		if (itoken != -1)
 			return env.setMemberByNum(itoken, val);
-		//System.out.println(itoken);
+		// System.out.println(itoken);
 		return env.setMemberByName(token, val);
 	}
 
@@ -61,25 +63,25 @@ public class Var extends SingleOperator implements Assignable, MemberOperator {
 	@Override
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		super.setChildren(codeNodes);
-		if (super.Child != null && !(super.Child instanceof LiteralNode)) {
+		if (super.Child != null && !(super.Child instanceof LiteralNode))
 			throw new SyntaxError(super.Child.toString());
-		}
-		if(super.Child!=null) {
-			token=((LiteralNode) super.Child).getToken();
+		if (super.Child != null) {
+			token = ((LiteralNode) super.Child).getToken();
 		}
 	}
 
 	@Override
 	public String toString() {
-		if(itoken!=-1)
-			return "def %"+itoken;
+		if (itoken != -1)
+			return "def %" + itoken;
 		return "var " + super.Child.toString();
 	}
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		if(itoken!=-1)
+		if (itoken != -1) {
 			env.setMemberByNum(itoken, new KVariant());
+		}
 		return env.setMemberByName(token, new KVariant());
 	}
 
@@ -93,14 +95,13 @@ public class Var extends SingleOperator implements Assignable, MemberOperator {
 		return Associative.LEFT;
 	}
 
-
 	@Override
 	public void Visit(List<String> parentMap) {
-		if(Child instanceof LiteralNode) {
+		if (Child instanceof LiteralNode) {
 			parentMap.add(token);
-			itoken=parentMap.size()-1;
+			itoken = parentMap.size() - 1;
 		}
-		
+
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Throw extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Throw() {
 		// TODO Auto-generated constructor stub

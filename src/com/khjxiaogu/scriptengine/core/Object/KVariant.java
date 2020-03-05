@@ -97,15 +97,16 @@ public class KVariant implements Cloneable {
 		value = ref.value;
 		return this;
 	}
+
 	public KVariant set(Object ref) {
 		type = TypeInfo.forType(ref.getClass());
 		value = ref;
 		return this;
 	}
+
 	public TypeInfo asNumber() throws ConvertionException {
-		if (value instanceof Integer || value instanceof Double) {
+		if (value instanceof Integer || value instanceof Double)
 			return type;
-		}
 		try {
 			value = ConvertionManager.getConvertion("Real").from(this);
 		} catch (ConvertionException e) {
@@ -122,9 +123,8 @@ public class KVariant implements Cloneable {
 
 	public Double getNumber() throws ConvertionException {
 		try {
-			if (!(value instanceof Double)) {
+			if (!(value instanceof Double))
 				return (Double) ConvertionManager.getConvertion("Real").from(this);
-			}
 			return (Double) value;
 		} catch (ConvertionException e) {
 			e.setType(type.getName(), "Number");
@@ -133,9 +133,8 @@ public class KVariant implements Cloneable {
 	}
 
 	public Integer getInt() throws ConvertionException {
-		if (!(value instanceof Integer)) {
+		if (!(value instanceof Integer))
 			return (Integer) ConvertionManager.getConvertion("Integer").from(this);
-		}
 		return (Integer) value;
 	}
 
@@ -149,22 +148,23 @@ public class KVariant implements Cloneable {
 			type = TypeInfo.forName("Real");
 		}
 	}
+
 	public void setNumber(int val) {
-		value=val;
+		value = val;
 		type = TypeInfo.forName("Integer");
 	}
+
 	/**
 	 * get the variant to specific type,changes the original variant
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 * @throws ConvertionException
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T asType(Class<T> toType) throws ConvertionException {
-		if (toType.isInstance(value)) {
+		if (toType.isInstance(value))
 			return (T) value;
-		}
 		Converter conv = ConvertionManager.getConvertion(toType);
 		type = conv.getOutTypeInfo();
 		return (T) (value = conv.from(this));
@@ -172,44 +172,41 @@ public class KVariant implements Cloneable {
 
 	/**
 	 * get the variant to specific type
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 * @throws ConvertionException
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T toType(Class<T> toType) throws ConvertionException {
-		if (toType.isInstance(value)) {
+		if (toType.isInstance(value))
 			return (T) value;
-		}
 		return (T) ConvertionManager.getConvertion(toType).from(this);
 	}
 
 	/**
 	 * get the variant to specific type
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 * @throws ConvertionException
 	 */
 	public Object toType(String name) throws ConvertionException {
-		if (type.getName().equals(name)) {
+		if (type.getName().equals(name))
 			return value;
-		}
 		return ConvertionManager.getConvertion(name).from(this);
 	}
 
 	/**
 	 * get the variant to specific type,changes the original variant
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 * @throws ConvertionException
 	 */
 	public Object asType(String name) throws ConvertionException {
-		if (type.getName().equals(name)) {
+		if (type.getName().equals(name))
 			return value;
-		}
 		Converter conv = ConvertionManager.getConvertion(name);
 		type = conv.getOutTypeInfo();
 		return value = conv.from(this);
@@ -271,11 +268,10 @@ public class KVariant implements Cloneable {
 	}
 
 	public KVariant add(KVariant By) throws ConvertionException {
-		if (type.getType() != String.class&&By.getType().getType()!=String.class) {
+		if (type.getType() != String.class && By.getType().getType() != String.class)
 			return new KVariant(getNumber() + By.getNumber());
-		} else {
-			return new KVariant(this.toString() + By.toString());
-		}
+		else
+			return new KVariant(toString() + By.toString());
 	}
 
 	public KVariant minus(KVariant By) throws ConvertionException {
@@ -298,44 +294,38 @@ public class KVariant implements Cloneable {
 	}
 
 	public KVariant LT(KVariant by) throws ConvertionException {
-		if (type.getType() == String.class && by.type.getType() == String.class) {
+		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo((String) by.asType("String")) < 0);
-		}
 		Double value = getNumber();
 		return new KVariant(value < by.getNumber());
 	}
 
 	public KVariant GT(KVariant by) throws ConvertionException {
-		if (type.getType() == String.class && by.type.getType() == String.class) {
+		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo((String) by.asType("String")) > 0);
-		}
 		Double value = getNumber();
 		return new KVariant(value > by.getNumber());
 	}
 
 	public KVariant LOET(KVariant by) throws ConvertionException {
-		if (type.getType() == String.class && by.type.getType() == String.class) {
+		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo((String) by.asType("String")) <= 0);
-		}
 		Double value = getNumber();
 		return new KVariant(value <= by.getNumber());
 	}
 
 	public KVariant GOET(KVariant by) throws ConvertionException {
-		if (type.getType() == String.class && by.type.getType() == String.class) {
+		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo((String) by.asType("String")) >= 0);
-		}
 		Double value = getNumber();
 		return new KVariant(value >= by.getNumber());
 	}
 
 	public boolean ExactEquals(KVariant another) {
-		if (another == this) {
+		if (another == this)
 			return true;
-		}
-		if (type.getName() != another.type.getName()) {
+		if (type.getName() != another.type.getName())
 			return false;
-		}
 		return value.equals(another.value);
 	}
 
@@ -355,11 +345,11 @@ public class KVariant implements Cloneable {
 	}
 
 	public boolean asBoolean() {
-		if (value.equals(0)) {
+		if (value.equals(0))
 			return false;
-		}
 		return value != null;
 	}
+
 	public KVariant multiplyby(KVariant By) throws ConvertionException {
 		setNumber(getNumber() * By.getNumber());
 		return this;
@@ -369,6 +359,7 @@ public class KVariant implements Cloneable {
 		setNumber(Math.floorMod(getInt(), By.getInt()));
 		return this;
 	}
+
 	public KVariant floorDivideby(KVariant By) throws ConvertionException {
 		setNumber(Math.floorDiv(getInt(), By.getInt()));
 		return this;
@@ -380,14 +371,15 @@ public class KVariant implements Cloneable {
 	}
 
 	public KVariant addby(KVariant By) throws ConvertionException {
-		if (type.getType() != String.class&&By.getType().getType()!=String.class) {
+		if (type.getType() != String.class && By.getType().getType() != String.class) {
 			setNumber(getNumber() + By.getNumber());
 			return this;
 		} else {
-			value=this.asString() + By.toString();
+			value = asString() + By.toString();
 			return this;
 		}
 	}
+
 	public KVariant minusby(KVariant By) throws ConvertionException {
 		setNumber(getNumber() - By.getNumber());
 		return this;
@@ -407,6 +399,7 @@ public class KVariant implements Cloneable {
 		setNumber(getInt() >>> by);
 		return this;
 	}
+
 	public KVariant BANDby(KVariant by) throws ConvertionException {
 		setNumber(getInt() & by.getInt());
 		return this;
@@ -421,18 +414,16 @@ public class KVariant implements Cloneable {
 		setNumber(getInt() ^ by.getInt());
 		return this;
 	}
+
 	@Override
 	public boolean equals(Object another) {
-		if (another == this) {
+		if (another == this)
 			return true;
-		}
-		if (!(another instanceof KVariant)) {
+		if (!(another instanceof KVariant))
 			return false;
-		}
 		KVariant by = (KVariant) another;
-		if (type.getName() == by.type.getName()) {
+		if (type.getName() == by.type.getName())
 			return value.equals(by.value);
-		}
 		try {
 			return getNumber().equals(by.getNumber());
 		} catch (ConvertionException e) {
@@ -442,7 +433,7 @@ public class KVariant implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		if(value!=null)
+		if (value != null)
 			return value.hashCode();
 		else
 			return 0;
@@ -456,6 +447,7 @@ public class KVariant implements Cloneable {
 			return "(" + type.getName() + ")" + hashCode();
 		}
 	}
+
 	public String asString() throws ConvertionException {
 		return (String) asType("String");
 	}

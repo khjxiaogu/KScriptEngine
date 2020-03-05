@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
 public class NumberNode implements ASTParser, CodeNode {
 
 	/**
-	 * 
+	 *
 	 */
 	KVariant number = new KVariant();
 

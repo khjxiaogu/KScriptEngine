@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Negative extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Negative() {
 		// TODO Auto-generated constructor stub

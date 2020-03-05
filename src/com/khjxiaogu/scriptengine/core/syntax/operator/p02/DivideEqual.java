@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 public class DivideEqual extends Equal {
 
 	/**
-	 * 
+	 *
 	 */
 	public DivideEqual() {
 		// TODO Auto-generated constructor stub

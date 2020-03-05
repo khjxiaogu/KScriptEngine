@@ -3,22 +3,24 @@ package com.khjxiaogu.scriptengine.core.exceptions;
 /**
  * @author khjxiaogu
  * @time 2020年3月4日
- * project:khjScriptEngine
+ *       project:khjScriptEngine
  */
 public class AssemblyException extends KSException {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	String detail;
+
 	public AssemblyException(String detail) {
-		this.detail=detail;
+		this.detail = detail;
 	}
+
 	@Override
 	public String getMessage() {
 		StringBuilder sb = new StringBuilder();

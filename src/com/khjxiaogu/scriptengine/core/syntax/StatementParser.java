@@ -15,17 +15,18 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 public class StatementParser {
 
 	/**
-	 * 
+	 *
 	 */
 	ArrayList<CodeNode> nodes = new ArrayList<>();
 	TokenDecider td = new TokenDecider();
-	CodeNode last=null;
+	CodeNode last = null;
+
 	public StatementParser() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public void put(CodeNode node) {
-		nodes.add(last=node);
+		nodes.add(last = node);
 	}
 
 	public void clear() {
@@ -37,11 +38,11 @@ public class StatementParser {
 		Operator ret = null;// top level operator
 		Operator pending = null;// deciding operator
 		CodeNode last = null;// last node
-		if(nodes.size()==1)
+		if (nodes.size() == 1)
 			return nodes.get(0);
 		for (CodeNode current : nodes) {
-			//System.out.println(current.getClass().getSimpleName());
-			if (isOperator(current)) {
+			// System.out.println(current.getClass().getSimpleName());
+			if (StatementParser.isOperator(current)) {
 				Operator op = (Operator) current;
 				if (pending != null) {
 					if (pending.getPriority() >= op.getPriority()
@@ -67,16 +68,15 @@ public class StatementParser {
 				}
 			} else if (last == null) {
 				last = current;
-			} else {
-				throw new SyntaxError("unexpected '" + current.toString()+"after"+last.toString() + "', excpected operator.");
-			}
+			} else
+				throw new SyntaxError(
+						"unexpected '" + current.toString() + "after" + last.toString() + "', excpected operator.");
 		}
 		if (last != null) {
 			if (pending != null) {
 				pending.setChildren(null, last);
-			} else {
+			} else
 				return last;
-			}
 		}
 		// System.out.println(ret.getClass().getSimpleName());
 		return ret;
@@ -91,23 +91,26 @@ public class StatementParser {
 			}
 			if (c != until) {
 				put(td.parse(reader));
-				if(last instanceof Block) {
+				if (last instanceof Block) {
 					break;
 				}
-				//td.reset();
+				// td.reset();
 			} else {
 				break;
 			}
 		}
 		CodeNode ret = parseTree();
-		if(ret==null)
-			ret=new Nop();
-		if(reader.read()==until)
-		reader.eat();
+		if (ret == null) {
+			ret = new Nop();
+		}
+		if (reader.read() == until) {
+			reader.eat();
+		}
 		td.reset();
 		clear();
 		return ret;
 	}
+
 	public CodeNode parseUntil(ParseReader reader, char until) throws KSException {
 		while (true) {
 			char c = reader.read();
@@ -117,19 +120,21 @@ public class StatementParser {
 			}
 			if (c != until) {
 				put(td.parse(reader));
-				//td.reset();
+				// td.reset();
 			} else {
 				break;
 			}
 		}
 		CodeNode ret = parseTree();
-		if(ret==null)
-			ret=new Nop();
+		if (ret == null) {
+			ret = new Nop();
+		}
 		reader.eat();
 		td.reset();
 		clear();
 		return ret;
 	}
+
 	public CodeNode parseUntilOrEnd(ParseReader reader, char until) throws KSException {
 		while (true) {
 			if (!reader.has()) {
@@ -145,17 +150,20 @@ public class StatementParser {
 			}
 			if (c != until) {
 				put(td.parse(reader));
-				if(last instanceof Block)
+				if (last instanceof Block) {
 					break;
+				}
 			} else {
 				break;
 			}
 		}
 		CodeNode ret = parseTree();
-		if(ret==null)
-			ret=new Nop();
-		if(reader.has()&&reader.read()==until)
+		if (ret == null) {
+			ret = new Nop();
+		}
+		if (reader.has() && reader.read() == until) {
 			reader.eat();
+		}
 		td.reset();
 		clear();
 		return ret;

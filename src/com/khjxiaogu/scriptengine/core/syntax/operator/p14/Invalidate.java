@@ -14,7 +14,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Invalidate extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Invalidate() {
 		// TODO Auto-generated constructor stub

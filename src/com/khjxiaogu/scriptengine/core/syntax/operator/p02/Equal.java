@@ -15,7 +15,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class Equal extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Equal() {
 		// TODO Auto-generated constructor stub
@@ -43,8 +43,7 @@ public class Equal extends DoubleOperator {
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
-		if (!(super.left instanceof Assignable)) {
+		if (!(super.left instanceof Assignable))
 			throw new SyntaxError("错误的赋值表达式");
-		}
 	}
 }

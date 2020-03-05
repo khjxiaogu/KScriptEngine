@@ -22,7 +22,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 public class GetMember extends DoubleOperator implements MemberOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public GetMember() {
 		// TODO Auto-generated constructor stub
@@ -68,9 +68,8 @@ public class GetMember extends DoubleOperator implements MemberOperator {
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
-		if (!(super.left instanceof Assignable)) {
+		if (!(super.left instanceof Assignable))
 			throw new SyntaxError("错误的表达式");
-		}
 	}
 
 	@Override
@@ -90,19 +89,20 @@ public class GetMember extends DoubleOperator implements MemberOperator {
 
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(super.left,parentMap);
-		if(!(super.right instanceof LiteralNode)) {
-			Visitable.Visit(super.right,parentMap);
+		Visitable.Visit(super.left, parentMap);
+		if (!(super.right instanceof LiteralNode)) {
+			Visitable.Visit(super.right, parentMap);
 		}
 	}
 
 	@Override
 	public void VisitAsChild(List<String> parentMap) {
-		if(!(super.right instanceof LiteralNode)) {
-			if(super.right instanceof MemberOperator)
+		if (!(super.right instanceof LiteralNode)) {
+			if (super.right instanceof MemberOperator) {
 				((MemberOperator) super.right).VisitAsChild(parentMap);
-			else
-				Visitable.Visit(super.right,parentMap);
+			} else {
+				Visitable.Visit(super.right, parentMap);
+			}
 		}
 	}
 }

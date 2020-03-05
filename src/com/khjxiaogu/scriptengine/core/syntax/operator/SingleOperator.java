@@ -34,22 +34,20 @@ public abstract class SingleOperator implements Operator {
 		if (codeNodes[0] != null) {
 			if (getAssociative() == Associative.RIGHT) {
 				Child = codeNodes[0];
-			} else {
+			} else
 				throw new SyntaxError("Unexpected 'operator' position,expected ';'");
-			}
 		}
 		if (codeNodes.length > 1 && codeNodes[1] != null) {
 			if (getAssociative() == Associative.LEFT) {
 				Child = codeNodes[1];
-			} else {
+			} else
 				throw new SyntaxError("Unexpected 'operator' position,expected ';'");
-			}
 		}
 	}
 
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(Child,parentMap);
+		Visitable.Visit(Child, parentMap);
 	}
 
 }

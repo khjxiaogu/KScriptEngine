@@ -15,7 +15,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Return extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Return() {
 		// TODO Auto-generated constructor stub

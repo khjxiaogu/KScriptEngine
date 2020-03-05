@@ -9,7 +9,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 public class MemberNotFoundException extends ScriptException {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

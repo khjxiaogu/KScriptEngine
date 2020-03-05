@@ -11,7 +11,8 @@ public interface ParseReader {
 
 	public char read(int off) throws KSException;
 
-	public String reads(int off,int count) throws KSException;
+	public String reads(int off, int count) throws KSException;
+
 	public char eat() throws KSException;
 
 	public void eat(int count) throws KSException;

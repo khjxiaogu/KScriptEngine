@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class TypeOf extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public TypeOf() {
 		// TODO Auto-generated constructor stub

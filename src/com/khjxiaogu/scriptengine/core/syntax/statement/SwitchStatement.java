@@ -18,11 +18,11 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
 
 public class SwitchStatement extends CodeBlock {
 
-
-	List<Case> cases=new ArrayList<>();
-	List<Integer> casepos=new ArrayList<>();
-	int defaultpos=-1;
+	List<Case> cases = new ArrayList<>();
+	List<Integer> casepos = new ArrayList<>();
+	int defaultpos = -1;
 	CodeNode cond;
+
 	public SwitchStatement() {
 		super(CodeBlockAttribute.BREAKABLE);
 	}
@@ -30,17 +30,18 @@ public class SwitchStatement extends CodeBlock {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env,off,siz, this,attr);
-		KVariant res=cond.eval(cbenv);
-		
+		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, off, siz, this, attr);
+		KVariant res = cond.eval(cbenv);
+
 		int i = defaultpos;
-		for(int j=0;j<cases.size();j++) {
-			if(res.equals(cases.get(j).getCond().eval(cbenv))) {
-				i=casepos.get(j);
+		for (int j = 0; j < cases.size(); j++) {
+			if (res.equals(cases.get(j).getCond().eval(cbenv))) {
+				i = casepos.get(j);
 				break;
 			}
 		}
-		if(nodes.size()==0||i==-1)return null;
+		if (nodes.size() == 0 || i == -1)
+			return null;
 		try {
 			for (; i < nodes.size(); i++) {
 				nodes.get(i).eval(cbenv);
@@ -48,14 +49,13 @@ public class SwitchStatement extends CodeBlock {
 					break;
 				}
 			}
-			if (cbenv.isStopped()) {
+			if (cbenv.isStopped())
 				return null;
-			}
 			return null;
 		} catch (ScriptException e) {
 			e.filename = name;
 			e.colume = 0;
-			e.line = i+1;
+			e.line = i + 1;
 			throw e;
 		}
 	}
@@ -76,27 +76,25 @@ public class SwitchStatement extends CodeBlock {
 			}
 			if (c == '(') {
 				parser.clear();
-				c=reader.eat();
-				cond=parser.parseUntilOrBlock(reader, ')');
-				c=reader.read();
+				c = reader.eat();
+				cond = parser.parseUntilOrBlock(reader, ')');
+				c = reader.read();
 				while (Character.isWhitespace(c)) {
 					c = reader.eat();
 				}
-				//System.out.println(c);
-				if(c=='{') {
-					c=reader.eat();
+				// System.out.println(c);
+				if (c == '{') {
+					c = reader.eat();
 					break;
-				}else {
+				} else
 					throw new SyntaxError("无效的switch语句");
-				}
-			}else {
+			} else
 				throw new SyntaxError("无效的switch语句");
-			}
 		}
 		super.parse(reader);
-		for(int i=0;i<super.nodes.size();i++) {
-			CodeNode cur=super.nodes.get(i);
-			if(cur instanceof Case) {
+		for (int i = 0; i < super.nodes.size(); i++) {
+			CodeNode cur = super.nodes.get(i);
+			if (cur instanceof Case) {
 				cases.add((Case) cur);
 				casepos.add(i);
 			}
@@ -106,12 +104,12 @@ public class SwitchStatement extends CodeBlock {
 
 	@Override
 	public String toString() {
-		return "switch("+cond.toString()+")"+super.toString();
+		return "switch(" + cond.toString() + ")" + super.toString();
 	}
 
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(cond,parentMap);
+		Visitable.Visit(cond, parentMap);
 		super.Visit(parentMap);
 	}
 }

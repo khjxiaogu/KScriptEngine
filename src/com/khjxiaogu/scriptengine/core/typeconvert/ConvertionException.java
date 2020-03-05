@@ -4,7 +4,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 
 public class ConvertionException extends ScriptException {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

@@ -15,7 +15,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Break extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Break() {
 		// TODO Auto-generated constructor stub

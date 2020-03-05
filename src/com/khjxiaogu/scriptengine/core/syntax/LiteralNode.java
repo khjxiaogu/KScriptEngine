@@ -14,13 +14,14 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
  * @author khjxiaogu
  * @time 2020年2月16日 file:LiteralNode.java
  */
-public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOperator,Visitable {
+public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOperator, Visitable {
 
 	/**
-	 * 
+	 *
 	 */
 	String token;
-	int itoken=-1;
+	int itoken = -1;
+
 	public LiteralNode() {
 		// TODO Auto-generated constructor stub
 	}
@@ -33,7 +34,7 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if(isLocal())
+		if (isLocal())
 			return env.getMemberByNum(itoken);
 		return env.getMemberByNameEnsure(token);
 	}
@@ -41,16 +42,18 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	public String getToken() {
 		return token;
 	}
+
 	public int getLocalToken() throws AssemblyException {
-		if(isLocal()) {
+		if (isLocal())
 			return itoken;
-		}else
+		else
 			throw new AssemblyException("使用了未定义的寄存器");
 	}
+
 	@Override
 	public String toString() {
-		if(itoken!=-1)
-			return "%"+itoken;
+		if (itoken != -1)
+			return "%" + itoken;
 		return token;
 	}
 
@@ -63,7 +66,7 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		if(isLocal())
+		if (isLocal())
 			return env.setMemberByNum(itoken, val);
 		return env.setMemberByNameEnsure(token, val);
 	}
@@ -71,15 +74,16 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if(isLocal())
+		if (isLocal())
 			return (KObject) env.getMemberByNum(itoken).toType("KObject");
 		return (KObject) env.getMemberByNameEnsure(token).toType("KObject");
 	}
+
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		if(isLocal())
-			return env.DoOperatonByNum(op,itoken, val);
-		return env.DoOperatonByName(op,token, val);
+		if (isLocal())
+			return env.DoOperatonByNum(op, itoken, val);
+		return env.DoOperatonByName(op, token, val);
 	}
 
 	@Override
@@ -91,12 +95,14 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	public KVariant getPointing(KEnvironment env) {
 		return new KVariant(getToken());
 	}
+
 	public boolean isLocal() {
-		return itoken!=-1;
+		return itoken != -1;
 	}
+
 	@Override
 	public void Visit(List<String> parentMap) {
-		itoken=parentMap.lastIndexOf(this.token);
+		itoken = parentMap.lastIndexOf(token);
 	}
 
 	@Override

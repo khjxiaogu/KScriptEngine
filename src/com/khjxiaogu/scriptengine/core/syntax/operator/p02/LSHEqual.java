@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 public class LSHEqual extends Equal {
 
 	/**
-	 * 
+	 *
 	 */
 	public LSHEqual() {
 		// TODO Auto-generated constructor stub

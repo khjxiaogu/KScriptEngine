@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class ExactEquals extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public ExactEquals() {
 		// TODO Auto-generated constructor stub

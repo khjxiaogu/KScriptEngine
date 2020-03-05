@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class Minus extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Minus() {
 		// TODO Auto-generated constructor stub

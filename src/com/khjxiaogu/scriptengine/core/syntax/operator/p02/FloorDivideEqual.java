@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 public class FloorDivideEqual extends Equal {
 
 	/**
-	 * 
+	 *
 	 */
 	public FloorDivideEqual() {
 		// TODO Auto-generated constructor stub

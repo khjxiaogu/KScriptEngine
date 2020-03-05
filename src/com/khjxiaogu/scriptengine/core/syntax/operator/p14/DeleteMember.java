@@ -19,7 +19,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class DeleteMember extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public DeleteMember() {
 		// TODO Auto-generated constructor stub
@@ -29,12 +29,14 @@ public class DeleteMember extends SingleOperator {
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		if (super.Child instanceof LiteralNode) {
-			if(((LiteralNode) super.Child).isLocal()) {
-				return new KVariant(Integer.valueOf(env.deleteMemberByNum(((LiteralNode) super.Child).getLocalToken()) ? 1 : 0),
+			if (((LiteralNode) super.Child).isLocal())
+				return new KVariant(
+						Integer.valueOf(env.deleteMemberByNum(((LiteralNode) super.Child).getLocalToken()) ? 1 : 0),
 						"Integer");
-			}else
-			return new KVariant(Integer.valueOf(env.deleteMemberByName(((LiteralNode) super.Child).getToken()) ? 1 : 0),
-					"Integer");
+			else
+				return new KVariant(
+						Integer.valueOf(env.deleteMemberByName(((LiteralNode) super.Child).getToken()) ? 1 : 0),
+						"Integer");
 		} else if (super.Child instanceof MemberOperator) {
 			List<String> path = new ArrayList<>();
 			KVariant ret = new KVariant();

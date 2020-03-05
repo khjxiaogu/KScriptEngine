@@ -3,7 +3,7 @@ package com.khjxiaogu.scriptengine.core.exceptions;
 public class KSException extends Exception {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

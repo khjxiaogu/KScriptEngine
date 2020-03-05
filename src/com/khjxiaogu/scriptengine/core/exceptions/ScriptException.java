@@ -4,7 +4,7 @@ import com.khjxiaogu.scriptengine.core.ParseReader;
 
 public class ScriptException extends KSException {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	public int line;

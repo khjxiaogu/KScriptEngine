@@ -4,6 +4,7 @@ import com.khjxiaogu.scriptengine.core.Parser;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.syntax.CodeBlockEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
@@ -14,7 +15,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class EvalString extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public EvalString() {
 		// TODO Auto-generated constructor stub
@@ -23,6 +24,9 @@ public class EvalString extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
+		if(env instanceof CodeBlockEnvironment) {
+			return Parser.getParser().parse(super.Child.eval(env).toType(String.class),((CodeBlockEnvironment)env).getSymbol()).eval(env);
+		}
 		return Parser.getParser().parse(super.Child.eval(env).toType(String.class)).eval(env);
 	}
 

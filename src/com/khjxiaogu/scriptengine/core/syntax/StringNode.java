@@ -18,8 +18,8 @@ public class StringNode implements CodeNode, ASTParser {
 		StringBuilder sb = new StringBuilder();
 		char start = reader.read();
 		char c = reader.eat();
-		//System.out.println(c);
-		//System.out.println(start);
+		// System.out.println(c);
+		// System.out.println(start);
 		while (c != start) {
 			if (c == '\\') {
 				switch (c) {

@@ -12,15 +12,15 @@ public enum CodeBlockAttribute {
 	/**
 	 * for classes
 	 */
-	OBJECT, 
+	OBJECT,
 	/**
 	 * for normal blocks
 	 */
-	NORMAL, 
+	NORMAL,
 	/**
 	 * for loop and switch
 	 */
-	BREAKABLE, 
+	BREAKABLE,
 	/**
 	 * for evaluation and execute
 	 */

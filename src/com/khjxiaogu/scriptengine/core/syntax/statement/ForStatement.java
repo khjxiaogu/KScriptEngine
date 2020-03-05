@@ -20,6 +20,7 @@ public class ForStatement implements Block {
 	private CodeNode Cond;
 	private CodeNode Incr;
 	private CodeNode Body;
+
 	public ForStatement() {
 	}
 
@@ -38,46 +39,48 @@ public class ForStatement implements Block {
 			if (!reader.has()) {
 				break;
 			}
-			if (c == '('&&Init==null) {
+			if (c == '(' && Init == null) {
 				parser.clear();
-				c=reader.eat();
-				Init=parser.parseUntilOrBlock(reader,';');
-				Cond=parser.parseUntilOrBlock(reader, ';');
-				Incr=parser.parseUntilOrBlock(reader,')');
-			}else if (c == '{') {
-				if(Incr==null)
+				c = reader.eat();
+				Init = parser.parseUntilOrBlock(reader, ';');
+				Cond = parser.parseUntilOrBlock(reader, ';');
+				Incr = parser.parseUntilOrBlock(reader, ')');
+			} else if (c == '{') {
+				if (Incr == null)
 					throw new SyntaxError("错误的for表达式");
-				c=reader.eat();
-				Body=new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);
+				c = reader.eat();
+				Body = new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);
 				break;
-			}else if(Incr!=null) {
+			} else if (Incr != null) {
 				parser.clear();
-				Body=parser.parseUntilOrBlock(reader,';');
+				Body = parser.parseUntilOrBlock(reader, ';');
 				break;
 			}
 		}
-		if(Init==null||Cond==null||Incr==null||Body==null)
+		if (Init == null || Cond == null || Incr == null || Body == null)
 			throw new SyntaxError("错误的for表达式");
 		return this;
 	}
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		for(Init.eval(env);Cond.eval(env).asBoolean();Incr.eval(env))
+		for (Init.eval(env); Cond.eval(env).asBoolean(); Incr.eval(env)) {
 			Body.eval(env);
+		}
 		return null;
 	}
+
 	@Override
 	public String toString() {
-		return "for("+Init.toString()+";"+Cond.toString()+";"+Incr.toString()+")\n"+Body.toString();
+		return "for(" + Init.toString() + ";" + Cond.toString() + ";" + Incr.toString() + ")\n" + Body.toString();
 	}
 
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(Init,parentMap);
-		Visitable.Visit(Cond,parentMap);
-		Visitable.Visit(Incr,parentMap);
-		Visitable.Visit(Body,parentMap);
+		Visitable.Visit(Init, parentMap);
+		Visitable.Visit(Cond, parentMap);
+		Visitable.Visit(Incr, parentMap);
+		Visitable.Visit(Body, parentMap);
 	}
 
 	@Override

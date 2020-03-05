@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class NotEquals extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public NotEquals() {
 		// TODO Auto-generated constructor stub

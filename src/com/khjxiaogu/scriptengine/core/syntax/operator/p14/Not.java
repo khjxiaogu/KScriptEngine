@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class Not extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Not() {
 		// TODO Auto-generated constructor stub

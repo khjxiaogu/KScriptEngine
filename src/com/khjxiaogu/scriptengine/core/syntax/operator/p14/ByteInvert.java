@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class ByteInvert extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public ByteInvert() {
 		// TODO Auto-generated constructor stub

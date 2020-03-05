@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 public class LogicalOrEqual extends Equal {
 
 	/**
-	 * 
+	 *
 	 */
 	public LogicalOrEqual() {
 		// TODO Auto-generated constructor stub

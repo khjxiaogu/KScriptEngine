@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class FloorDivide extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public FloorDivide() {
 		// TODO Auto-generated constructor stub

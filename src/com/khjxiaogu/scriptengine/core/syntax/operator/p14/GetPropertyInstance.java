@@ -14,7 +14,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 public class GetPropertyInstance extends SingleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public GetPropertyInstance() {
 		// TODO Auto-generated constructor stub

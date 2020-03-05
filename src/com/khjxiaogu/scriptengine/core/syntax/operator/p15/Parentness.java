@@ -25,7 +25,7 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	CodeNode inner;
 
 	/**
-	 * 
+	 *
 	 */
 	public Parentness() {
 		// TODO Auto-generated constructor stub
@@ -49,29 +49,27 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	public String toString() {
 		return inner.toString();
 	}
+
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		if (inner instanceof Assignable) {
+		if (inner instanceof Assignable)
 			return ((MemberOperator) inner).assign(env, val);
-		}
 		throw new ScriptException("错误的赋值表达式");
 	}
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if (inner instanceof Assignable) {
+		if (inner instanceof Assignable)
 			return ((MemberOperator) inner).getObject(env);
-		}
 		throw new ScriptException("错误的赋值表达式");
 	}
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		if (inner instanceof Assignable) {
+		if (inner instanceof Assignable)
 			return ((MemberOperator) inner).assignOperation(env, val, op);
-		}
 		throw new ScriptException("错误的赋值表达式");
 	}
 
@@ -84,17 +82,20 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((MemberOperator) inner).getPointing(env);
 	}
+
 	@Override
 	public void Visit(List<String> parentMap) {
-		Visitable.Visit(inner,parentMap);
+		Visitable.Visit(inner, parentMap);
 	}
+
 	@Override
 	public void VisitAsChild(List<String> parentMap) {
-		if(!(inner instanceof LiteralNode)) {
-			if(inner instanceof MemberOperator)
-				((MemberOperator)inner).VisitAsChild(parentMap);
-			else
-				Visitable.Visit(inner,parentMap);
+		if (!(inner instanceof LiteralNode)) {
+			if (inner instanceof MemberOperator) {
+				((MemberOperator) inner).VisitAsChild(parentMap);
+			} else {
+				Visitable.Visit(inner, parentMap);
+			}
 		}
 	}
 

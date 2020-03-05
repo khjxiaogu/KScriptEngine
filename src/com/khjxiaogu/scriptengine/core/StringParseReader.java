@@ -11,9 +11,9 @@ public class StringParseReader implements ParseReader {
 	String backed;
 	int pos = 0;
 	String name;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public StringParseReader(String s) {
 		// TODO Auto-generated constructor stub
@@ -30,9 +30,9 @@ public class StringParseReader implements ParseReader {
 	@Override
 	public char read() throws KSException {
 		// TODO Auto-generated method stub
-		if (has()) {
+		if (has())
 			return backed.charAt(pos);
-		}throw new SyntaxError("unexpected end");
+		throw new SyntaxError("unexpected end");
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class StringParseReader implements ParseReader {
 		// TODO Auto-generated method stub
 		// System.out.print(backed.charAt(pos));
 		++pos;
-		if(has())
+		if (has())
 			return read();
 		else
 			return 0;
@@ -90,7 +90,7 @@ public class StringParseReader implements ParseReader {
 
 	@Override
 	public String reads(int off, int count) throws KSException {
-		return backed.substring(pos+off,pos+off+count);
+		return backed.substring(pos + off, pos + off + count);
 	}
 
 }

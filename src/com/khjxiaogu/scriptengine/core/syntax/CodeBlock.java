@@ -10,13 +10,14 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 
-public class CodeBlock implements Block,Visitable {
+public class CodeBlock implements Block, Visitable {
 	protected List<CodeNode> nodes = new ArrayList<>();
 	protected StatementParser parser = new StatementParser();
 	protected CodeBlockAttribute attr;
 	protected String name;
 	protected int off;
 	protected int siz;
+	protected String[] symbol;
 	public CodeBlock(CodeBlockAttribute attr) {
 		// TODO Auto-generated constructor stub
 		this.attr = attr;
@@ -25,9 +26,10 @@ public class CodeBlock implements Block,Visitable {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env,off,siz, this,attr);
+		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, off, siz, this, attr);
 		int i = 0;
-		if(nodes.size()==0)return null;
+		if (nodes.size() == 0)
+			return null;
 		try {
 			KVariant result = new KVariant();
 			for (; i < nodes.size(); i++) {
@@ -36,50 +38,54 @@ public class CodeBlock implements Block,Visitable {
 					break;
 				}
 			}
-			if (attr == CodeBlockAttribute.STATEMENT) {
+			if (attr == CodeBlockAttribute.STATEMENT)
 				return result;
-			} else if (attr == CodeBlockAttribute.RETURNABLE) {
+			else if (attr == CodeBlockAttribute.RETURNABLE)
 				return cbenv.getRet();
-			} else if (attr == CodeBlockAttribute.BREAKABLE) {
-				if (cbenv.isStopped()) {
+			else if (attr == CodeBlockAttribute.BREAKABLE) {
+				if (cbenv.isStopped())
 					return null;
-				}
 				return KVariant.TRUE;
 			}
 		} catch (ScriptException e) {
 			e.filename = name;
 			e.colume = 0;
-			e.line = i+1;
+			e.line = i + 1;
 			throw e;
 		}
 		return null;
 	}
+
 	/**
 	 * for class object,wont run Function
+	 * 
 	 * @param env
 	 * @return
 	 * @throws KSException
 	 */
+	@Override
 	public void init(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		int i = 0;
-		if(nodes.size()==0)return;
+		if (nodes.size() == 0)
+			return;
 		try {
 			for (; i < nodes.size(); i++) {
 				CodeNode cn;
 				cn = nodes.get(i);
-				if(cn instanceof CodeBlock) {
-					((CodeBlock) cn).attr=CodeBlockAttribute.OBJECT;
+				if (cn instanceof CodeBlock) {
+					((CodeBlock) cn).attr = CodeBlockAttribute.OBJECT;
 					((CodeBlock) cn).init(env);
 				}
 			}
 		} catch (ScriptException e) {
 			e.filename = name;
 			e.colume = 0;
-			e.line = i+1;
+			e.line = i + 1;
 			throw e;
 		}
 	}
+
 	public void put(CodeNode node) {
 		nodes.add(node);
 	}
@@ -112,7 +118,7 @@ public class CodeBlock implements Block,Visitable {
 				if (!reader.has()) {
 					break;
 				}
-	
+
 				if (c != '}') {
 					if (attr == CodeBlockAttribute.STATEMENT) {
 						put(parser.parseUntilOrEnd(reader, ';'));
@@ -128,7 +134,7 @@ public class CodeBlock implements Block,Visitable {
 		} catch (SyntaxError e) {
 			e.filename = name;
 			e.colume = 0;
-			e.line = nodes.size()+1;
+			e.line = nodes.size() + 1;
 			throw e;
 		}
 		return this;
@@ -136,13 +142,13 @@ public class CodeBlock implements Block,Visitable {
 
 	@Override
 	public void Visit(List<String> parentMap) {
-		off=parentMap.size();
-		List<String> curmap=new ArrayList<>(parentMap);
-		for(int i=0;i<nodes.size();i++) {
-			CodeNode node=nodes.get(i);
-				Visitable.Visit(node,curmap);
+		off = parentMap.size();
+		List<String> curmap = new ArrayList<>(parentMap);
+		for (int i = 0; i < nodes.size(); i++) {
+			CodeNode node = nodes.get(i);
+			Visitable.Visit(node, curmap);
 		}
-		siz=curmap.size()-off;
+		siz = curmap.size() - off;
 	}
 
 }

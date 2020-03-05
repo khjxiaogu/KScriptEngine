@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class Order extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Order() {
 		// TODO Auto-generated constructor stub

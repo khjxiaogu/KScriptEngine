@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 public class MultiplyEqual extends Equal {
 
 	/**
-	 * 
+	 *
 	 */
 	public MultiplyEqual() {
 		// TODO Auto-generated constructor stub

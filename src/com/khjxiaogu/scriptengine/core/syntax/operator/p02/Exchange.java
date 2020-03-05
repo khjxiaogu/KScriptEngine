@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class Exchange extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public Exchange() {
 		// TODO Auto-generated constructor stub

@@ -8,7 +8,7 @@ public class BasicProperty implements KProperty {
 	Object value;
 
 	/**
-	 * 
+	 *
 	 */
 	public BasicProperty() {
 		// TODO Auto-generated constructor stub

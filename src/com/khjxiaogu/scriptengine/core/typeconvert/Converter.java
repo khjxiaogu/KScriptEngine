@@ -15,25 +15,21 @@ public class Converter {
 
 	public KVariant convert(KVariant in) throws ConvertionException {
 		TypeInfo t = in.getType();
-		if (t.equals(type)) {
+		if (t.equals(type))
 			return new KVariant(in);
-		}
 		TypeConverter<?, ?> converter;
-		if ((converter = converters.get(t)) != null) {
+		if ((converter = converters.get(t)) != null)
 			return new KVariant(converter.from(in), type);
-		}
 		throw new ConvertionException(t, type);
 	}
 
 	public Object from(KVariant in) throws ConvertionException {
 		TypeInfo t = in.getType();
-		if (t.equals(type)) {
+		if (t.equals(type))
 			return in.getValue();
-		}
 		TypeConverter<?, ?> converter;
-		if ((converter = converters.get(t)) != null) {
+		if ((converter = converters.get(t)) != null)
 			return converter.from(in.getValue());
-		}
 		throw new ConvertionException(t, type);
 	}
 
@@ -43,9 +39,8 @@ public class Converter {
 
 	public TypeConverter<?, ?> getConvertionEnsure(TypeInfo fromType) throws ConvertionException {
 		TypeConverter<?, ?> conv = converters.get(fromType);
-		if (conv == null) {
+		if (conv == null)
 			throw new ConvertionException(fromType, type);
-		}
 		return conv;
 	}
 

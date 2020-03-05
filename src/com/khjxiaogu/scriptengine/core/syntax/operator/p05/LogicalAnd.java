@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class LogicalAnd extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public LogicalAnd() {
 		// TODO Auto-generated constructor stub

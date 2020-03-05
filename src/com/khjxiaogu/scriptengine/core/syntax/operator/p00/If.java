@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 public class If extends DoubleOperator {
 
 	/**
-	 * 
+	 *
 	 */
 	public If() {
 		// TODO Auto-generated constructor stub
