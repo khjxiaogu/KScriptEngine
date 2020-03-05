@@ -3,7 +3,6 @@ package com.khjxiaogu.scriptengine.core.syntax;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 
 /**
  * @author khjxiaogu

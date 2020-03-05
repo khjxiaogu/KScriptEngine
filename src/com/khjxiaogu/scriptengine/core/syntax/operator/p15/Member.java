@@ -55,8 +55,7 @@ public class Member extends DoubleOperator implements MemberOperator {
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return (KObject) ((Assignable) super.left).getObject(env)
-				.getMemberByName(((LiteralNode) super.right).getToken()).toType("Object");
+		return ((Assignable) super.left).getObject(env);
 	}
 
 	@Override
@@ -86,19 +85,14 @@ public class Member extends DoubleOperator implements MemberOperator {
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(super.left, parentMap);
-		if (!(super.right instanceof LiteralNode)) {
-			Visitable.Visit(super.right, parentMap);
-		}
 	}
 
 	@Override
 	public void VisitAsChild(List<String> parentMap) throws KSException {
-		if (!(super.right instanceof LiteralNode)) {
-			if (super.right instanceof MemberOperator) {
-				((MemberOperator) super.right).VisitAsChild(parentMap);
-			} else {
-				Visitable.Visit(super.right, parentMap);
-			}
+		if (super.left instanceof MemberOperator) {
+			((MemberOperator) super.right).VisitAsChild(parentMap);
+		} else {
+			Visitable.Visit(super.right, parentMap);
 		}
 	}
 }

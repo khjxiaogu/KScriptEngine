@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.Parser;
+import com.khjxiaogu.scriptengine.core.StringParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.GlobalCodeBlock;
 
 public class ParserRunner {
-	public static void main(String[] args) throws KSException {
+	public static void main(String[] args){
 		Parser p = Parser.getParser();
 		CodeDialog cd = new CodeDialog();
 		String s;
 		while ((s = cd.showDialog()) != null) {
 			// System.out.println(s);
-			CodeBlock cn = null;
+			GlobalCodeBlock cn = new GlobalCodeBlock();
 			try {
-				cn = (CodeBlock) p.parse(s);
-				List<String> li;
-				cn.Visit(li = new ArrayList<String>());
+				cn.parse(new StringParseReader(s));
 				System.out.println("语法解析结果：");
 				System.out.println(cn.toString());
-				System.out.println("在null上下文执行结果：");
-				System.out.println(cn.eval(null));
+				System.out.println("在global上下文执行结果：");
+				System.out.println(cn.eval());
 			} catch (KSException e) {
 				System.out.println(e.getMessage());
 				e.printStackTrace();

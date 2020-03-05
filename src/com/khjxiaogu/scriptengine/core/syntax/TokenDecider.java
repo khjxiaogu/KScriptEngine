@@ -1,18 +1,23 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidCharacterException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
+import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
+import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
+import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Break;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Continue;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.If;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Return;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Throw;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p01.ArgumentNode;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.ARSHEqual;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.AddEqual;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.ByteAndEqual;
@@ -67,6 +72,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p14.SelfIncrementLeft;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.SetProperty;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.TypeOf;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.EvalString;
+import com.khjxiaogu.scriptengine.core.syntax.operator.p15.FuncCall;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.GetMember;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.InContextOf;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.Member;
@@ -74,11 +80,16 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p15.Parentness;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfDecrementRight;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfIncrementRight;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.TypeConvertion;
+import com.khjxiaogu.scriptengine.core.syntax.operator.p15.WithMember;
+import com.khjxiaogu.scriptengine.core.syntax.statement.ArgumentNode;
+import com.khjxiaogu.scriptengine.core.syntax.statement.DoWhileStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.ForStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.FunctionStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.IfStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.SwitchStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.VarStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WhileStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.WithStatement;
 
 /**
  * @author khjxiaogu
@@ -90,6 +101,7 @@ public class TokenDecider implements ASTParser {
 	 *
 	 */
 	private CodeNode last = null;
+	private static Map<String, LiteralFactory> identifiers = new HashMap<>();
 
 	public TokenDecider() {
 		// TODO Auto-generated constructor stub
@@ -102,10 +114,7 @@ public class TokenDecider implements ASTParser {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
-		char c = reader.read();
-		while (Character.isWhitespace(c)) {
-			c = reader.eat();
-		}
+		char c = reader.eatAll();
 		if (c < '!')
 			throw new InvalidCharacterException(c);
 		else if (c < '0') {
@@ -120,8 +129,12 @@ public class TokenDecider implements ASTParser {
 			return last = parseLiteral(reader);
 		else if (c <= '^')
 			return last = parseOperator(reader);
-		else
+		else if(c <'{')
 			return last = parseLiteral(reader);
+		else if(c <='~')
+			return last=parseOperator(reader);
+		else
+			return last=parseLiteral(reader);
 	}
 
 	public CodeNode parseOperator(ParseReader reader) throws KSException {
@@ -132,7 +145,8 @@ public class TokenDecider implements ASTParser {
 		if (last == null || last instanceof Operator) {
 			infer = Associative.LEFT;
 		}
-		// System.out.println(last);
+		
+		// System.out.println(first);
 		// ! # $ % & ( ) * + , - . / : ; < = > ? [ \ ] ^ { | } ~
 		switch (first) {
 		case '!':
@@ -171,6 +185,8 @@ public class TokenDecider implements ASTParser {
 			} else
 				return new ByteAnd();
 		case '(':
+			if (last instanceof MemberOperator)
+				return new FuncCall().parse(reader);
 			return new Parentness().parse(reader);
 		case '*':
 			if (infer == Associative.LEFT)
@@ -214,8 +230,10 @@ public class TokenDecider implements ASTParser {
 			if ('0' <= next && next <= '9') {
 				reader.rewind('.');
 				return new NumberNode().parse(reader);
-			} else
+			} else if(last instanceof Assignable) {
 				return new Member();
+			}else
+				return new WithMember();
 		case '/':
 			if (next == '=') {
 				reader.eat();
@@ -312,11 +330,43 @@ public class TokenDecider implements ASTParser {
 		case '~':
 			return new ByteInvert();
 		default:
-			//reader.rewind(first);
-			//return null;
+			// reader.rewind(first);
+			// return null;
 			throw new SyntaxError("unexpected" + first);
 		}
-	//	return null;
+		// return null;
+	}
+
+	static {
+		identifiers.put("break", (reader,last) -> {return new Break();});
+		identifiers.put("continue", (reader,last) -> {return new Continue();});
+		identifiers.put("delete", (reader,last) -> {return new DeleteMember();});
+		identifiers.put("false", (reader,last) -> {return new NumberNode(0);});
+		identifiers.put("incontextof", (reader,last) -> {return new InContextOf();});
+		identifiers.put("Infinity", (reader,last) -> {return new NumberNode(Double.POSITIVE_INFINITY);});
+		identifiers.put("invalidate", (reader,last) -> {return new Invalidate();});
+		identifiers.put("instanceof", (reader,last) -> {return new InstanceOf();});
+		identifiers.put("isvalid", (reader,last) -> {return new IsValid();});
+		identifiers.put("int", (reader,last) -> {return new TypeConvertion("Integer");});
+		identifiers.put("function", (reader,last) -> {return new FunctionStatement().parse(reader);});
+		identifiers.put("if", (reader,last) -> {if (last == null)return new IfStatement().parse(reader);return new If();});
+		identifiers.put("case", (reader,last) -> {return new Case().parse(reader);});
+		identifiers.put("for", (reader,last) -> {return new ForStatement().parse(reader);});
+		identifiers.put("switch", (reader,last) -> {return new SwitchStatement().parse(reader);});
+		identifiers.put("while", (reader,last) -> {return new WhileStatement().parse(reader);});
+		identifiers.put("NaN", (reader,last) -> {return new NumberNode(Double.NaN);});
+		identifiers.put("null", (reader,last) -> {return new LiteralNode(null);});
+		identifiers.put("return", (reader,last) -> {return new Return();});
+		identifiers.put("real", (reader,last) -> {return new TypeConvertion("real");});
+		identifiers.put("string", (reader,last) -> {return new TypeConvertion("String");});
+		identifiers.put("typeof", (reader,last) -> {return new TypeOf();});
+		identifiers.put("throw", (reader,last) -> {return new Throw();});
+		identifiers.put("true", (reader,last) -> {return new NumberNode(1);});
+		identifiers.put("void", (reader,last) -> {return new NumberNode();});
+		identifiers.put("var", (reader,last) -> {return new VarStatement().parse(reader);});
+		identifiers.put("with", (reader,last) -> {return new WithStatement().parse(reader);});
+		identifiers.put("do", (reader,last) -> {return new DoWhileStatement().parse(reader);});
+		
 	}
 
 	public CodeNode parseLiteral(ParseReader reader) throws KSException {
@@ -324,80 +374,24 @@ public class TokenDecider implements ASTParser {
 		StringBuilder sb = new StringBuilder();
 		char ch = reader.read();
 		/*
-		 ** break *continue const catch class case
-		 *
-		 * debugger default *delete do extends export
-		 *
-		 * enum *else function finally *false for
-		 *
-		 * *global getter goto *incontextof *Infinity
-		 *
-		 * *invalidate *instanceof *isvalid import *int in
-		 *
-		 * *if *NaN *null new *octet protected property
-		 *
-		 * private public *return *real synchronized switch
-		 *
-		 * static setter *string +super *typeof throw
-		 *
-		 * +this *true try *void *var *while with
+		 * TODO:
+		 * const catch class
+		 * debugger extends export
+		 * enum finally
+		 * getter goto
+		 * import in
+		 * new protected property
+		 * private public synchronized 
+		 * static setter +super throw
+		 * +this
 		 */
 		do {
 			sb.append(ch);
 		} while (Character.isJavaIdentifierPart(ch = reader.eat()) && ch != '$' && ch != 0);
 		String lite = sb.toString();
-		if (lite.equals("break"))
-			return new Break();
-		else if (lite.equals("continue"))
-			return new Continue();
-		else if (lite.equals("delete"))
-			return new DeleteMember();
-		else if (lite.equals("false"))
-			return new NumberNode(0);
-		else if (lite.equals("incontextof"))
-			return new InContextOf();
-		else if (lite.equals("Infinity"))
-			return new NumberNode(Double.POSITIVE_INFINITY);
-		else if (lite.equals("invalidate"))
-			return new Invalidate();
-		else if (lite.equals("instanceof"))
-			return new InstanceOf();
-		else if (lite.equals("isvalid"))
-			return new IsValid();
-		else if (lite.equals("int"))
-			return new TypeConvertion("Integer");
-		else if (lite.equals("if")) {
-			if (last == null)
-				return new IfStatement().parse(reader);
-			return new If();
-		} else if (lite.equals("case"))
-			return new Case().parse(reader);
-		else if(lite.equals("for"))
-			return new ForStatement().parse(reader);
-		else if (lite.equals("switch"))
-			return new SwitchStatement().parse(reader);
-		else if (lite.equals("while"))
-			return new WhileStatement().parse(reader);
-		else if (lite.equals("NaN"))
-			return new NumberNode(Double.NaN);
-		else if (lite.equals("null"))
-			return new LiteralNode(null);
-		else if (lite.equals("return"))
-			return new Return();
-		else if (lite.equals("real"))
-			return new TypeConvertion("real");
-		else if (lite.equals("string"))
-			return new TypeConvertion("String");
-		else if (lite.equals("typeof"))
-			return new TypeOf();
-		else if (lite.equals("throw"))
-			return new Throw();
-		else if (lite.equals("true"))
-			return new NumberNode(1);
-		else if (lite.equals("void"))
-			return new NumberNode();
-		else if (lite.equals("var"))
-			return new VarStatement().parse(reader);
+		LiteralFactory cn=identifiers.get(lite);
+		if(cn!=null)
+			return cn.create(reader, last);
 		return new LiteralNode(lite);
 	}
 
@@ -424,4 +418,9 @@ public class TokenDecider implements ASTParser {
 		char first = reader.read();
 		return null;
 	}
+}
+
+@FunctionalInterface
+interface LiteralFactory {
+	public CodeNode create(ParseReader reader,CodeNode last) throws KSException;
 }

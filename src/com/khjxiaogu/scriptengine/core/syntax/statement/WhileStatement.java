@@ -25,36 +25,22 @@ public class WhileStatement implements Block {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser = new StatementParser();
-		while (true) {
-			if (!reader.has()) {
-				break;
-			}
-			char c = reader.read();
-			//
-			while (Character.isWhitespace(c)) {
-				c = reader.eat();
-			}
-			if (!reader.has()) {
-				break;
-			}
-
-			if (c == '(' && Condition == null) {
-				parser.clear();
-				c = reader.eat();
-				Condition = parser.parseUntil(reader, ')');
-				reader.eat();
-			} else if (c == '{') {
-				if (Condition == null)
-					throw new SyntaxError("错误的while表达式");
-				c = reader.eat();
-				Body = new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);
-				break;
-			} else if (Condition != null) {
-				parser.clear();
-				Body = parser.parseUntilOrBlock(reader, ';');
-				reader.eat();
-				break;
-			}
+		char c=reader.eatAll();
+		//
+		
+		if (c == '(') {
+			parser.clear();
+			c = reader.eat();
+			Condition = parser.parseUntil(reader, ')');
+			reader.eat();
+		}else throw new SyntaxError("错误的while表达式");
+		c=reader.eatAll();
+		if (c == '{') {
+			c = reader.eat();
+			Body = new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);
+		} else{
+			Body = parser.parseUntilOrBlock(reader, ';');
+			reader.eat();
 		}
 		if (Condition == null || Body == null)
 			throw new SyntaxError("错误的while表达式");

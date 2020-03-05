@@ -31,20 +31,16 @@ public class ForStatement implements Block {
 			if (!reader.has()) {
 				break;
 			}
-			char c = reader.read();
-			//
-			while (Character.isWhitespace(c)) {
-				c = reader.eat();
-			}
+			char c=reader.eatAll();
 			if (!reader.has()) {
 				break;
 			}
 			if (c == '(' && Init == null) {
 				parser.clear();
 				c = reader.eat();
-				//System.out.println(c);
+				// System.out.println(c);
 				Init = parser.parseUntil(reader, ';');
-				//System.out.println(reader.read());
+				// System.out.println(reader.read());
 				reader.eat();
 				Cond = parser.parseUntil(reader, ';');
 				reader.eat();
@@ -59,7 +55,7 @@ public class ForStatement implements Block {
 			} else if (Incr != null) {
 				parser.clear();
 				Body = parser.parseUntilOrBlock(reader, ';');
-				//reader.eat();
+				// reader.eat();
 				break;
 			}
 		}

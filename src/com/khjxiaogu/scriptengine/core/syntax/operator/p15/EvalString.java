@@ -24,9 +24,10 @@ public class EvalString extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if(env instanceof CodeBlockEnvironment) {
-			return Parser.getParser().parse(super.Child.eval(env).toType(String.class),((CodeBlockEnvironment)env).getSymbol()).eval(env);
-		}
+		if (env instanceof CodeBlockEnvironment)
+			return Parser.getParser()
+					.parse(super.Child.eval(env).toType(String.class), ((CodeBlockEnvironment) env).getSymbol())
+					.eval(env);
 		return Parser.getParser().parse(super.Child.eval(env).toType(String.class)).eval(env);
 	}
 

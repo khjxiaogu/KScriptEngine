@@ -27,8 +27,9 @@ public class StatementParser {
 	}
 
 	public void put(CodeNode node) {
-		if(node!=null)
-		nodes.add(last = node);
+		if (node != null) {
+			nodes.add(last = node);
+		}
 	}
 
 	public void clear() {
@@ -43,7 +44,7 @@ public class StatementParser {
 		if (nodes.size() == 1)
 			return nodes.get(0);
 		for (CodeNode current : nodes) {
-			// System.out.println(current.getClass().getSimpleName());
+			//System.out.println(current.getClass().getSimpleName());
 			if (StatementParser.isOperator(current)) {
 				Operator op = (Operator) current;
 				if (pending != null) {
@@ -71,8 +72,7 @@ public class StatementParser {
 			} else if (last == null) {
 				last = current;
 			} else
-				throw new SyntaxError(
-						"错误出现的 '" + current.toString() + "在" + last.toString() + "'之后,缺失运算符.");
+				throw new SyntaxError("错误出现的 '" + current.toString() + "在" + last.toString() + "'之后,缺失运算符.");
 		}
 		if (last != null) {
 			if (pending != null) {
@@ -86,11 +86,7 @@ public class StatementParser {
 
 	public CodeNode parseUntilOrBlock(ParseReader reader, char until) throws KSException {
 		while (true) {
-			char c = reader.read();
-
-			while (Character.isWhitespace(c)) {
-				c = reader.eat();
-			}
+			char c=reader.eatAll();
 			if (c != until) {
 				put(td.parse(reader));
 				if (last instanceof Block) {
@@ -112,21 +108,18 @@ public class StatementParser {
 		clear();
 		return ret;
 	}
-	public CodeNode parseUntil(ParseReader reader, char...untils) throws KSException {
+
+	public CodeNode parseUntil(ParseReader reader, char... untils) throws KSException {
 		Arrays.parallelSort(untils);
 		while (true) {
-			char c = reader.read();
-			
-			while (Character.isWhitespace(c)) {
-				c = reader.eat();
-			}
-			int srh=Arrays.binarySearch(untils,c);
-			//System.out.println(srh);
-			if (srh<0) {
+			char c=reader.eatAll();
+			int srh = Arrays.binarySearch(untils, c);
+			// System.out.println(srh);
+			if (srh < 0) {
 				put(td.parse(reader));
 				// td.reset();
 			} else {
-				//System.out.println("break");
+				// System.out.println("break");
 				break;
 			}
 		}
@@ -138,16 +131,13 @@ public class StatementParser {
 		clear();
 		return ret;
 	}
+
 	public CodeNode parseUntilOrEnd(ParseReader reader, char until) throws KSException {
 		while (true) {
 			if (!reader.has()) {
 				break;
 			}
-			char c = reader.read();
-			// System.out.print(c);
-			while (Character.isWhitespace(c)) {
-				c = reader.eat();
-			}
+			char c=reader.eatAll();
 			if (!reader.has()) {
 				break;
 			}

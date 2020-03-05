@@ -22,16 +22,17 @@ public class Parser {
 	public CodeNode parse(String s) throws KSException {
 		// System.out.println(s);
 		ParseReader reader = new StringParseReader(s);
-		CodeBlock cb=(CodeBlock) new CodeBlock(CodeBlockAttribute.STATEMENT).parse(reader);
+		CodeBlock cb = (CodeBlock) new CodeBlock(CodeBlockAttribute.STATEMENT).parse(reader);
 		return cb;
 	}
-	public CodeNode parse(String s,String[] symbols) throws KSException {
+
+	public CodeNode parse(String s, String[] symbols) throws KSException {
 		// System.out.println(s);
 		ParseReader reader = new StringParseReader(s);
-		CodeBlock cb=(CodeBlock) new CodeBlock(CodeBlockAttribute.STATEMENT).parse(reader);
+		CodeBlock cb = (CodeBlock) new CodeBlock(CodeBlockAttribute.STATEMENT).parse(reader);
 		try {
-		cb.Visit(Arrays.asList(symbols));
-		}catch(UnsupportedOperationException e) {
+			cb.Visit(Arrays.asList(symbols));
+		} catch (UnsupportedOperationException e) {
 			throw new SyntaxError("var");
 		}
 		return cb;

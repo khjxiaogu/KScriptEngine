@@ -32,7 +32,7 @@ public interface KEnvironment {
 	public boolean deleteMemberByNum(int num) throws KSException;
 
 	public boolean deleteMemberByVariant(KVariant var) throws KSException;
-	
+
 	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException;
 
 	public KVariant DoOperatonByNum(AssignOperation op, int num, KVariant opr) throws KSException;

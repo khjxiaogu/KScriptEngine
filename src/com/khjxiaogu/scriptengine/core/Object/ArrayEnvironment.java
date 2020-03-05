@@ -1,12 +1,13 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
+import java.util.Arrays;
+
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class ArrayEnvironment implements KEnvironment {
-	// private List<KVariant> list=Collections.synchronizedList(new ArrayList<>());
 	private KVariant[] list;
 	protected KEnvironment parent = null;
 	int offset;
@@ -14,6 +15,30 @@ public class ArrayEnvironment implements KEnvironment {
 	public ArrayEnvironment(KEnvironment par, int off, int size) {
 		list = new KVariant[size];
 		offset = off;
+		parent = par;
+	}
+
+	public ArrayEnvironment(KEnvironment par, int off, int size, KVariant[] initial) {
+		list = Arrays.copyOf(initial, size);
+		offset = off;
+		parent = par;
+	}
+
+	public ArrayEnvironment(ArrayEnvironment par, int size, KVariant[] initial) {
+		list = Arrays.copyOf(initial, size);
+		offset = par.list.length + par.offset;
+		parent = par;
+	}
+
+	public ArrayEnvironment(KEnvironment par, int off, KVariant[] initial) {
+		list = initial;
+		offset = off;
+		parent = par;
+	}
+
+	public ArrayEnvironment(ArrayEnvironment par, KVariant[] initial) {
+		list = initial;
+		offset = par.list.length + par.offset;
 		parent = par;
 	}
 

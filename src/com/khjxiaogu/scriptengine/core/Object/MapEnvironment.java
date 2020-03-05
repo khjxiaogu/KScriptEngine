@@ -103,6 +103,7 @@ public class MapEnvironment implements KEnvironment {
 		// TODO Auto-generated method stub
 		throw new MemberNotFoundException("%" + num);
 	}
+
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
 		return map.remove(var.toString()) != null || parent.deleteMemberByVariant(var);
@@ -190,6 +191,5 @@ public class MapEnvironment implements KEnvironment {
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
 		return map.containsKey(var.toString()) || parent != null && parent.hasMemberByVariant(var);
 	}
-
 
 }

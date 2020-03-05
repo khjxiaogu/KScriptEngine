@@ -25,63 +25,38 @@ public class IfStatement implements Block {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser = new StatementParser();
-		boolean iselse = false;
-		while (true) {
-			if (!reader.has()) {
-				break;
-			}
-			char c = reader.read();
-			//
-			while (Character.isWhitespace(c)) {
-				c = reader.eat();
-			}
-			if (!reader.has()) {
-				break;
-			}
+		char c=reader.eatAll();
+		//
 
-			if (c == '(' && Condition == null) {
-				parser.clear();
-				c = reader.eat();
-				Condition = parser.parseUntil(reader, ')');
-				c=reader.eat();
-				//System.out.println(c);
-			} else if (c == '{') {
-				if (Condition == null)
-					throw new SyntaxError("错误的if表达式");
-				c = reader.eat();
-				if (iselse) {
-					Else = new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
-					break;
-				} else {
-					if (If == null) {
-						If = new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
-					} else {
-						break;
-					}
-				}
-				// c=reader.eat();
-			} else if (c == 'e' && reader.reads(0, 4).equals("else")) {
-				reader.eat();
-				reader.eat();
-				reader.eat();
-				reader.eat();
-				iselse = true;
-			} else if (Condition != null) {
-				parser.clear();
-				if (iselse) {
-					Else = parser.parseUntilOrBlock(reader, ';');
-					reader.eat();
-					break;
-				} else if (If == null) {
-					If = parser.parseUntilOrBlock(reader, ';');
-					reader.eat();
-				} else {
-					break;
-				}
-			}
+		if (c == '(') {
+			parser.clear();
+			c = reader.eat();
+			Condition = parser.parseUntil(reader, ')');
+			c = reader.eat();
+			// System.out.println(c);
 		}
-		if (Condition == null || If == null)
-			throw new SyntaxError("错误的if表达式");
+		c=reader.eatAll();
+		if (c == '{') {
+			c = reader.eat();
+			If = new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
+			// c=reader.eat();
+		}else
+			If = parser.parseUntilOrBlock(reader, ';');
+		c=reader.eatAll();
+		if (c == 'e' && reader.reads(0, 4).equals("else")) {
+			reader.eat();
+			reader.eat();
+			reader.eat();
+			reader.eat();
+			c=reader.eatAll();
+			if (c == '{') {
+				c = reader.eat();
+				Else = new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
+				// c=reader.eat();
+			}else
+			Else = parser.parseUntilOrBlock(reader, ';');
+			reader.eat();
+		}
 		return this;
 	}
 

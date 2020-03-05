@@ -26,6 +26,7 @@ public class Return extends SingleOperator {
 		// TODO Auto-generated method stub
 		if (env instanceof CodeBlockEnvironment) {
 			((CodeBlockEnvironment) env).Return(super.Child.eval(env));
+			return null;
 		}
 		throw new ScriptException("错误的return语句");
 	}
@@ -34,6 +35,11 @@ public class Return extends SingleOperator {
 	public int getPriority() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return "return " + Child.toString();
 	}
 
 	@Override

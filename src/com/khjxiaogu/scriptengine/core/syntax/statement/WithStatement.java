@@ -1,47 +1,35 @@
 package com.khjxiaogu.scriptengine.core.syntax.statement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.Block;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlockEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.Visitable;
+import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.WithEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Default;
 
-public class SwitchStatement extends CodeBlock {
-
-	List<Case> cases = new ArrayList<>();
-	List<Integer> casepos = new ArrayList<>();
-	int defaultpos = -1;
-	CodeNode cond;
-
-	public SwitchStatement() {
-		super(CodeBlockAttribute.BREAKABLE);
+public class WithStatement extends CodeBlock {
+	private CodeNode cond;
+	public WithStatement() {
+		super(CodeBlockAttribute.NORMAL);
 	}
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		// TODO Auto-generated method stub
-		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, off, siz, this, attr);
-		KVariant res = cond.eval(cbenv);
-
-		int i = defaultpos;
-		for (int j = 0; j < cases.size(); j++) {
-			if (res.equals(cases.get(j).getCond().eval(cbenv))) {
-				i = casepos.get(j);
-				break;
-			}
-		}
-		if (nodes.size() == 0 || i == -1)
+		WithEnvironment cbenv = new WithEnvironment(env, off, siz, this, attr, symbol);
+		cbenv.setWith((KObject) cond.eval(env).toType("Object"));
+		int i = 0;
+		if (nodes.size() == 0)
 			return null;
 		try {
 			for (; i < nodes.size(); i++) {
@@ -50,15 +38,13 @@ public class SwitchStatement extends CodeBlock {
 					break;
 				}
 			}
-			if (cbenv.isStopped())
-				return null;
-			return null;
 		} catch (ScriptException e) {
 			e.filename = name;
 			e.colume = 0;
 			e.line = i + 1;
 			throw e;
 		}
+		return null;
 	}
 
 	@Override
@@ -72,31 +58,20 @@ public class SwitchStatement extends CodeBlock {
 			c=reader.eatAll();
 			if (c == '{') {
 				c = reader.eat();
-			} else
-				throw new SyntaxError("无效的switch语句");
-		} else
-			throw new SyntaxError("无效的switch语句");
-		super.parse(reader);
-		for (int i = 0; i < super.nodes.size(); i++) {
-			CodeNode cur = super.nodes.get(i);
-			if (cur instanceof Case) {
-				cases.add((Case) cur);
-				casepos.add(i);
-			}else if(cur instanceof Default) {
-				defaultpos=i;
+				super.parse(reader);
+			} else{
+				super.parseExp(reader);
 			}
-		}
+		} else throw new SyntaxError("错误的with语句");
 		return this;
 	}
 
 	@Override
-	public String toString() {
-		return "switch(" + cond.toString() + ")" + super.toString();
+	public void Visit(List<String> parentMap) throws KSException {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(cond, parentMap);
-		super.Visit(parentMap);
+	public void init(KEnvironment env) throws KSException {
 	}
+
 }

@@ -9,6 +9,7 @@ import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 public class CodeBlock implements Block, Visitable {
 	protected List<CodeNode> nodes = new ArrayList<>();
@@ -18,6 +19,7 @@ public class CodeBlock implements Block, Visitable {
 	protected int off;
 	protected int siz;
 	protected String[] symbol;
+
 	public CodeBlock(CodeBlockAttribute attr) {
 		// TODO Auto-generated constructor stub
 		this.attr = attr;
@@ -26,7 +28,7 @@ public class CodeBlock implements Block, Visitable {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, off, siz, this, attr);
+		CodeBlockEnvironment cbenv = new CodeBlockEnvironment(env, off, siz, this, attr, symbol);
 		int i = 0;
 		if (nodes.size() == 0)
 			return null;
@@ -58,7 +60,7 @@ public class CodeBlock implements Block, Visitable {
 
 	/**
 	 * for class object,wont run Function
-	 * 
+	 *
 	 * @param env
 	 * @return
 	 * @throws KSException
@@ -73,7 +75,7 @@ public class CodeBlock implements Block, Visitable {
 			for (; i < nodes.size(); i++) {
 				CodeNode cn;
 				cn = nodes.get(i);
-				if (cn instanceof CodeBlock) {
+				if (cn.getClass()==CodeBlock.class) {
 					((CodeBlock) cn).attr = CodeBlockAttribute.OBJECT;
 					((CodeBlock) cn).init(env);
 				}
@@ -111,10 +113,7 @@ public class CodeBlock implements Block, Visitable {
 				if (!reader.has()) {
 					break;
 				}
-				char c = reader.read();
-				while (Character.isWhitespace(c)) {
-					c = reader.eat();
-				}
+				char c=reader.eatAll();
 				if (!reader.has()) {
 					break;
 				}
@@ -139,7 +138,20 @@ public class CodeBlock implements Block, Visitable {
 		}
 		return this;
 	}
-
+	public CodeNode parseExp(ParseReader reader) throws KSException {
+		name = reader.getName();
+		// TODO Auto-generated method stub
+		try {
+			put(parser.parseUntilOrBlock(reader, ';'));
+			parser.clear();
+		} catch (SyntaxError e) {
+			e.filename = name;
+			e.colume = 0;
+			e.line = nodes.size() + 1;
+			throw e;
+		}
+		return this;
+	}
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
 		off = parentMap.size();
@@ -149,6 +161,19 @@ public class CodeBlock implements Block, Visitable {
 			Visitable.Visit(node, curmap);
 		}
 		siz = curmap.size() - off;
+		symbol=curmap.toArray(new String[curmap.size()]);
 	}
-
+	public void VisitAsChild(List<String> parentMap) throws KSException {
+		off = parentMap.size();
+		List<String> curmap = new ArrayList<>(parentMap);
+		for (int i = 0; i < nodes.size(); i++) {
+			CodeNode node = nodes.get(i);
+			if(node instanceof MemberOperator)
+				((MemberOperator) node).VisitAsChild(parentMap);
+			else
+				Visitable.Visit(node, curmap);
+		}
+		siz = curmap.size() - off;
+		symbol=curmap.toArray(new String[curmap.size()]);
+	}
 }

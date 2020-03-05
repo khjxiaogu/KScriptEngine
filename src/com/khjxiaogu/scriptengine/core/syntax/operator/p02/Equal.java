@@ -39,15 +39,17 @@ public class Equal extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return "=";
 	}
+
 	public LiteralNode getAssignToken() {
-		if(super.left instanceof LiteralNode) {
+		if (super.left instanceof LiteralNode)
 			return (LiteralNode) super.left;
-		}
 		return null;
 	}
+
 	public CodeNode getAssignExpression() {
 		return super.right;
 	}
+
 	@Override
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
