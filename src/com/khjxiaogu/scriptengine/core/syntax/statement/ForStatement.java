@@ -42,9 +42,14 @@ public class ForStatement implements Block {
 			if (c == '(' && Init == null) {
 				parser.clear();
 				c = reader.eat();
-				Init = parser.parseUntilOrBlock(reader, ';');
-				Cond = parser.parseUntilOrBlock(reader, ';');
-				Incr = parser.parseUntilOrBlock(reader, ')');
+				//System.out.println(c);
+				Init = parser.parseUntil(reader, ';');
+				//System.out.println(reader.read());
+				reader.eat();
+				Cond = parser.parseUntil(reader, ';');
+				reader.eat();
+				Incr = parser.parseUntil(reader, ')');
+				reader.eat();
 			} else if (c == '{') {
 				if (Incr == null)
 					throw new SyntaxError("错误的for表达式");
@@ -54,6 +59,7 @@ public class ForStatement implements Block {
 			} else if (Incr != null) {
 				parser.clear();
 				Body = parser.parseUntilOrBlock(reader, ';');
+				//reader.eat();
 				break;
 			}
 		}
@@ -76,7 +82,7 @@ public class ForStatement implements Block {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(Init, parentMap);
 		Visitable.Visit(Cond, parentMap);
 		Visitable.Visit(Incr, parentMap);

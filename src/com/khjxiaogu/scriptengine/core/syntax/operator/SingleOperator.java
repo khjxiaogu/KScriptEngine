@@ -46,7 +46,7 @@ public abstract class SingleOperator implements Operator {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(Child, parentMap);
 	}
 

@@ -52,7 +52,7 @@ public abstract class DoubleOperator implements Operator {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(left, parentMap);
 		Visitable.Visit(right, parentMap);
 	}

@@ -6,6 +6,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
@@ -38,7 +39,15 @@ public class Equal extends DoubleOperator {
 		// TODO Auto-generated method stub
 		return "=";
 	}
-
+	public LiteralNode getAssignToken() {
+		if(super.left instanceof LiteralNode) {
+			return (LiteralNode) super.left;
+		}
+		return null;
+	}
+	public CodeNode getAssignExpression() {
+		return super.right;
+	}
 	@Override
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub

@@ -25,7 +25,8 @@ public class Case implements CodeNode, ASTParser, Block {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser = new StatementParser();
-		cond = parser.parseUntilOrBlock(reader, ':');
+		cond = parser.parseUntil(reader, ':');
+		reader.eat();
 		return this;
 	}
 
@@ -35,7 +36,7 @@ public class Case implements CodeNode, ASTParser, Block {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(cond, parentMap);
 	}
 

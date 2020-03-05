@@ -141,7 +141,7 @@ public class CodeBlock implements Block, Visitable {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		off = parentMap.size();
 		List<String> curmap = new ArrayList<>(parentMap);
 		for (int i = 0; i < nodes.size(); i++) {

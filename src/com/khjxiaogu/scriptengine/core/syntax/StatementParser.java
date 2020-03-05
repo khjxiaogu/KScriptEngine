@@ -1,6 +1,7 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
@@ -26,6 +27,7 @@ public class StatementParser {
 	}
 
 	public void put(CodeNode node) {
+		if(node!=null)
 		nodes.add(last = node);
 	}
 
@@ -70,7 +72,7 @@ public class StatementParser {
 				last = current;
 			} else
 				throw new SyntaxError(
-						"unexpected '" + current.toString() + "after" + last.toString() + "', excpected operator.");
+						"错误出现的 '" + current.toString() + "在" + last.toString() + "'之后,缺失运算符.");
 		}
 		if (last != null) {
 			if (pending != null) {
@@ -110,18 +112,21 @@ public class StatementParser {
 		clear();
 		return ret;
 	}
-
-	public CodeNode parseUntil(ParseReader reader, char until) throws KSException {
+	public CodeNode parseUntil(ParseReader reader, char...untils) throws KSException {
+		Arrays.parallelSort(untils);
 		while (true) {
 			char c = reader.read();
-
+			
 			while (Character.isWhitespace(c)) {
 				c = reader.eat();
 			}
-			if (c != until) {
+			int srh=Arrays.binarySearch(untils,c);
+			//System.out.println(srh);
+			if (srh<0) {
 				put(td.parse(reader));
 				// td.reset();
 			} else {
+				//System.out.println("break");
 				break;
 			}
 		}
@@ -129,12 +134,10 @@ public class StatementParser {
 		if (ret == null) {
 			ret = new Nop();
 		}
-		reader.eat();
 		td.reset();
 		clear();
 		return ret;
 	}
-
 	public CodeNode parseUntilOrEnd(ParseReader reader, char until) throws KSException {
 		while (true) {
 			if (!reader.has()) {

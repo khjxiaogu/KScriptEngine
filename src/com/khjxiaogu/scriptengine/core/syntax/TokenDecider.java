@@ -12,7 +12,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Continue;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.If;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Return;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Throw;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p01.Order;
+import com.khjxiaogu.scriptengine.core.syntax.operator.p01.ArgumentNode;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.ARSHEqual;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.AddEqual;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.ByteAndEqual;
@@ -30,7 +30,6 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p02.ModEqual;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.MultiplyEqual;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.RSHEqual;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p03.Condition;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p03.Var;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p04.LogicalOr;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p05.LogicalAnd;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p06.ByteOr;
@@ -75,8 +74,10 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p15.Parentness;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfDecrementRight;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfIncrementRight;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.TypeConvertion;
+import com.khjxiaogu.scriptengine.core.syntax.statement.ForStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.IfStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.SwitchStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.VarStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WhileStatement;
 
 /**
@@ -194,7 +195,7 @@ public class TokenDecider implements ASTParser {
 			else
 				return new Add();
 		case ',':
-			return new Order();
+			return new ArgumentNode(';').parse(reader);
 		case '-':
 			if (next == '-') {
 				reader.eat();
@@ -311,8 +312,11 @@ public class TokenDecider implements ASTParser {
 		case '~':
 			return new ByteInvert();
 		default:
+			//reader.rewind(first);
+			//return null;
 			throw new SyntaxError("unexpected" + first);
 		}
+	//	return null;
 	}
 
 	public CodeNode parseLiteral(ParseReader reader) throws KSException {
@@ -368,6 +372,8 @@ public class TokenDecider implements ASTParser {
 			return new If();
 		} else if (lite.equals("case"))
 			return new Case().parse(reader);
+		else if(lite.equals("for"))
+			return new ForStatement().parse(reader);
 		else if (lite.equals("switch"))
 			return new SwitchStatement().parse(reader);
 		else if (lite.equals("while"))
@@ -391,7 +397,7 @@ public class TokenDecider implements ASTParser {
 		else if (lite.equals("void"))
 			return new NumberNode();
 		else if (lite.equals("var"))
-			return new Var();
+			return new VarStatement().parse(reader);
 		return new LiteralNode(lite);
 	}
 

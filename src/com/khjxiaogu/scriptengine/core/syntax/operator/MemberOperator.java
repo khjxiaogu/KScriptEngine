@@ -5,6 +5,7 @@ import java.util.List;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
@@ -13,5 +14,5 @@ public interface MemberOperator extends Assignable, Visitable {
 
 	public KVariant getPointing(KEnvironment env) throws KSException;
 
-	public void VisitAsChild(List<String> parentMap);
+	public void VisitAsChild(List<String> parentMap) throws KSException;
 }

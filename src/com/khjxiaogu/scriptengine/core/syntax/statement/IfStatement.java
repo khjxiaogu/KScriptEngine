@@ -42,7 +42,9 @@ public class IfStatement implements Block {
 			if (c == '(' && Condition == null) {
 				parser.clear();
 				c = reader.eat();
-				Condition = parser.parseUntilOrBlock(reader, ')');
+				Condition = parser.parseUntil(reader, ')');
+				c=reader.eat();
+				//System.out.println(c);
 			} else if (c == '{') {
 				if (Condition == null)
 					throw new SyntaxError("错误的if表达式");
@@ -68,9 +70,11 @@ public class IfStatement implements Block {
 				parser.clear();
 				if (iselse) {
 					Else = parser.parseUntilOrBlock(reader, ';');
+					reader.eat();
 					break;
 				} else if (If == null) {
 					If = parser.parseUntilOrBlock(reader, ';');
+					reader.eat();
 				} else {
 					break;
 				}
@@ -98,7 +102,7 @@ public class IfStatement implements Block {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(Condition, parentMap);
 		Visitable.Visit(If, parentMap);
 		Visitable.Visit(Else, parentMap);

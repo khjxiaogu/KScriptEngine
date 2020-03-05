@@ -41,7 +41,8 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	public CodeNode parse(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
 		StatementParser sp = new StatementParser();
-		inner = sp.parseUntilOrBlock(reader, ')');
+		inner = sp.parseUntil(reader, ')');
+		reader.eat();
 		return this;
 	}
 
@@ -84,12 +85,12 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(inner, parentMap);
 	}
 
 	@Override
-	public void VisitAsChild(List<String> parentMap) {
+	public void VisitAsChild(List<String> parentMap) throws KSException {
 		if (!(inner instanceof LiteralNode)) {
 			if (inner instanceof MemberOperator) {
 				((MemberOperator) inner).VisitAsChild(parentMap);

@@ -84,7 +84,7 @@ public class Member extends DoubleOperator implements MemberOperator {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(super.left, parentMap);
 		if (!(super.right instanceof LiteralNode)) {
 			Visitable.Visit(super.right, parentMap);
@@ -92,7 +92,7 @@ public class Member extends DoubleOperator implements MemberOperator {
 	}
 
 	@Override
-	public void VisitAsChild(List<String> parentMap) {
+	public void VisitAsChild(List<String> parentMap) throws KSException {
 		if (!(super.right instanceof LiteralNode)) {
 			if (super.right instanceof MemberOperator) {
 				((MemberOperator) super.right).VisitAsChild(parentMap);

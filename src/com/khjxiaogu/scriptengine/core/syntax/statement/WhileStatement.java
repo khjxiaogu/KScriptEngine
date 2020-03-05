@@ -41,7 +41,8 @@ public class WhileStatement implements Block {
 			if (c == '(' && Condition == null) {
 				parser.clear();
 				c = reader.eat();
-				Condition = parser.parseUntilOrBlock(reader, ')');
+				Condition = parser.parseUntil(reader, ')');
+				reader.eat();
 			} else if (c == '{') {
 				if (Condition == null)
 					throw new SyntaxError("错误的while表达式");
@@ -51,6 +52,7 @@ public class WhileStatement implements Block {
 			} else if (Condition != null) {
 				parser.clear();
 				Body = parser.parseUntilOrBlock(reader, ';');
+				reader.eat();
 				break;
 			}
 		}
@@ -73,7 +75,7 @@ public class WhileStatement implements Block {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
+	public void Visit(List<String> parentMap) throws KSException {
 		Visitable.Visit(Condition, parentMap);
 		Visitable.Visit(Body, parentMap);
 	}

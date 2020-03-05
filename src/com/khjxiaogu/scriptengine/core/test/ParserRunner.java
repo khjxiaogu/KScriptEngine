@@ -19,9 +19,9 @@ public class ParserRunner {
 				cn = (CodeBlock) p.parse(s);
 				List<String> li;
 				cn.Visit(li = new ArrayList<String>());
-				System.out.println("AST Parse result");
+				System.out.println("语法解析结果：");
 				System.out.println(cn.toString());
-				System.out.println("result of expression in null context:");
+				System.out.println("在null上下文执行结果：");
 				System.out.println(cn.eval(null));
 			} catch (KSException e) {
 				System.out.println(e.getMessage());
