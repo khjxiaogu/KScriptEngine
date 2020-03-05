@@ -3,7 +3,7 @@ package com.khjxiaogu.scriptengine.core.typeconvert;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.khjxiaogu.scriptengine.core.Object.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariant;
 
 public class Converter {
 	Map<TypeInfo, TypeConverter<?, ?>> converters = new ConcurrentHashMap<>();

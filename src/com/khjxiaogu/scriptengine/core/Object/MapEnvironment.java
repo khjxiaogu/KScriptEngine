@@ -3,7 +3,9 @@ package com.khjxiaogu.scriptengine.core.Object;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class MapEnvironment implements KEnvironment {

@@ -3,10 +3,10 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p14;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KVariant;
-import com.khjxiaogu.scriptengine.core.Object.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;

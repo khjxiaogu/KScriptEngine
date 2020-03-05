@@ -1,5 +1,7 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
+import com.khjxiaogu.scriptengine.core.KVariant;
+
 /**
  * @author khjxiaogu
  * @time 2020年2月16日 file:BasicProperty.java

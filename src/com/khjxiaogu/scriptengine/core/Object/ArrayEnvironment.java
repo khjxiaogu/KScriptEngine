@@ -1,6 +1,8 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
+import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class ArrayEnvironment implements KEnvironment {

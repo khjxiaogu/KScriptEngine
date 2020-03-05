@@ -1,5 +1,6 @@
-package com.khjxiaogu.scriptengine.core.Object;
+package com.khjxiaogu.scriptengine.core;
 
+import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.typeconvert.Converter;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
