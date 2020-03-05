@@ -26,6 +26,7 @@ public class Break extends SingleOperator {
 		// TODO Auto-generated method stub
 		if (env instanceof CodeBlockEnvironment) {
 			((CodeBlockEnvironment) env).Break();
+			return null;
 		}
 		throw new ScriptException("错误的break语句");
 	}
@@ -40,6 +41,11 @@ public class Break extends SingleOperator {
 	public Associative getAssociative() {
 		// TODO Auto-generated method stub
 		return Associative.LEFT;
+	}
+
+	@Override
+	public String toString() {
+		return "break";
 	}
 
 }

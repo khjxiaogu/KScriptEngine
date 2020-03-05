@@ -37,8 +37,10 @@ public class StatementParser {
 		Operator ret = null;// top level operator
 		Operator pending = null;// deciding operator
 		CodeNode last = null;// last node
+		if(nodes.size()==1)
+			return nodes.get(0);
 		for (CodeNode current : nodes) {
-			// System.out.println(current.getClass().getSimpleName());
+			//System.out.println(current.getClass().getSimpleName());
 			if (isOperator(current)) {
 				Operator op = (Operator) current;
 				if (pending != null) {
@@ -80,6 +82,32 @@ public class StatementParser {
 		return ret;
 	}
 
+	public CodeNode parseUntilOrBlock(ParseReader reader, char until) throws KSException {
+		while (true) {
+			char c = reader.read();
+
+			while (Character.isWhitespace(c)) {
+				c = reader.eat();
+			}
+			if (c != until) {
+				put(td.parse(reader));
+				if(last instanceof Block) {
+					break;
+				}
+				//td.reset();
+			} else {
+				break;
+			}
+		}
+		CodeNode ret = parseTree();
+		if(ret==null)
+			ret=new Nop();
+		if(reader.read()==until)
+		reader.eat();
+		td.reset();
+		clear();
+		return ret;
+	}
 	public CodeNode parseUntil(ParseReader reader, char until) throws KSException {
 		while (true) {
 			char c = reader.read();
@@ -89,18 +117,19 @@ public class StatementParser {
 			}
 			if (c != until) {
 				put(td.parse(reader));
+				//td.reset();
 			} else {
-				CodeNode ret = parseTree();
-				if(ret==null)
-					ret=new Nop();
-				reader.eat();
-				td.reset();
-				clear();
-				return ret;
+				break;
 			}
 		}
+		CodeNode ret = parseTree();
+		if(ret==null)
+			ret=new Nop();
+		reader.eat();
+		td.reset();
+		clear();
+		return ret;
 	}
-
 	public CodeNode parseUntilOrEnd(ParseReader reader, char until) throws KSException {
 		while (true) {
 			if (!reader.has()) {
@@ -123,6 +152,8 @@ public class StatementParser {
 			}
 		}
 		CodeNode ret = parseTree();
+		if(ret==null)
+			ret=new Nop();
 		if(reader.has()&&reader.read()==until)
 			reader.eat();
 		td.reset();

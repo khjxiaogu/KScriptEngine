@@ -41,9 +41,9 @@ public class ForStatement implements Block {
 			if (c == '('&&Init==null) {
 				parser.clear();
 				c=reader.eat();
-				Init=parser.parseUntil(reader,';');
-				Cond=parser.parseUntil(reader, ';');
-				Incr=parser.parseUntil(reader,')');
+				Init=parser.parseUntilOrBlock(reader,';');
+				Cond=parser.parseUntilOrBlock(reader, ';');
+				Incr=parser.parseUntilOrBlock(reader,')');
 			}else if (c == '{') {
 				if(Incr==null)
 					throw new SyntaxError("错误的for表达式");
@@ -52,7 +52,7 @@ public class ForStatement implements Block {
 				break;
 			}else if(Incr!=null) {
 				parser.clear();
-				Body=parser.parseUntil(reader,';');
+				Body=parser.parseUntilOrBlock(reader,';');
 				break;
 			}
 		}

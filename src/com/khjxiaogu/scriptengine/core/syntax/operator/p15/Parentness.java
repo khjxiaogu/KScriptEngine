@@ -41,7 +41,7 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	public CodeNode parse(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
 		StatementParser sp = new StatementParser();
-		inner = sp.parseUntil(reader, ')');
+		inner = sp.parseUntilOrBlock(reader, ')');
 		return this;
 	}
 

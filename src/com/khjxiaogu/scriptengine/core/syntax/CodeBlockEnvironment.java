@@ -13,15 +13,17 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
  */
 public class CodeBlockEnvironment extends ArrayEnvironment {
 	CodeBlock block;
-	boolean stopped = false;
-	boolean skipped = false;
-	KVariant ret;
+	private boolean stopped = false;
+	private boolean skipped = false;
+	private KVariant ret;
 	CodeBlockAttribute attr;
+	protected String[] symbol;
 	/**
 	 * @param parent
 	 */
 	public CodeBlockEnvironment(KEnvironment parent,int offset,int size ,CodeBlock block,CodeBlockAttribute attr) {
 		super(parent, offset, size);
+		symbol=new String[size];
 		this.block = block;
 		this.attr=attr;
 		// TODO Auto-generated constructor stub
@@ -35,8 +37,8 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 			else
 				throw new ScriptException("错误出现的break");
 		}
-		stopped = true;
-		skipped = true;
+		setStopped(true);
+		setSkipped(true);
 	}
 
 	public void Return(KVariant val) throws KSException {
@@ -47,9 +49,9 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 			else
 				throw new ScriptException("错误出现的break");
 		}
-		stopped = true;
-		skipped = true;
-		ret = val;
+		setStopped(true);
+		setSkipped(true);
+		setRet(val);
 
 	}
 
@@ -60,6 +62,30 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 			else
 				throw new ScriptException("错误出现的break");
 		}
-		skipped = true;
+		setSkipped(true);
+	}
+
+	public boolean isSkipped() {
+		return skipped;
+	}
+
+	public void setSkipped(boolean skipped) {
+		this.skipped = skipped;
+	}
+
+	public boolean isStopped() {
+		return stopped;
+	}
+
+	public void setStopped(boolean stopped) {
+		this.stopped = stopped;
+	}
+
+	public KVariant getRet() {
+		return ret;
+	}
+
+	public void setRet(KVariant ret) {
+		this.ret = ret;
 	}
 }

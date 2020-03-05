@@ -40,7 +40,7 @@ public class WhileStatement implements Block {
 			if (c == '('&&Condition==null) {
 				parser.clear();
 				c=reader.eat();
-				Condition=parser.parseUntil(reader, ')');
+				Condition=parser.parseUntilOrBlock(reader, ')');
 			}else if (c == '{') {
 				if(Condition==null)
 					throw new SyntaxError("错误的while表达式");
@@ -49,7 +49,7 @@ public class WhileStatement implements Block {
 				break;
 			}else if(Condition!=null) {
 				parser.clear();
-				Body=parser.parseUntil(reader,';');
+				Body=parser.parseUntilOrBlock(reader,';');
 				break;
 			}
 		}

@@ -7,6 +7,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Break;
+import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Continue;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.If;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Return;
@@ -75,6 +76,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfDecrementRight;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfIncrementRight;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.TypeConvertion;
 import com.khjxiaogu.scriptengine.core.syntax.statement.IfStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.SwitchStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WhileStatement;
 
 /**
@@ -131,6 +133,7 @@ public class TokenDecider implements ASTParser {
 		if (last == null || last instanceof Operator) {
 			infer = Associative.LEFT;
 		}
+		//System.out.println(last);
 		// ! # $ % & ( ) * + , - . / : ; < = > ? [ \ ] ^ { | } ~
 		switch (first) {
 		case '!':
@@ -389,6 +392,10 @@ public class TokenDecider implements ASTParser {
 			if(last==null)
 				return new IfStatement().parse(reader);
 			return new If();
+		} else if(lite.equals("case")) {
+			return new Case().parse(reader);
+		} else if(lite.equals("switch")) {
+			return new SwitchStatement().parse(reader);
 		} else if (lite.equals("while")) {
 			return new WhileStatement().parse(reader);
 		} else if (lite.equals("NaN")) {

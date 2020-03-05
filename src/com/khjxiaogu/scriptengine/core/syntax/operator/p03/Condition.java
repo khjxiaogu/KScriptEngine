@@ -78,7 +78,7 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 	public CodeNode parse(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
 		StatementParser sp = new StatementParser();
-		first = sp.parseUntil(reader, ':');
+		first = sp.parseUntilOrBlock(reader, ':');
 		return this;
 	}
 

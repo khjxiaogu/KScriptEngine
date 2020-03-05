@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
 public class CodeDialog {
 	JSplitPane mpane;
 	JTextArea area;
-
+	
 	public CodeDialog() {
 		// TODO Auto-generated constructor stub
 		area = new JTextArea(15, 40);
@@ -39,6 +39,7 @@ public class CodeDialog {
 		area.setText("enter your code here...");
 		// oarea.setText("here is the console\n");
 		PrintStream con = new PrintStream(new TextAreaOutputStream(oarea));
+		
 		System.setOut(con);
 	}
 
@@ -103,7 +104,7 @@ class TextAreaOutputStream extends OutputStream {
 // *************************************************************************************************
 // INSTANCE MEMBERS
 // *************************************************************************************************
-
+	PrintStream dout=System.out;
 	private byte[] oneByte; // array for write(int val);
 	private Appender appender; // most recent action
 
@@ -140,17 +141,20 @@ class TextAreaOutputStream extends OutputStream {
 	public synchronized void write(int val) {
 		oneByte[0] = (byte) val;
 		write(oneByte, 0, 1);
+		dout.write(val);
 	}
 
 	@Override
-	public synchronized void write(byte[] ba) {
+	public synchronized void write(byte[] ba) throws IOException {
 		write(ba, 0, ba.length);
+		dout.write(ba);
 	}
 
 	@Override
 	public synchronized void write(byte[] ba, int str, int len) {
 		if (appender != null) {
 			appender.append(bytesToString(ba, str, len));
+			dout.write(ba,str, len);
 		}
 	}
 

@@ -41,7 +41,7 @@ public class IfStatement implements Block {
 			if (c == '('&&Condition==null) {
 				parser.clear();
 				c=reader.eat();
-				Condition=parser.parseUntil(reader, ')');
+				Condition=parser.parseUntilOrBlock(reader, ')');
 			}else if (c == '{') {
 				if(Condition==null)
 					throw new SyntaxError("错误的if表达式");
@@ -65,11 +65,11 @@ public class IfStatement implements Block {
 			}else if(Condition!=null) {
 				parser.clear();
 				if(iselse) {
-					Else=parser.parseUntil(reader,';');
+					Else=parser.parseUntilOrBlock(reader,';');
 					break;
 				}else
 					if(If==null)
-						If=parser.parseUntil(reader,';');
+						If=parser.parseUntilOrBlock(reader,';');
 					else
 						break;
 			}

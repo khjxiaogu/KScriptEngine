@@ -11,12 +11,12 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 
 public class CodeBlock implements Block,Visitable {
-	List<CodeNode> nodes = new ArrayList<>();
-	StatementParser parser = new StatementParser();
-	CodeBlockAttribute attr;
-	String name;
-	int off;
-	int siz;
+	protected List<CodeNode> nodes = new ArrayList<>();
+	protected StatementParser parser = new StatementParser();
+	protected CodeBlockAttribute attr;
+	protected String name;
+	protected int off;
+	protected int siz;
 	public CodeBlock(CodeBlockAttribute attr) {
 		// TODO Auto-generated constructor stub
 		this.attr = attr;
@@ -32,16 +32,16 @@ public class CodeBlock implements Block,Visitable {
 			KVariant result = new KVariant();
 			for (; i < nodes.size(); i++) {
 				result = nodes.get(i).eval(cbenv);
-				if (cbenv.skipped) {
+				if (cbenv.isSkipped()) {
 					break;
 				}
 			}
 			if (attr == CodeBlockAttribute.STATEMENT) {
 				return result;
 			} else if (attr == CodeBlockAttribute.RETURNABLE) {
-				return cbenv.ret;
-			} else if (attr == CodeBlockAttribute.BREAKABLE||attr==CodeBlockAttribute.SWITCH) {
-				if (cbenv.stopped) {
+				return cbenv.getRet();
+			} else if (attr == CodeBlockAttribute.BREAKABLE) {
+				if (cbenv.isStopped()) {
 					return null;
 				}
 				return KVariant.TRUE;
@@ -117,8 +117,9 @@ public class CodeBlock implements Block,Visitable {
 					if (attr == CodeBlockAttribute.STATEMENT) {
 						put(parser.parseUntilOrEnd(reader, ';'));
 					} else {
-						put(parser.parseUntil(reader, ';'));
+						put(parser.parseUntilOrBlock(reader, ';'));
 					}
+					parser.clear();
 				} else {
 					reader.eat();
 					break;
