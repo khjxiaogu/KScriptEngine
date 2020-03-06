@@ -7,6 +7,7 @@ import com.khjxiaogu.scriptengine.core.Object.KObject;
 
 public class WithEnvironment extends CodeBlockEnvironment {
 	KObject with;
+
 	public KObject getWith() {
 		return with;
 	}
@@ -28,5 +29,5 @@ public class WithEnvironment extends CodeBlockEnvironment {
 			String[] symbols) {
 		super(parent, offset, size, block, attr, symbols);
 	}
-	
+
 }

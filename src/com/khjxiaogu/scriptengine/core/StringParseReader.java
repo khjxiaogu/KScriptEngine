@@ -48,11 +48,10 @@ public class StringParseReader implements ParseReader {
 		++pos;
 		if (has())
 			return read();
+		else if (pos > backed.length())
+			throw new SyntaxError("错误的文档结尾");
 		else
-			if(pos>backed.length())
-				throw new SyntaxError("错误的文档结尾");
-			else
-				return 0;
+			return 0;
 	}
 
 	@Override
@@ -100,7 +99,7 @@ public class StringParseReader implements ParseReader {
 	public char eatAll() throws KSException {
 		while (Character.isWhitespace(backed.charAt(pos))) {
 			pos++;
-			if(pos>=backed.length())
+			if (pos >= backed.length())
 				throw new SyntaxError("错误的文档结尾");
 		}
 		return read();

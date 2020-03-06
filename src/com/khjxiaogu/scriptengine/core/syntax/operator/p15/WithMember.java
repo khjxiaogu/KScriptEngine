@@ -8,10 +8,8 @@ import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
-import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
-import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.WithEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
@@ -24,22 +22,21 @@ public class WithMember extends SingleOperator implements MemberOperator {
 
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		if(!(env instanceof WithEnvironment))
+		if (!(env instanceof WithEnvironment))
 			throw new SyntaxError("错误的.");
 		return ((WithEnvironment) env).getWith().setMemberByName(((LiteralNode) super.Child).getToken(), val);
 	}
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		if(!(env instanceof WithEnvironment))
+		if (!(env instanceof WithEnvironment))
 			throw new SyntaxError("错误的.");
-		return ((WithEnvironment) env).getWith().DoOperatonByName(op, ((LiteralNode) super.Child).getToken(),
-				val);
+		return ((WithEnvironment) env).getWith().DoOperatonByName(op, ((LiteralNode) super.Child).getToken(), val);
 	}
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
-		if(!(env instanceof WithEnvironment))
+		if (!(env instanceof WithEnvironment))
 			throw new SyntaxError("错误的.");
 		return ((WithEnvironment) env).getWith();
 	}
@@ -53,10 +50,12 @@ public class WithMember extends SingleOperator implements MemberOperator {
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((LiteralNode) super.Child).getPointing(env);
 	}
+
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
 		return;
 	}
+
 	@Override
 	public void VisitAsChild(List<String> parentMap) throws KSException {
 		return;
@@ -64,7 +63,7 @@ public class WithMember extends SingleOperator implements MemberOperator {
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		if(!(env instanceof WithEnvironment))
+		if (!(env instanceof WithEnvironment))
 			throw new SyntaxError("错误的.");
 		return ((WithEnvironment) env).getWith().getMemberByName(((LiteralNode) super.Child).getToken());
 	}

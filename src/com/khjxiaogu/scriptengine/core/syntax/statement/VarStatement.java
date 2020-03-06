@@ -4,39 +4,34 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
+import com.khjxiaogu.scriptengine.core.Object.Closure;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
-import com.khjxiaogu.scriptengine.core.Object.Closure;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
-import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p02.Equal;
 
 /**
  * @author khjxiaogu
  * @time 2020年3月2日
  *       project:khjScriptEngine
  */
-public class VarStatement implements Visitable, ASTParser,MemberOperator,CodeNode {
+public class VarStatement implements Visitable, ASTParser, MemberOperator, CodeNode {
 
 	/**
 	 *
 	 */
 	private ArgumentNode Child;
+
 	public VarStatement() {
 	}
 
 	int itoken = -1;
 	// List<String> tokens;
 	String token;
-
 
 	@Override
 	public String toString() {
@@ -51,7 +46,7 @@ public class VarStatement implements Visitable, ASTParser,MemberOperator,CodeNod
 		 * }
 		 * return env.setMemberByName(token, new KVariant());
 		 */
-		if(env instanceof Closure)
+		if (env instanceof Closure)
 			return Child.evalAsVar(env);
 		return Child.eval(env);
 	}

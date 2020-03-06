@@ -22,11 +22,11 @@ public class ScriptFunctionClosure extends Closure {
 	CodeNode[] defargs;
 	int off;
 
-	public ScriptFunctionClosure(KEnvironment env,CodeBlock functionBody, int off,CodeNode[] args) {
+	public ScriptFunctionClosure(KEnvironment env, CodeBlock functionBody, int off, CodeNode[] args) {
 		super(env);
 		this.functionBody = functionBody;
 		this.off = off;
-		this.defargs=args;
+		defargs = args;
 	}
 
 	@Override
@@ -57,20 +57,21 @@ public class ScriptFunctionClosure extends Closure {
 	@Override
 	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
 		KEnvironment tenv;
-		if(args.length<off) {
-			args=Arrays.copyOf(args,args.length);
+		if (args.length < off) {
+			args = Arrays.copyOf(args, args.length);
 		}
-		for(int i=0;i<args.length;i++) {
-			if((args[i]==null||args[i].getType().getType()==Void.class)&&defargs[i]!=null) {
-				args[i]=defargs[i].eval(Closure);
-			}else if(args[i]==null){
-				args[i]=new KVariant();
+		for (int i = 0; i < args.length; i++) {
+			if ((args[i] == null || args[i].getType().getType() == Void.class) && defargs[i] != null) {
+				args[i] = defargs[i].eval(Closure);
+			} else if (args[i] == null) {
+				args[i] = new KVariant();
 			}
 		}
 		if (env != null) {
 			tenv = new ArrayEnvironment(env, off, args);
-		} else
-			tenv = new ArrayEnvironment(super.Closure,off, args);
+		} else {
+			tenv = new ArrayEnvironment(super.Closure, off, args);
+		}
 		return functionBody.eval(tenv);
 	}
 

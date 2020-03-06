@@ -20,12 +20,12 @@ public abstract class Closure implements KObject {
 	protected KEnvironment Closure;
 
 	public Closure(KEnvironment env) {
-		Closure=env;
+		Closure = env;
 	}
 
 	@Override
 	public KVariant getMemberByName(String name) throws KSException {
-		if (name != null&&(!name.equals("this")))
+		if (name != null && !name.equals("this"))
 			throw new MemberNotFoundException(name);
 		else
 			return new KVariant(this);
@@ -43,7 +43,7 @@ public abstract class Closure implements KObject {
 
 	@Override
 	public KVariant getMemberByNameEnsure(String name) throws KSException {
-		if (name != null&&(!name.equals("this")))
+		if (name != null && !name.equals("this"))
 			throw new MemberNotFoundException(name);
 		else
 			return new KVariant(this);

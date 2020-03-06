@@ -16,9 +16,9 @@ public interface ParseReader {
 	public char eat() throws KSException;
 
 	public void eat(int count) throws KSException;
-	
-	public char eatAll()throws KSException;
-	
+
+	public char eatAll() throws KSException;
+
 	public void rewind(char ch);
 
 	public boolean has();

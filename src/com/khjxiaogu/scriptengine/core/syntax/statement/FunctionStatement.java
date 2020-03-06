@@ -22,98 +22,100 @@ import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.Equal;
 
-public class FunctionStatement implements BlockClosure,MemberOperator {
+public class FunctionStatement implements BlockClosure, MemberOperator {
 	String name;
-	int itoken=-1;
+	int itoken = -1;
 	String[] argnames;
 	CodeNode[] defargs;
 	CodeNode body;
 	int off;
+
 	public FunctionStatement() {
 	}
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		if(itoken != -1) {
-			env.setMemberByNum(itoken,new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body,off, defargs)));
+		if (itoken != -1) {
+			env.setMemberByNum(itoken, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)));
 			return null;
-		}else
-		if(name != null) {
-			env.setMemberByName(name,new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body,off, defargs)));
+		} else if (name != null) {
+			env.setMemberByName(name, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)));
 			return null;
-		}else {
-			return new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body,off, defargs));
-		}
+		} else
+			return new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
 	}
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
-		StatementParser p=new StatementParser();
-		char c=reader.eatAll();
-		if(c!='(') {
-			//reader.eat();
-			CodeNode cn=p.parseUntil(reader,'(');
-			if(!(cn instanceof LiteralNode))
+		StatementParser p = new StatementParser();
+		char c = reader.eatAll();
+		if (c != '(') {
+			// reader.eat();
+			CodeNode cn = p.parseUntil(reader, '(');
+			if (!(cn instanceof LiteralNode))
 				throw new SyntaxError("函数表达式有误");
-			else
-				name=((LiteralNode) cn).getToken();
+			else {
+				name = ((LiteralNode) cn).getToken();
+			}
 		}
 		reader.eat();
-		ArgumentNode an=new ArgumentNode('(');
+		ArgumentNode an = new ArgumentNode('(');
 		an.parse(reader);
-		List<CodeNode> cns=an.getAll();
-		if(cns.size()!=0) {
-			argnames=new String[cns.size()];
-			defargs=new CodeNode[cns.size()];
-			for(int i=0;i<cns.size();i++) {
-				CodeNode cur=cns.get(i);
-				if(cur instanceof LiteralNode) {
-					argnames[i]=((LiteralNode) cur).getToken();
-				}else if(cur instanceof Equal) {
-					LiteralNode cr=((Equal) cur).getAssignToken();
-					if(cr==null)throw new SyntaxError("函数表达式有误");
-					argnames[i]=cr.getToken();
-					defargs[i]=((Equal) cur).getAssignExpression();
+		List<CodeNode> cns = an.getAll();
+		if (cns.size() != 0) {
+			argnames = new String[cns.size()];
+			defargs = new CodeNode[cns.size()];
+			for (int i = 0; i < cns.size(); i++) {
+				CodeNode cur = cns.get(i);
+				if (cur instanceof LiteralNode) {
+					argnames[i] = ((LiteralNode) cur).getToken();
+				} else if (cur instanceof Equal) {
+					LiteralNode cr = ((Equal) cur).getAssignToken();
+					if (cr == null)
+						throw new SyntaxError("函数表达式有误");
+					argnames[i] = cr.getToken();
+					defargs[i] = ((Equal) cur).getAssignExpression();
 				}
-				if(argnames[i]==null)
+				if (argnames[i] == null)
 					throw new SyntaxError("函数表达式有误");
 			}
 		}
-		c=reader.eatAll();
-		if(c=='{') {
+		c = reader.eatAll();
+		if (c == '{') {
 			c = reader.eat();
-			body=new CodeBlock(CodeBlockAttribute.RETURNABLE).parse(reader);
+			body = new CodeBlock(CodeBlockAttribute.RETURNABLE).parse(reader);
 		}
 		return this;
 	}
 
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
-		List<String>allnodes=new ArrayList<String>(parentMap);
-		off=parentMap.size();
+		List<String> allnodes = new ArrayList<String>(parentMap);
+		off = parentMap.size();
 		allnodes.addAll(Arrays.asList(argnames));
-		Visitable.Visit(body,allnodes);
-		if(name!=null) {
+		Visitable.Visit(body, allnodes);
+		if (name != null) {
 			parentMap.add(name);
-			itoken=parentMap.size()-1;
+			itoken = parentMap.size() - 1;
 		}
 	}
 
 	@Override
 	public String toString() {
-		String pardesc="";
-		for(int i=0;i<argnames.length;i++) {
-			pardesc+=argnames[i]+"[%"+(i+off)+"]";
-			if(defargs[i]!=null) {
-				pardesc+="="+defargs[i].toString();
+		String pardesc = "";
+		for (int i = 0; i < argnames.length; i++) {
+			pardesc += argnames[i] + "[%" + (i + off) + "]";
+			if (defargs[i] != null) {
+				pardesc += "=" + defargs[i].toString();
 			}
-			if(i!=argnames.length-1)
-				pardesc+=",";
+			if (i != argnames.length - 1) {
+				pardesc += ",";
+			}
 		}
-		if(itoken==-1)
-		return "function "+name+"("+pardesc+")"+body.toString();
+		if (itoken == -1)
+			return "function " + name + "(" + pardesc + ")" + body.toString();
 		else
-			return "function "+name+"[%"+itoken+"]"+"("+pardesc+")"+body.toString();
+			return "function " + name + "[%" + itoken + "]" + "(" + pardesc + ")" + body.toString();
 	}
 
 	@Override

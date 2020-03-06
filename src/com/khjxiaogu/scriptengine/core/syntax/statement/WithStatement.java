@@ -9,17 +9,14 @@ import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
-import com.khjxiaogu.scriptengine.core.syntax.Block;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlockEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.WithEnvironment;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
 
 public class WithStatement extends CodeBlock {
 	private CodeNode cond;
+
 	public WithStatement() {
 		super(CodeBlockAttribute.NORMAL);
 	}
@@ -49,20 +46,21 @@ public class WithStatement extends CodeBlock {
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
-		char c=reader.eatAll();
+		char c = reader.eatAll();
 		if (c == '(') {
 			parser.clear();
 			c = reader.eat();
 			cond = parser.parseUntil(reader, ')');
 			reader.eat();
-			c=reader.eatAll();
+			c = reader.eatAll();
 			if (c == '{') {
 				c = reader.eat();
 				super.parse(reader);
-			} else{
+			} else {
 				super.parseExp(reader);
 			}
-		} else throw new SyntaxError("错误的with语句");
+		} else
+			throw new SyntaxError("错误的with语句");
 		return this;
 	}
 

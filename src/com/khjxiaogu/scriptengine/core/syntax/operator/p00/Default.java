@@ -6,17 +6,13 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.Block;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
-import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 public class Default implements CodeNode, Block {
 
 	public Default() {
 	}
-
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
@@ -36,7 +32,6 @@ public class Default implements CodeNode, Block {
 	public String toString() {
 		return "default:";
 	}
-
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {

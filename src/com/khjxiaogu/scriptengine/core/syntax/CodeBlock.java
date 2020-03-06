@@ -75,7 +75,7 @@ public class CodeBlock implements Block, Visitable {
 			for (; i < nodes.size(); i++) {
 				CodeNode cn;
 				cn = nodes.get(i);
-				if (cn.getClass()==CodeBlock.class) {
+				if (cn.getClass() == CodeBlock.class) {
 					((CodeBlock) cn).attr = CodeBlockAttribute.OBJECT;
 					((CodeBlock) cn).init(env);
 				}
@@ -113,7 +113,7 @@ public class CodeBlock implements Block, Visitable {
 				if (!reader.has()) {
 					break;
 				}
-				char c=reader.eatAll();
+				char c = reader.eatAll();
 				if (!reader.has()) {
 					break;
 				}
@@ -138,6 +138,7 @@ public class CodeBlock implements Block, Visitable {
 		}
 		return this;
 	}
+
 	public CodeNode parseExp(ParseReader reader) throws KSException {
 		name = reader.getName();
 		// TODO Auto-generated method stub
@@ -152,6 +153,7 @@ public class CodeBlock implements Block, Visitable {
 		}
 		return this;
 	}
+
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
 		off = parentMap.size();
@@ -161,19 +163,21 @@ public class CodeBlock implements Block, Visitable {
 			Visitable.Visit(node, curmap);
 		}
 		siz = curmap.size() - off;
-		symbol=curmap.toArray(new String[curmap.size()]);
+		symbol = curmap.toArray(new String[curmap.size()]);
 	}
+
 	public void VisitAsChild(List<String> parentMap) throws KSException {
 		off = parentMap.size();
 		List<String> curmap = new ArrayList<>(parentMap);
 		for (int i = 0; i < nodes.size(); i++) {
 			CodeNode node = nodes.get(i);
-			if(node instanceof MemberOperator)
+			if (node instanceof MemberOperator) {
 				((MemberOperator) node).VisitAsChild(parentMap);
-			else
+			} else {
 				Visitable.Visit(node, curmap);
+			}
 		}
 		siz = curmap.size() - off;
-		symbol=curmap.toArray(new String[curmap.size()]);
+		symbol = curmap.toArray(new String[curmap.size()]);
 	}
 }

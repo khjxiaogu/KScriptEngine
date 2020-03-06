@@ -30,7 +30,7 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 			if (!reader.has()) {
 				break;
 			}
-			char c=reader.eatAll();
+			char c = reader.eatAll();
 			if (!reader.has()) {
 				break;
 			}
@@ -67,9 +67,11 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 		}
 		return ret;
 	}
+
 	public List<CodeNode> getAll() {
 		return subnodes;
 	}
+
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
 		for (int i = 0; i < subnodes.size(); i++) {
@@ -104,18 +106,19 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 		}
 		return res;
 	}
+
 	public KVariant evalAsVar(KEnvironment env) throws KSException {
-		KVariant result=null;
+		KVariant result = null;
 		for (int i = 0; i < subnodes.size(); i++) {
 			CodeNode cur = subnodes.get(i);
 			// System.out.println(cur.getClass().getSimpleName());
 			if (cur instanceof Equal) {
 				LiteralNode tok = ((Equal) cur).getAssignToken();
 				if (tok != null) {
-					result=env.setMemberByName(tok.getToken(),((Equal) cur).getAssignExpression().eval(env));
+					result = env.setMemberByName(tok.getToken(), ((Equal) cur).getAssignExpression().eval(env));
 				}
 			} else if (cur instanceof LiteralNode) {
-				result=env.setMemberByName(((LiteralNode) cur).getToken(),new KVariant());
+				result = env.setMemberByName(((LiteralNode) cur).getToken(), new KVariant());
 			}
 
 		}
@@ -127,7 +130,7 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 			CodeNode cur = subnodes.get(i);
 			// System.out.println(cur.getClass().getSimpleName());
 			if (cur instanceof Equal) {
-					Visitable.Visit(((Equal) cur).getAssignExpression(), parentMap);
+				Visitable.Visit(((Equal) cur).getAssignExpression(), parentMap);
 			}
 		}
 	}

@@ -8,10 +8,8 @@ import com.khjxiaogu.scriptengine.core.exceptions.InvalidCharacterException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
-import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
-import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Break;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Continue;
@@ -129,12 +127,12 @@ public class TokenDecider implements ASTParser {
 			return last = parseLiteral(reader);
 		else if (c <= '^')
 			return last = parseOperator(reader);
-		else if(c <'{')
+		else if (c < '{')
 			return last = parseLiteral(reader);
-		else if(c <='~')
-			return last=parseOperator(reader);
+		else if (c <= '~')
+			return last = parseOperator(reader);
 		else
-			return last=parseLiteral(reader);
+			return last = parseLiteral(reader);
 	}
 
 	public CodeNode parseOperator(ParseReader reader) throws KSException {
@@ -145,7 +143,7 @@ public class TokenDecider implements ASTParser {
 		if (last == null || last instanceof Operator) {
 			infer = Associative.LEFT;
 		}
-		
+
 		// System.out.println(first);
 		// ! # $ % & ( ) * + , - . / : ; < = > ? [ \ ] ^ { | } ~
 		switch (first) {
@@ -230,9 +228,9 @@ public class TokenDecider implements ASTParser {
 			if ('0' <= next && next <= '9') {
 				reader.rewind('.');
 				return new NumberNode().parse(reader);
-			} else if(last instanceof Assignable) {
+			} else if (last instanceof Assignable)
 				return new Member();
-			}else
+			else
 				return new WithMember();
 		case '/':
 			if (next == '=') {
@@ -338,35 +336,93 @@ public class TokenDecider implements ASTParser {
 	}
 
 	static {
-		identifiers.put("break", (reader,last) -> {return new Break();});
-		identifiers.put("continue", (reader,last) -> {return new Continue();});
-		identifiers.put("delete", (reader,last) -> {return new DeleteMember();});
-		identifiers.put("false", (reader,last) -> {return new NumberNode(0);});
-		identifiers.put("incontextof", (reader,last) -> {return new InContextOf();});
-		identifiers.put("Infinity", (reader,last) -> {return new NumberNode(Double.POSITIVE_INFINITY);});
-		identifiers.put("invalidate", (reader,last) -> {return new Invalidate();});
-		identifiers.put("instanceof", (reader,last) -> {return new InstanceOf();});
-		identifiers.put("isvalid", (reader,last) -> {return new IsValid();});
-		identifiers.put("int", (reader,last) -> {return new TypeConvertion("Integer");});
-		identifiers.put("function", (reader,last) -> {return new FunctionStatement().parse(reader);});
-		identifiers.put("if", (reader,last) -> {if (last == null)return new IfStatement().parse(reader);return new If();});
-		identifiers.put("case", (reader,last) -> {return new Case().parse(reader);});
-		identifiers.put("for", (reader,last) -> {return new ForStatement().parse(reader);});
-		identifiers.put("switch", (reader,last) -> {return new SwitchStatement().parse(reader);});
-		identifiers.put("while", (reader,last) -> {return new WhileStatement().parse(reader);});
-		identifiers.put("NaN", (reader,last) -> {return new NumberNode(Double.NaN);});
-		identifiers.put("null", (reader,last) -> {return new LiteralNode(null);});
-		identifiers.put("return", (reader,last) -> {return new Return();});
-		identifiers.put("real", (reader,last) -> {return new TypeConvertion("real");});
-		identifiers.put("string", (reader,last) -> {return new TypeConvertion("String");});
-		identifiers.put("typeof", (reader,last) -> {return new TypeOf();});
-		identifiers.put("throw", (reader,last) -> {return new Throw();});
-		identifiers.put("true", (reader,last) -> {return new NumberNode(1);});
-		identifiers.put("void", (reader,last) -> {return new NumberNode();});
-		identifiers.put("var", (reader,last) -> {return new VarStatement().parse(reader);});
-		identifiers.put("with", (reader,last) -> {return new WithStatement().parse(reader);});
-		identifiers.put("do", (reader,last) -> {return new DoWhileStatement().parse(reader);});
-		
+		TokenDecider.identifiers.put("break", (reader, last) -> {
+			return new Break();
+		});
+		TokenDecider.identifiers.put("continue", (reader, last) -> {
+			return new Continue();
+		});
+		TokenDecider.identifiers.put("delete", (reader, last) -> {
+			return new DeleteMember();
+		});
+		TokenDecider.identifiers.put("false", (reader, last) -> {
+			return new NumberNode(0);
+		});
+		TokenDecider.identifiers.put("incontextof", (reader, last) -> {
+			return new InContextOf();
+		});
+		TokenDecider.identifiers.put("Infinity", (reader, last) -> {
+			return new NumberNode(Double.POSITIVE_INFINITY);
+		});
+		TokenDecider.identifiers.put("invalidate", (reader, last) -> {
+			return new Invalidate();
+		});
+		TokenDecider.identifiers.put("instanceof", (reader, last) -> {
+			return new InstanceOf();
+		});
+		TokenDecider.identifiers.put("isvalid", (reader, last) -> {
+			return new IsValid();
+		});
+		TokenDecider.identifiers.put("int", (reader, last) -> {
+			return new TypeConvertion("Integer");
+		});
+		TokenDecider.identifiers.put("function", (reader, last) -> {
+			return new FunctionStatement().parse(reader);
+		});
+		TokenDecider.identifiers.put("if", (reader, last) -> {
+			if (last == null)
+				return new IfStatement().parse(reader);
+			return new If();
+		});
+		TokenDecider.identifiers.put("case", (reader, last) -> {
+			return new Case().parse(reader);
+		});
+		TokenDecider.identifiers.put("for", (reader, last) -> {
+			return new ForStatement().parse(reader);
+		});
+		TokenDecider.identifiers.put("switch", (reader, last) -> {
+			return new SwitchStatement().parse(reader);
+		});
+		TokenDecider.identifiers.put("while", (reader, last) -> {
+			return new WhileStatement().parse(reader);
+		});
+		TokenDecider.identifiers.put("NaN", (reader, last) -> {
+			return new NumberNode(Double.NaN);
+		});
+		TokenDecider.identifiers.put("null", (reader, last) -> {
+			return new LiteralNode(null);
+		});
+		TokenDecider.identifiers.put("return", (reader, last) -> {
+			return new Return();
+		});
+		TokenDecider.identifiers.put("real", (reader, last) -> {
+			return new TypeConvertion("real");
+		});
+		TokenDecider.identifiers.put("string", (reader, last) -> {
+			return new TypeConvertion("String");
+		});
+		TokenDecider.identifiers.put("typeof", (reader, last) -> {
+			return new TypeOf();
+		});
+		TokenDecider.identifiers.put("throw", (reader, last) -> {
+			return new Throw();
+		});
+		TokenDecider.identifiers.put("true", (reader, last) -> {
+			return new NumberNode(1);
+		});
+		TokenDecider.identifiers.put("void", (reader, last) -> {
+			return new NumberNode();
+		});
+		TokenDecider.identifiers.put("var", (reader, last) -> {
+			return new VarStatement().parse(reader);
+		});
+		TokenDecider.identifiers.put("with", (reader, last) -> {
+			return new WithStatement().parse(reader);
+		});
+		TokenDecider.identifiers.put("do", (reader, last) -> {
+			return new DoWhileStatement().parse(reader);
+		});
+
 	}
 
 	public CodeNode parseLiteral(ParseReader reader) throws KSException {
@@ -381,7 +437,7 @@ public class TokenDecider implements ASTParser {
 		 * getter goto
 		 * import in
 		 * new protected property
-		 * private public synchronized 
+		 * private public synchronized
 		 * static setter +super throw
 		 * +this
 		 */
@@ -389,8 +445,8 @@ public class TokenDecider implements ASTParser {
 			sb.append(ch);
 		} while (Character.isJavaIdentifierPart(ch = reader.eat()) && ch != '$' && ch != 0);
 		String lite = sb.toString();
-		LiteralFactory cn=identifiers.get(lite);
-		if(cn!=null)
+		LiteralFactory cn = TokenDecider.identifiers.get(lite);
+		if (cn != null)
 			return cn.create(reader, last);
 		return new LiteralNode(lite);
 	}
@@ -422,5 +478,5 @@ public class TokenDecider implements ASTParser {
 
 @FunctionalInterface
 interface LiteralFactory {
-	public CodeNode create(ParseReader reader,CodeNode last) throws KSException;
+	public CodeNode create(ParseReader reader, CodeNode last) throws KSException;
 }

@@ -25,20 +25,21 @@ public class WhileStatement implements Block {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser = new StatementParser();
-		char c=reader.eatAll();
+		char c = reader.eatAll();
 		//
-		
+
 		if (c == '(') {
 			parser.clear();
 			c = reader.eat();
 			Condition = parser.parseUntil(reader, ')');
 			reader.eat();
-		}else throw new SyntaxError("错误的while表达式");
-		c=reader.eatAll();
+		} else
+			throw new SyntaxError("错误的while表达式");
+		c = reader.eatAll();
 		if (c == '{') {
 			c = reader.eat();
 			Body = new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);
-		} else{
+		} else {
 			Body = parser.parseUntilOrBlock(reader, ';');
 			reader.eat();
 		}

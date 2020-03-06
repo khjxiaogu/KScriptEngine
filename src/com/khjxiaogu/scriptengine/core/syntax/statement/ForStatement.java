@@ -31,7 +31,7 @@ public class ForStatement implements Block {
 			if (!reader.has()) {
 				break;
 			}
-			char c=reader.eatAll();
+			char c = reader.eatAll();
 			if (!reader.has()) {
 				break;
 			}

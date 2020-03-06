@@ -14,15 +14,16 @@ public class GlobalCodeBlock extends CodeBlock {
 	public GlobalCodeBlock() {
 		super(CodeBlockAttribute.STATEMENT);
 	}
+
 	public KVariant eval() throws KSException {
-		GlobalEnvironment cbenv=GlobalEnvironment.getGlobal();
+		GlobalEnvironment cbenv = GlobalEnvironment.getGlobal();
 		int i = 0;
 		if (nodes.size() == 0)
 			return null;
 		try {
 			KVariant result = null;
 			for (; i < nodes.size(); i++) {
-				result=nodes.get(i).eval(cbenv);
+				result = nodes.get(i).eval(cbenv);
 			}
 			return result;
 		} catch (ScriptException e) {
@@ -32,6 +33,7 @@ public class GlobalCodeBlock extends CodeBlock {
 			throw e;
 		}
 	}
+
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		name = reader.getName();

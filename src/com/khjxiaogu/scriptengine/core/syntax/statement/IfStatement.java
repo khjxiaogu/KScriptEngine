@@ -6,7 +6,6 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.Block;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
@@ -25,7 +24,7 @@ public class IfStatement implements Block {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser = new StatementParser();
-		char c=reader.eatAll();
+		char c = reader.eatAll();
 		//
 
 		if (c == '(') {
@@ -35,26 +34,28 @@ public class IfStatement implements Block {
 			c = reader.eat();
 			// System.out.println(c);
 		}
-		c=reader.eatAll();
+		c = reader.eatAll();
 		if (c == '{') {
 			c = reader.eat();
 			If = new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
 			// c=reader.eat();
-		}else
+		} else {
 			If = parser.parseUntilOrBlock(reader, ';');
-		c=reader.eatAll();
+		}
+		c = reader.eatAll();
 		if (c == 'e' && reader.reads(0, 4).equals("else")) {
 			reader.eat();
 			reader.eat();
 			reader.eat();
 			reader.eat();
-			c=reader.eatAll();
+			c = reader.eatAll();
 			if (c == '{') {
 				c = reader.eat();
 				Else = new CodeBlock(CodeBlockAttribute.NORMAL).parse(reader);
 				// c=reader.eat();
-			}else
-			Else = parser.parseUntilOrBlock(reader, ';');
+			} else {
+				Else = parser.parseUntilOrBlock(reader, ';');
+			}
 			reader.eat();
 		}
 		return this;

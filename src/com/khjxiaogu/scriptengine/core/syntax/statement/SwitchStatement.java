@@ -63,13 +63,13 @@ public class SwitchStatement extends CodeBlock {
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
-		char c=reader.eatAll();
+		char c = reader.eatAll();
 		if (c == '(') {
 			parser.clear();
 			c = reader.eat();
 			cond = parser.parseUntil(reader, ')');
 			reader.eat();
-			c=reader.eatAll();
+			c = reader.eatAll();
 			if (c == '{') {
 				c = reader.eat();
 			} else
@@ -82,8 +82,8 @@ public class SwitchStatement extends CodeBlock {
 			if (cur instanceof Case) {
 				cases.add((Case) cur);
 				casepos.add(i);
-			}else if(cur instanceof Default) {
-				defaultpos=i;
+			} else if (cur instanceof Default) {
+				defaultpos = i;
 			}
 		}
 		return this;

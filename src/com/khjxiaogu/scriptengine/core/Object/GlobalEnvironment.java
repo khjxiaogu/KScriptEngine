@@ -6,14 +6,16 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class GlobalEnvironment extends Closure {
-	private static GlobalEnvironment global=new GlobalEnvironment();
+	private static GlobalEnvironment global = new GlobalEnvironment();
+
 	public static GlobalEnvironment getGlobal() {
-		return global;
+		return GlobalEnvironment.global;
 	}
+
 	public GlobalEnvironment() {
 		super(new MapEnvironment(null));
 		try {
-			Closure.setMemberByName("global",new KVariant(this));
+			Closure.setMemberByName("global", new KVariant(this));
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			System.out.println("engine start failure");
@@ -21,6 +23,7 @@ public class GlobalEnvironment extends Closure {
 			System.exit(0);
 		}
 	}
+
 	@Override
 	public KVariant getMemberByName(String name) throws KSException {
 		return Closure.getMemberByName(name);
@@ -38,21 +41,21 @@ public class GlobalEnvironment extends Closure {
 
 	@Override
 	public KVariant setMemberByName(String name, KVariant val) throws KSException {
-		if(name.equals("global"))
+		if (name.equals("global"))
 			throw new AccessDeniedException();
 		return Closure.setMemberByName(name, val);
 	}
 
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val) throws KSException {
-		if(var.toString().equals("global"))
+		if (var.toString().equals("global"))
 			throw new AccessDeniedException();
 		return Closure.setMemberByVariant(var, val);
 	}
 
 	@Override
 	public KVariant setMemberByNameEnsure(String name, KVariant val) throws KSException {
-		if(name.equals("global"))
+		if (name.equals("global"))
 			throw new AccessDeniedException();
 		return Closure.setMemberByNameEnsure(name, val);
 	}
@@ -64,46 +67,44 @@ public class GlobalEnvironment extends Closure {
 
 	@Override
 	public boolean deleteMemberByName(String name) throws KSException {
-		if(name.equals("global"))
+		if (name.equals("global"))
 			throw new AccessDeniedException();
 		return Closure.deleteMemberByName(name);
 	}
 
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
-		if(var.toString().equals("global"))
+		if (var.toString().equals("global"))
 			throw new AccessDeniedException();
 		return Closure.deleteMemberByVariant(var);
 	}
 
 	@Override
 	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		if(name.equals("global"))
+		if (name.equals("global"))
 			throw new AccessDeniedException();
 		return Closure.DoOperatonByName(op, name, opr);
 	}
 
 	@Override
 	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
-		if(var.toString().equals("global"))
+		if (var.toString().equals("global"))
 			throw new AccessDeniedException();
 		return Closure.DoOperatonByVariant(op, var, opr);
 	}
 
 	@Override
 	public boolean isValid() throws KSException {
-		return Closure!=null;
+		return Closure != null;
 	}
 
 	@Override
 	public boolean invalidate() throws KSException {
-		if(isValid()) {
-			Closure=null;
+		if (isValid()) {
+			Closure = null;
 			return true;
 		}
 		return false;
 	}
-
-
 
 }

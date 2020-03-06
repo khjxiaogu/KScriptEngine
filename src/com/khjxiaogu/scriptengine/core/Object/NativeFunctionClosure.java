@@ -8,9 +8,11 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 public class NativeFunctionClosure extends Closure {
 	NativeFunction<Object> functhis;
-	public NativeFunctionClosure(KEnvironment env, String obj) {
+
+	public NativeFunctionClosure(KEnvironment env) {
 		super(env);
 	}
+
 	@Override
 	public boolean isInstanceOf(String str) {
 		return str.equals("Function");
@@ -25,7 +27,7 @@ public class NativeFunctionClosure extends Closure {
 	public boolean invalidate() {
 		if (super.Closure != null) {
 			super.Closure = null;
-			functhis=null;
+			functhis = null;
 			return true;
 		}
 		return false;
@@ -38,13 +40,12 @@ public class NativeFunctionClosure extends Closure {
 
 	@Override
 	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
-		KEnvironment tenv;
-		if(args!=null) {
-			args=Arrays.copyOf(args,args.length);
+		if (args != null) {
+			args = Arrays.copyOf(args, args.length);
 		}
-		if (env!=null&&env instanceof NativeClosure) {
-			return functhis.call(((NativeClosure) env).getObjthis(),args);
-		} else
-			return functhis.call(null,args);
+		if (env != null && env instanceof NativeClosure)
+			return functhis.call(((NativeClosure) env).getObjthis(), args);
+		else
+			return functhis.call(null, args);
 	}
 }

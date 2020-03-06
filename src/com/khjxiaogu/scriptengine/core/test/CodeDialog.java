@@ -27,11 +27,11 @@ public class CodeDialog {
 	public CodeDialog() {
 		// TODO Auto-generated constructor stub
 		area = new JTextArea(10, 40);
-		area.setFont(new Font("微软雅黑",Font.BOLD, 15));
+		area.setFont(new Font("微软雅黑", Font.BOLD, 15));
 		JScrollPane pane = new JScrollPane(area);
 		// pane.setPreferredSize(new Dimension(200,200));
 		JTextArea oarea = new JTextArea(15, 40);
-		oarea.setFont(new Font("微软雅黑",Font.BOLD, 15));
+		oarea.setFont(new Font("微软雅黑", Font.BOLD, 15));
 		JScrollPane opane = new JScrollPane(oarea);
 		// opane.setPreferredSize(new Dimension(200,200));
 		mpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
