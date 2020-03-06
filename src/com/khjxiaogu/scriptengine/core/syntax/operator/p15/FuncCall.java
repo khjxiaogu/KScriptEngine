@@ -7,7 +7,7 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
-import com.khjxiaogu.scriptengine.core.Object.ScriptClosure;
+import com.khjxiaogu.scriptengine.core.Object.Closure;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
@@ -30,7 +30,7 @@ public class FuncCall extends SingleOperator implements ASTParser {
 			arg[i]=args[i].eval(env);
 		}
 		KObject obj=(KObject) func.asType("Object");
-		if(obj instanceof ScriptClosure) {
+		if(obj instanceof Closure) {
 			return obj.FuncCall(arg, env);
 		}else throw new ScriptException("对象不是函数");
 	}

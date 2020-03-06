@@ -1,7 +1,5 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
-import java.util.ArrayList;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.AccessDeniedException;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
@@ -9,98 +7,130 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
-public class ScriptClosure extends Closure {
-	private String clsname;
-	private KEnvironment objthis;
-	public ScriptClosure(KEnvironment env,String inheritance) {
-		super(new MapEnvironment(env));
-		clsname=inheritance;
-		objthis=env;
+/**
+ * @author khjxiaogu
+ * @time 2020年3月5日
+ *       project:khjScriptEngine
+ */
+public abstract class Closure implements KObject {
+
+	/**
+	 *
+	 */
+	protected KEnvironment Closure;
+
+	public Closure(KEnvironment env) {
+		Closure=env;
 	}
 
 	@Override
 	public KVariant getMemberByName(String name) throws KSException {
-		if ((name != null)&&(name.equals("this")))
+		if (name != null&&(!name.equals("this")))
+			throw new MemberNotFoundException(name);
+		else
 			return new KVariant(this);
-		return Closure.getMemberByName(name);
 	}
+
+	@Override
+	public KVariant getMemberByNum(int num) throws KSException {
+		throw new MemberNotFoundException("%" + num);
+	}
+
 	@Override
 	public KVariant getMemberByVariant(KVariant var) throws KSException {
-		return Closure.getMemberByVariant(var);
+		throw new MemberNotFoundException(var.toString());
 	}
+
 	@Override
 	public KVariant getMemberByNameEnsure(String name) throws KSException {
-		if ((name != null)&&(name.equals("this")))
+		if (name != null&&(!name.equals("this")))
+			throw new MemberNotFoundException(name);
+		else
 			return new KVariant(this);
-		return Closure.getMemberByNameEnsure(name);
 	}
+
 	@Override
 	public KVariant setMemberByName(String name, KVariant val) throws KSException {
-		if ((name != null)&&(name.equals("this")))
-			throw new AccessDeniedException();
-		return Closure.setMemberByName(name, val);
+		throw new AccessDeniedException();
 	}
+
+	@Override
+	public KVariant setMemberByNum(int num, KVariant val) throws KSException {
+		throw new MemberNotFoundException("%" + num);
+	}
+
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val) throws KSException {
-		return Closure.setMemberByVariant(var, val);
+		throw new MemberNotFoundException(var.toString());
 	}
+
 	@Override
 	public KVariant setMemberByNameEnsure(String name, KVariant val) throws KSException {
-		if ((name != null)&&(name.equals("this")))
-			throw new AccessDeniedException();
-		return Closure.setMemberByNameEnsure(name, val);
+		throw new MemberNotFoundException(name);
 	}
+
 	@Override
 	public boolean hasMemberByName(String name) throws KSException {
-		if ((name != null)&&(name.equals("this")))
-			return true;
-		return Closure.hasMemberByName(name);
+		throw new MemberNotFoundException(name);
 	}
+
+	@Override
+	public boolean hasMemberByNum(int num) throws KSException {
+		throw new MemberNotFoundException("%" + num);
+	}
+
 	@Override
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
-		return Closure.hasMemberByVariant(var);
+		throw new MemberNotFoundException(var.toString());
 	}
+
 	@Override
 	public boolean deleteMemberByName(String name) throws KSException {
-		if ((name != null)&&(name.equals("this")))
-			throw new MemberNotFoundException("this");
-		return Closure.deleteMemberByName(name);
+		throw new MemberNotFoundException(name);
 	}
+
+	@Override
+	public boolean deleteMemberByNum(int num) throws KSException {
+		throw new MemberNotFoundException("%" + num);
+	}
+
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
-		return Closure.deleteMemberByVariant(var);
+		throw new MemberNotFoundException(var.toString());
 	}
+
 	@Override
 	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		if ((name != null)&&(name.equals("this")))
-			throw new AccessDeniedException();
-		return Closure.DoOperatonByName(op, name, opr);
+		throw new MemberNotFoundException(name);
 	}
+
+	@Override
+	public KVariant DoOperatonByNum(AssignOperation op, int num, KVariant opr) throws KSException {
+		throw new MemberNotFoundException("%" + num);
+	}
+
 	@Override
 	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
-		return Closure.DoOperatonByVariant(op, var, opr);
+		throw new MemberNotFoundException(var.toString());
 	}
+
+	@Override
+	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
+		throw new MemberNotFoundException("");
+	}
+
 	@Override
 	public boolean isInstanceOf(String str) throws KSException {
-		if(str.equals(clsname))
-			return true;
-		else if(objthis!=null&&(objthis instanceof KObject)&&((KObject) objthis).isInstanceOf(str))
-			return true;
 		return false;
 	}
 
 	@Override
 	public boolean isValid() throws KSException {
-		return Closure==null;
+		return true;
 	}
 
 	@Override
 	public boolean invalidate() throws KSException {
-		if(objthis!=null) {
-			objthis=null;
-			Closure=null;
-			return true;
-		}
 		return false;
 	}
 

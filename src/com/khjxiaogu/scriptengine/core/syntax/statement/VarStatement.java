@@ -6,7 +6,7 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
-import com.khjxiaogu.scriptengine.core.Object.ScriptClosure;
+import com.khjxiaogu.scriptengine.core.Object.Closure;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
@@ -51,7 +51,7 @@ public class VarStatement implements Visitable, ASTParser,MemberOperator,CodeNod
 		 * }
 		 * return env.setMemberByName(token, new KVariant());
 		 */
-		if(env instanceof ScriptClosure)
+		if(env instanceof Closure)
 			return Child.evalAsVar(env);
 		return Child.eval(env);
 	}

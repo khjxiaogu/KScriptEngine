@@ -5,7 +5,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.AccessDeniedException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
-public class GlobalEnvironment extends ScriptClosure {
+public class GlobalEnvironment extends Closure {
 	private static GlobalEnvironment global=new GlobalEnvironment();
 	public static GlobalEnvironment getGlobal() {
 		return global;
