@@ -6,11 +6,13 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
-public class NativeFunctionClosure extends Closure implements CallableFunction {
-	NativeFunction<Object> functhis;
+public class NativeFunctionClosure<T> extends Closure implements CallableFunction {
+	NativeFunction<T> functhis;
 
-	public NativeFunctionClosure(KEnvironment env) {
-		super(env);
+
+	public NativeFunctionClosure(NativeFunction<T> functhis) {
+		super(null);
+		this.functhis = functhis;
 	}
 
 	@Override
@@ -38,13 +40,14 @@ public class NativeFunctionClosure extends Closure implements CallableFunction {
 		throw new ContextException();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
 		if (args != null) {
 			args = Arrays.copyOf(args, args.length);
 		}
 		if (env != null && env instanceof NativeClosure)
-			return functhis.call(((NativeClosure) env).getObjthis(), args);
+			return functhis.call((T) ((NativeClosure) env).getObjthis(), args);
 		else
 			return functhis.call(null, args);
 	}

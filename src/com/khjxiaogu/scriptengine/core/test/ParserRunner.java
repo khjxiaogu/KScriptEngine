@@ -1,7 +1,10 @@
 package com.khjxiaogu.scriptengine.core.test;
 
+import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Parser;
 import com.khjxiaogu.scriptengine.core.StringParseReader;
+import com.khjxiaogu.scriptengine.core.Object.GlobalEnvironment;
+import com.khjxiaogu.scriptengine.core.Object.NativeFunctionClosure;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.GlobalCodeBlock;
 
@@ -14,6 +17,17 @@ public class ParserRunner {
 			// System.out.println(s);
 			GlobalCodeBlock cn = new GlobalCodeBlock();
 			try {
+				GlobalEnvironment.getGlobal().setMemberByName("print",
+					new KVariant(
+						new NativeFunctionClosure<Object>(
+								(objthis,params)-> {
+									if(params.length>0)
+									System.out.println(params[0].toString());
+									return null;
+								}
+							)
+						)
+					);
 				cn.parse(new StringParseReader(s));
 				System.out.println("语法解析结果：");
 				System.out.println(cn.toString());
