@@ -1,10 +1,12 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class ArrayEnvironment implements KEnvironment {
@@ -199,5 +201,33 @@ public class ArrayEnvironment implements KEnvironment {
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
 		throw new MemberNotFoundException(var.toString());
+	}
+	@Override
+	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis) throws KSException {
+		KVariant res = list[num];
+		if (res == null) {
+			if (parent != null) {
+				return parent.funcCallByNum(num, args, objthis);
+			}
+		}
+		if (res == null)
+			throw new MemberNotFoundException("%"+num);
+		KObject obj=(KObject) res.toType("Object");
+		if(obj instanceof CallableFunction)
+			return ((CallableFunction)obj).FuncCall(args,objthis==null?this:objthis);
+		else
+			throw new ScriptException("呼叫的对象不是函数");
+	}
+
+	@Override
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis) throws KSException {
+		throw new MemberNotFoundException(name);
+	}
+
+	@Override
+	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
+		for(int i=0;i<list.length;i++) {
+			cosumer.accept(new KVariant(i),list[i]);
+		}
 	}
 }

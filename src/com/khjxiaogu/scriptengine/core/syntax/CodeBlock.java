@@ -59,7 +59,7 @@ public class CodeBlock implements Block, Visitable {
 	}
 
 	/**
-	 * for class object,wont run Function
+	 * for class object,would run without changing context
 	 *
 	 * @param env
 	 * @return
@@ -78,7 +78,8 @@ public class CodeBlock implements Block, Visitable {
 				if (cn.getClass() == CodeBlock.class) {
 					((CodeBlock) cn).attr = CodeBlockAttribute.OBJECT;
 					((CodeBlock) cn).init(env);
-				}
+				}else
+				cn.eval(env);
 			}
 		} catch (ScriptException e) {
 			e.filename = name;

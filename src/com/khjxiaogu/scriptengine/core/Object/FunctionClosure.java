@@ -2,12 +2,13 @@ package com.khjxiaogu.scriptengine.core.Object;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 
-public class FunctionClosure extends Closure {
-	KObject functhis;
+public class FunctionClosure extends Closure implements CallableFunction {
 	KObject objthis;
+	CallableFunction functhis;
 
-	public FunctionClosure(KObject objthis, KObject functhis) {
+	public FunctionClosure(CallableFunction functhis,KObject objthis) {
 		super(objthis);
 		this.objthis = objthis;
 		this.functhis = functhis;
@@ -15,10 +16,7 @@ public class FunctionClosure extends Closure {
 
 	@Override
 	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
-		if (env == null)
-			return functhis.FuncCall(args, objthis);
-		else
-			return functhis.FuncCall(args, env);
+		return functhis.FuncCall(args, objthis);
 	}
 
 	@Override
@@ -39,6 +37,19 @@ public class FunctionClosure extends Closure {
 	@Override
 	public KObject newInstance() throws KSException {
 		return functhis.newInstance();
+	}
+
+	@Override
+	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis) throws KSException {
+		throw new MemberNotFoundException("%"+num);
+	}
+
+	@Override
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis) throws KSException {
+		if(name!=null) {
+			throw new MemberNotFoundException(name);
+		}
+		return FuncCall(args,objthis);
 	}
 
 }

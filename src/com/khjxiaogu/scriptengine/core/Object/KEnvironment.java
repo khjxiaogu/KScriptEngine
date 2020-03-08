@@ -1,5 +1,7 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
+import java.util.function.BiConsumer;
+
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
@@ -21,6 +23,10 @@ public interface KEnvironment {
 
 	public KVariant setMemberByNameEnsure(String name, KVariant val) throws KSException;
 
+	public KVariant funcCallByNum(int num, KVariant[] args,KEnvironment objthis) throws KSException;
+
+	public KVariant funcCallByName(String name, KVariant[] args,KEnvironment objthis) throws KSException;
+	
 	public boolean hasMemberByName(String name) throws KSException;
 
 	public boolean hasMemberByNum(int num) throws KSException;
@@ -39,4 +45,6 @@ public interface KEnvironment {
 
 	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException;
 
+	public void EnumMembers(BiConsumer<KVariant,KVariant> cosumer)throws KSException;
+	
 }

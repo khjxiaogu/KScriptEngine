@@ -74,9 +74,10 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if (isLocal())
-			return (KObject) env.getMemberByNum(itoken).toType("KObject");
-		return (KObject) env.getMemberByNameEnsure(token).toType("KObject");
+		if(env instanceof KObject)
+			return (KObject) env;
+		else
+			return null;
 	}
 
 	@Override
@@ -93,7 +94,10 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 
 	@Override
 	public KVariant getPointing(KEnvironment env) {
-		return new KVariant(getToken());
+		if(itoken!=-1) {
+			return new KVariant(getToken());
+		}else
+			return new KVariant(itoken);
 	}
 
 	public boolean isLocal() {

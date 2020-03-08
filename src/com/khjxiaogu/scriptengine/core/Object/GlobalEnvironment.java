@@ -1,5 +1,7 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
+import java.util.function.BiConsumer;
+
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.AccessDeniedException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
@@ -105,6 +107,11 @@ public class GlobalEnvironment extends Closure {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
+		Closure.EnumMembers(cosumer);
 	}
 
 }

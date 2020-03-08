@@ -1,5 +1,7 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
+import java.util.function.BiConsumer;
+
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.AccessDeniedException;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
@@ -115,11 +117,6 @@ public abstract class Closure implements KObject {
 	}
 
 	@Override
-	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
-		throw new MemberNotFoundException("");
-	}
-
-	@Override
 	public boolean isInstanceOf(String str) throws KSException {
 		return false;
 	}
@@ -137,6 +134,22 @@ public abstract class Closure implements KObject {
 	@Override
 	public KObject newInstance() throws KSException {
 		throw new ContextException();
+	}
+
+	@Override
+	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis) throws KSException {
+		return null;
+	}
+
+	@Override
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis) throws KSException {
+		if(name==null&&this instanceof CallableFunction)
+			return ((CallableFunction)this).FuncCall(args, objthis);
+		throw new MemberNotFoundException(name);
+	}
+
+	@Override
+	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
 	}
 
 }

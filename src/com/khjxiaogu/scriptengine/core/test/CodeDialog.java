@@ -102,9 +102,6 @@ public class CodeDialog {
 
 class TextAreaOutputStream extends OutputStream {
 
-// *************************************************************************************************
-// INSTANCE MEMBERS
-// *************************************************************************************************
 	PrintStream dout = System.out;
 	private byte[] oneByte; // array for write(int val);
 	private Appender appender; // most recent action

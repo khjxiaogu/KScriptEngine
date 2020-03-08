@@ -10,5 +10,5 @@ public interface Assignable {
 
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException;
 
-	public KObject getObject(KEnvironment env) throws KSException;
+	public KEnvironment getObject(KEnvironment env) throws KSException;
 }

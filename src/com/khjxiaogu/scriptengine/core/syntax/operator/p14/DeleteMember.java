@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
@@ -28,20 +29,13 @@ public class DeleteMember extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if (super.Child instanceof LiteralNode) {
-			if (((LiteralNode) super.Child).isLocal())
-				return new KVariant(
-						Integer.valueOf(env.deleteMemberByNum(((LiteralNode) super.Child).getLocalToken()) ? 1 : 0),
-						"Integer");
-			else
-				return new KVariant(
-						Integer.valueOf(env.deleteMemberByName(((LiteralNode) super.Child).getToken()) ? 1 : 0),
-						"Integer");
-		} else if (super.Child instanceof MemberOperator) {
-			List<String> path = new ArrayList<>();
-			KVariant ret = new KVariant();
-			path.clear();
-			return ret;
+		if (super.Child instanceof MemberOperator) {
+			KVariant point=((MemberOperator) super.Child).getPointing(env);
+			KEnvironment obj=((MemberOperator) super.Child).getObject(env);
+			if(point.getType().getType()==Integer.class) {
+				obj.deleteMemberByNum(point.getInt());
+			}else
+				obj.deleteMemberByName(point.toString());
 		}
 		throw new MemberNotFoundException(super.Child.toString());
 		// CodeNode parent=

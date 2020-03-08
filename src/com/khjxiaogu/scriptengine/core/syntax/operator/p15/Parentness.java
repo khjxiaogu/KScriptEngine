@@ -60,7 +60,7 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	}
 
 	@Override
-	public KObject getObject(KEnvironment env) throws KSException {
+	public KEnvironment getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		if (inner instanceof Assignable)
 			return ((MemberOperator) inner).getObject(env);

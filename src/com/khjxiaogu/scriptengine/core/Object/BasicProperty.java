@@ -17,7 +17,7 @@ public class BasicProperty implements KProperty {
 	}
 
 	@Override
-	public void setProp(KVariant x) {
+	public void setProp(KVariant x,KEnvironment env) {
 		// TODO Auto-generated method stub
 		value = x.getValue();
 	}
@@ -28,7 +28,7 @@ public class BasicProperty implements KProperty {
 	}
 
 	@Override
-	public KVariant getProp() {
+	public KVariant getProp(KEnvironment env) {
 		// TODO Auto-generated method stub
 		return new KVariant(value);
 	}

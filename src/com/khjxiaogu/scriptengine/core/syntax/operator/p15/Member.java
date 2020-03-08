@@ -53,7 +53,7 @@ public class Member extends DoubleOperator implements MemberOperator {
 	}
 
 	@Override
-	public KObject getObject(KEnvironment env) throws KSException {
+	public KEnvironment getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		return ((Assignable) super.left).getObject(env);
 	}

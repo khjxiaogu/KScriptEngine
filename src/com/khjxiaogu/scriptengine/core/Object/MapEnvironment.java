@@ -2,10 +2,12 @@ package com.khjxiaogu.scriptengine.core.Object;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class MapEnvironment implements KEnvironment {
@@ -190,6 +192,35 @@ public class MapEnvironment implements KEnvironment {
 	@Override
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
 		return map.containsKey(var.toString()) || parent != null && parent.hasMemberByVariant(var);
+	}
+
+	@Override
+	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis) throws KSException {
+		throw new MemberNotFoundException("%" + num);
+	}
+
+	@Override
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis) throws KSException {
+		KVariant res = map.get(name);
+		if (res == null) {
+			if (parent != null) {
+				return parent.funcCallByName(name, args, objthis);
+			}
+		}
+		if (res == null)
+			throw new MemberNotFoundException(name);
+		KObject obj=(KObject) res.toType("Object");
+		if(obj instanceof CallableFunction)
+			return ((CallableFunction)obj).FuncCall(args,objthis==null?this:objthis);
+		else
+			throw new ScriptException("呼叫的对象不是函数");
+	}
+
+	@Override
+	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
+		for(Map.Entry<String,KVariant> me:map.entrySet()) {
+			cosumer.accept(new KVariant(me.getKey()),me.getValue());
+		}
 	}
 
 }

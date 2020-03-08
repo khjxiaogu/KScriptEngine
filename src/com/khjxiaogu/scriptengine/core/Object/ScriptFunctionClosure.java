@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
  * @time 2020年3月5日
  *       project:khjScriptEngine
  */
-public class ScriptFunctionClosure extends Closure {
+public class ScriptFunctionClosure extends Closure implements CallableFunction {
 
 	/**
 	 *

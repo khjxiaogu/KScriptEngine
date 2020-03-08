@@ -134,7 +134,7 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
-		return null;
+		return new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs);
 	}
 
 	@Override

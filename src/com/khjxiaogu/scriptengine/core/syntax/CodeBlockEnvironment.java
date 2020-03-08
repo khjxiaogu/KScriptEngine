@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.ArrayEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
@@ -194,5 +195,9 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 
 	public String[] getSymbol() {
 		return symbol;
+	}
+	@Override
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis) throws KSException {
+		return parent.funcCallByName(name, args, objthis);
 	}
 }

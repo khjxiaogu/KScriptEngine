@@ -6,7 +6,7 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
-public class NativeFunctionClosure extends Closure {
+public class NativeFunctionClosure extends Closure implements CallableFunction {
 	NativeFunction<Object> functhis;
 
 	public NativeFunctionClosure(KEnvironment env) {

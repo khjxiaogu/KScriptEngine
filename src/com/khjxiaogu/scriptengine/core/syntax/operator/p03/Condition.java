@@ -103,7 +103,7 @@ public class Condition implements Operator, ASTParser, MemberOperator {
 	}
 
 	@Override
-	public KObject getObject(KEnvironment env) throws KSException {
+	public KEnvironment getObject(KEnvironment env) throws KSException {
 		CodeNode cn;
 		if (cond.eval(env).asBoolean()) {
 			cn = first;

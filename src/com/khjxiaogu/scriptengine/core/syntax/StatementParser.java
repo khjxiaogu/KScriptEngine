@@ -49,7 +49,7 @@ public class StatementParser {
 				Operator op = (Operator) current;
 				if (pending != null) {
 					if (pending.getPriority() >= op.getPriority()
-							+ (op.getAssociative() == Associative.RIGHT ? 1 : 0)) {
+							+ (op.getAssociative() == Associative.RIGHT ? 0 : 1)) {
 						// ret.setChildren(null,op);
 						pending.setChildren(null, last);
 						op.setChildren(ret, null);
