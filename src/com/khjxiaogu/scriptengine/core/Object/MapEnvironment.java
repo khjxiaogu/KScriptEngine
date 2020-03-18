@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
@@ -221,6 +222,15 @@ public class MapEnvironment implements KEnvironment {
 		for(Map.Entry<String,KVariant> me:map.entrySet()) {
 			cosumer.accept(new KVariant(me.getKey()),me.getValue());
 		}
+	}
+
+	@Override
+	public <T> T getNativeInstance(Class<T> cls) throws KSException {
+		return parent.getNativeInstance(cls);
+	}
+
+	@Override
+	public void putNativeInstance(Object nis) throws KSException {
 	}
 
 }

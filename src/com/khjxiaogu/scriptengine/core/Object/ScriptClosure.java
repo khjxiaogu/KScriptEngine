@@ -1,5 +1,7 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
@@ -22,11 +24,14 @@ public class ScriptClosure extends Closure {
 
 	private String clsname;
 	private ScriptClosure[] sbclasses;
-
+	private ScriptClosure directSuper=null;
+	private List<Object> natives=new ArrayList<>();
 	public ScriptClosure(String name,ScriptClosure[] inheritance) {
 		super(new MapEnvironment(GlobalEnvironment.getGlobal()));
 		clsname = name;
 		sbclasses=inheritance;
+		if(inheritance.length==1)
+			directSuper=inheritance[0];
 	}
 	public ScriptClosure(String name) {
 		super(new MapEnvironment(GlobalEnvironment.getGlobal()));
@@ -242,5 +247,18 @@ public class ScriptClosure extends Closure {
 	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
 		Closure.EnumMembers(cosumer);
 	}
-
+	@Override
+	public void putNativeInstance(Object nis) throws KSException {
+		natives.add(nis);
+	}
+	@Override
+	public <T> T getNativeInstance(Class<T> cls) throws KSException {
+		for(int i=0;i<natives.size();i++) {
+			if(cls.isInstance(natives.get(i))) {
+				return (T) natives.get(i);
+			}
+		}
+		return null;
+	}
+		
 }

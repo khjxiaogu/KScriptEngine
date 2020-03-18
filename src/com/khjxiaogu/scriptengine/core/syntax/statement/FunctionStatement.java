@@ -149,6 +149,10 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 
 	@Override
 	public void VisitAsChild(List<String> parentMap) throws KSException {
+		List<String> allnodes = new ArrayList<String>(parentMap);
+		off = parentMap.size();
+		allnodes.addAll(Arrays.asList(argnames));
+		Visitable.Visit(body, allnodes);
 	}
 
 }

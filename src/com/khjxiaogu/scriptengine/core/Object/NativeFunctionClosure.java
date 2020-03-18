@@ -8,13 +8,18 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 public class NativeFunctionClosure<T> extends Closure implements CallableFunction {
 	NativeFunction<T> functhis;
+	Class<T> nativecls;
 
-
-	public NativeFunctionClosure(NativeFunction<T> functhis) {
+	public NativeFunctionClosure(Class<T> objtype,NativeFunction<T> functhis) {
 		super(null);
+		nativecls=objtype;
 		this.functhis = functhis;
 	}
-
+	public NativeFunctionClosure(NativeFunction<T> functhis) {
+		super(null);
+		nativecls=null;
+		this.functhis = functhis;
+	}
 	@Override
 	public boolean isInstanceOf(String str) {
 		return str.equals("Function");
@@ -40,15 +45,15 @@ public class NativeFunctionClosure<T> extends Closure implements CallableFunctio
 		throw new ContextException();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
 		if (args != null) {
 			args = Arrays.copyOf(args, args.length);
 		}
-		if (env != null && env instanceof NativeClosure)
-			return functhis.call((T) ((NativeClosure) env).getObjthis(), args);
+		if(nativecls!=null)
+			return functhis.call(env.getNativeInstance(nativecls), args);
 		else
 			return functhis.call(null, args);
 	}
+
 }

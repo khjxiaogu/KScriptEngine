@@ -152,4 +152,12 @@ public abstract class Closure implements KObject {
 	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
 	}
 
+	@Override
+	public <T> T getNativeInstance(Class<T> cls) throws KSException {
+		throw new ContextException();
+	}
+	@Override
+	public void putNativeInstance(Object nis) throws KSException {
+		throw new ContextException();
+	}
 }

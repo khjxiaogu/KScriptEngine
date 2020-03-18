@@ -47,4 +47,8 @@ public interface KEnvironment {
 
 	public void EnumMembers(BiConsumer<KVariant,KVariant> cosumer)throws KSException;
 	
+	public <T> T getNativeInstance(Class<T> cls)throws KSException;
+	
+	public void putNativeInstance(Object nis)throws KSException;
+	
 }

@@ -1,6 +1,8 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 public class PropertyClosure extends Closure implements KProperty {
 
@@ -16,5 +18,4 @@ public class PropertyClosure extends Closure implements KProperty {
 	public KVariant getProp(KEnvironment env) {
 		return null;
 	}
-
 }

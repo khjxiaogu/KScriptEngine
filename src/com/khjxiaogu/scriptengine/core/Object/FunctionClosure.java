@@ -1,6 +1,7 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 
@@ -51,5 +52,8 @@ public class FunctionClosure extends Closure implements CallableFunction {
 		}
 		return FuncCall(args,objthis);
 	}
+
+
+
 
 }
