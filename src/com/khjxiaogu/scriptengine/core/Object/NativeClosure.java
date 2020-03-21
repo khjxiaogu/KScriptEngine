@@ -1,7 +1,8 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
-public class NativeClosure extends ScriptClosure {
+public class NativeClosure extends ExtendableClosure {
 	protected Object cls;
+
 	public Object getObjthis() {
 		return cls;
 	}

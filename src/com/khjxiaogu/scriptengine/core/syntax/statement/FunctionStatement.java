@@ -36,10 +36,10 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		if (itoken != -1) {
-			env.setMemberByNum(itoken, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)));
+			env.setMemberByNum(itoken, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),KEnvironment.DEFAULT);
 			return null;
 		} else if (name != null) {
-			env.setMemberByName(name, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)));
+			env.setMemberByName(name, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),KEnvironment.THISONLY);
 			return null;
 		} else
 			return new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
@@ -122,15 +122,6 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 	public void init(KEnvironment env) throws KSException {
 	}
 
-	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		return null;
-	}
-
-	@Override
-	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return null;
-	}
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {

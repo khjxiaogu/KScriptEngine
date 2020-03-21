@@ -452,4 +452,10 @@ public class KVariant implements Cloneable {
 	public String asString() throws ConvertionException {
 		return (String) asType("String");
 	}
+
+	public boolean isNull() {
+		if (value == null || value instanceof String && ((String) value).length() == 0)
+			return true;
+		return false;
+	}
 }

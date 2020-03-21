@@ -1,12 +1,12 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
-import java.util.function.BiConsumer;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.AccessDeniedException;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
+import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 /**
@@ -26,53 +26,39 @@ public abstract class Closure implements KObject {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name) throws KSException {
-		if (name != null && !name.equals("this"))
+	public KVariant getMemberByName(String name,int flag) throws KSException {
+		if (name != null)
 			throw new MemberNotFoundException(name);
 		else
 			return new KVariant(this);
 	}
 
 	@Override
-	public KVariant getMemberByNum(int num) throws KSException {
+	public KVariant getMemberByNum(int num,int flag) throws KSException {
 		throw new MemberNotFoundException("%" + num);
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var) throws KSException {
+	public KVariant getMemberByVariant(KVariant var,int flag) throws KSException {
 		throw new MemberNotFoundException(var.toString());
 	}
 
 	@Override
-	public KVariant getMemberByNameEnsure(String name) throws KSException {
-		if (name != null && !name.equals("this"))
-			throw new MemberNotFoundException(name);
-		else
-			return new KVariant(this);
-	}
-
-	@Override
-	public KVariant setMemberByName(String name, KVariant val) throws KSException {
+	public KVariant setMemberByName(String name, KVariant val,int flag) throws KSException {
 		throw new AccessDeniedException();
 	}
 
 	@Override
-	public KVariant setMemberByNum(int num, KVariant val) throws KSException {
+	public KVariant setMemberByNum(int num, KVariant val,int flag) throws KSException {
 		throw new MemberNotFoundException("%" + num);
 	}
 
 	@Override
-	public KVariant setMemberByVariant(KVariant var, KVariant val) throws KSException {
+	public KVariant setMemberByVariant(KVariant var, KVariant val,int flag) throws KSException {
 		throw new MemberNotFoundException(var.toString());
 	}
-
 	@Override
-	public KVariant setMemberByNameEnsure(String name, KVariant val) throws KSException {
-		throw new MemberNotFoundException(name);
-	}
-
-	@Override
-	public boolean hasMemberByName(String name) throws KSException {
+	public boolean hasMemberByName(String name,int flag) throws KSException {
 		throw new MemberNotFoundException(name);
 	}
 
@@ -102,17 +88,17 @@ public abstract class Closure implements KObject {
 	}
 
 	@Override
-	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
+	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
 		throw new MemberNotFoundException(name);
 	}
 
 	@Override
-	public KVariant DoOperatonByNum(AssignOperation op, int num, KVariant opr) throws KSException {
+	public KVariant doOperationByNum(AssignOperation op, int num, KVariant opr) throws KSException {
 		throw new MemberNotFoundException("%" + num);
 	}
 
 	@Override
-	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
+	public KVariant doOperationByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
 		throw new MemberNotFoundException(var.toString());
 	}
 
@@ -137,27 +123,37 @@ public abstract class Closure implements KObject {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
 		return null;
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis) throws KSException {
-		if(name==null&&this instanceof CallableFunction)
-			return ((CallableFunction)this).FuncCall(args, objthis);
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+		if (name == null && this instanceof CallableFunction)
+			return ((CallableFunction) this).FuncCall(args, objthis);
 		throw new MemberNotFoundException(name);
 	}
 
 	@Override
-	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
+	public void EnumMembers(Enumerator cosumer,int flag) throws KSException {
 	}
 
 	@Override
 	public <T> T getNativeInstance(Class<T> cls) throws KSException {
 		throw new ContextException();
 	}
+
 	@Override
 	public void putNativeInstance(Object nis) throws KSException {
 		throw new ContextException();
+	}
+	@Override
+	public KEnvironment getThis() throws KSException {
+		throw new ScriptException("无法定位this的类。");
+	}
+
+	@Override
+	public KEnvironment getSuper() throws KSException {
+		throw new InvalidSuperClassException();
 	}
 }

@@ -1,11 +1,10 @@
 package com.khjxiaogu.scriptengine.core.Object;
 
-import java.util.function.BiConsumer;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.AccessDeniedException;
-import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
+import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class GlobalEnvironment extends Closure {
@@ -16,84 +15,53 @@ public class GlobalEnvironment extends Closure {
 	}
 
 	public GlobalEnvironment() {
-		super(new MapEnvironment(null));
-		try {
-			Closure.setMemberByName("global", new KVariant(this));
-		} catch (KSException e) {
-			// TODO Auto-generated catch block
-			System.out.println("engine start failure");
-			e.printStackTrace();
-			System.exit(0);
-		}
+		super(new MapEnvironment());
 	}
 
 	@Override
-	public KVariant getMemberByName(String name) throws KSException {
-		return Closure.getMemberByName(name);
+	public KVariant getMemberByName(String name,int flag) throws KSException {
+		return Closure.getMemberByName(name,flag);
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var) throws KSException {
-		return Closure.getMemberByVariant(var);
+	public KVariant getMemberByVariant(KVariant var,int flag) throws KSException {
+		return Closure.getMemberByVariant(var,flag);
+	}
+
+
+	@Override
+	public KVariant setMemberByName(String name, KVariant val,int flag) throws KSException {
+		return Closure.setMemberByName(name, val,flag);
 	}
 
 	@Override
-	public KVariant getMemberByNameEnsure(String name) throws KSException {
-		return Closure.getMemberByNameEnsure(name);
+	public KVariant setMemberByVariant(KVariant var, KVariant val,int flag) throws KSException {
+		return Closure.setMemberByVariant(var, val,flag);
 	}
 
 	@Override
-	public KVariant setMemberByName(String name, KVariant val) throws KSException {
-		if (name.equals("global"))
-			throw new AccessDeniedException();
-		return Closure.setMemberByName(name, val);
-	}
-
-	@Override
-	public KVariant setMemberByVariant(KVariant var, KVariant val) throws KSException {
-		if (var.toString().equals("global"))
-			throw new AccessDeniedException();
-		return Closure.setMemberByVariant(var, val);
-	}
-
-	@Override
-	public KVariant setMemberByNameEnsure(String name, KVariant val) throws KSException {
-		if (name.equals("global"))
-			throw new AccessDeniedException();
-		return Closure.setMemberByNameEnsure(name, val);
-	}
-
-	@Override
-	public boolean hasMemberByName(String name) throws KSException {
-		return Closure.hasMemberByName(name);
+	public boolean hasMemberByName(String name,int flag) throws KSException {
+		return Closure.hasMemberByName(name,flag);
 	}
 
 	@Override
 	public boolean deleteMemberByName(String name) throws KSException {
-		if (name.equals("global"))
-			throw new AccessDeniedException();
 		return Closure.deleteMemberByName(name);
 	}
 
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
-		if (var.toString().equals("global"))
-			throw new AccessDeniedException();
 		return Closure.deleteMemberByVariant(var);
 	}
 
 	@Override
-	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		if (name.equals("global"))
-			throw new AccessDeniedException();
-		return Closure.DoOperatonByName(op, name, opr);
+	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
+		return Closure.doOperationByName(op, name, opr);
 	}
 
 	@Override
-	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
-		if (var.toString().equals("global"))
-			throw new AccessDeniedException();
-		return Closure.DoOperatonByVariant(op, var, opr);
+	public KVariant doOperationByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
+		return Closure.doOperationByVariant(op, var, opr);
 	}
 
 	@Override
@@ -111,9 +79,7 @@ public class GlobalEnvironment extends Closure {
 	}
 
 	@Override
-	public void EnumMembers(BiConsumer<KVariant, KVariant> cosumer) throws KSException {
-		Closure.EnumMembers(cosumer);
+	public void EnumMembers(Enumerator cosumer,int flag) throws KSException {
+		Closure.EnumMembers(cosumer,flag);
 	}
-
-
 }

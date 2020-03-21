@@ -1,0 +1,8 @@
+add_header=true
+eclipse.preferences.version=1
+header_text=/*\r\n * file\: ${file_name}\r\n * @author khjxiaogu\r\n * time\: ${date}\r\n */
+include_subpackages=true
+project_specific_settings=true
+replacements=<?xml version\="1.0" standalone\="yes"?>\n\n<replacements></replacements>\n\n
+use_internal_formatter=true
+use_pkg_info=true

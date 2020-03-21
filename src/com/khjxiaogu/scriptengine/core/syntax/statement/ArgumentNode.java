@@ -115,10 +115,10 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 			if (cur instanceof Equal) {
 				LiteralNode tok = ((Equal) cur).getAssignToken();
 				if (tok != null) {
-					result = env.setMemberByName(tok.getToken(), ((Equal) cur).getAssignExpression().eval(env));
+					result = env.setMemberByName(tok.getToken(), ((Equal) cur).getAssignExpression().eval(env),KEnvironment.THISONLY);
 				}
 			} else if (cur instanceof LiteralNode) {
-				result = env.setMemberByName(((LiteralNode) cur).getToken(), new KVariant());
+				result = env.setMemberByName(((LiteralNode) cur).getToken(), new KVariant(),KEnvironment.THISONLY);
 			}
 
 		}

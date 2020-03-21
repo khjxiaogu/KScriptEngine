@@ -6,7 +6,7 @@ import java.util.Collection;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.ArrayEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
+import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
@@ -117,52 +117,39 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name) throws KSException {
+	public KVariant getMemberByName(String name,int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.getMemberByName(name);
+		return parent.getMemberByName(name,flag);
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var) throws KSException {
+	public KVariant getMemberByVariant(KVariant var,int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(var.toString());
-		return parent.getMemberByVariant(var);
+		return parent.getMemberByVariant(var,flag);
 	}
 
+
 	@Override
-	public KVariant getMemberByNameEnsure(String name) throws KSException {
+	public KVariant setMemberByName(String name, KVariant val,int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.getMemberByNameEnsure(name);
+		return parent.setMemberByName(name, val,flag);
 	}
 
 	@Override
-	public KVariant setMemberByName(String name, KVariant val) throws KSException {
-		if (parent == null)
-			throw new MemberNotFoundException(name);
-		return parent.setMemberByName(name, val);
-	}
-
-	@Override
-	public KVariant setMemberByVariant(KVariant var, KVariant val) throws KSException {
+	public KVariant setMemberByVariant(KVariant var, KVariant val,int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(var.toString());
-		return parent.setMemberByVariant(var, val);
+		return parent.setMemberByVariant(var, val,flag);
 	}
 
 	@Override
-	public KVariant setMemberByNameEnsure(String name, KVariant val) throws KSException {
+	public boolean hasMemberByName(String name,int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.setMemberByNameEnsure(name, val);
-	}
-
-	@Override
-	public boolean hasMemberByName(String name) throws KSException {
-		if (parent == null)
-			throw new MemberNotFoundException(name);
-		return parent.hasMemberByName(name);
+		return parent.hasMemberByName(name,flag);
 	}
 
 	@Override
@@ -180,24 +167,45 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	}
 
 	@Override
-	public KVariant DoOperatonByName(AssignOperation op, String name, KVariant opr) throws KSException {
+	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.DoOperatonByName(op, name, opr);
+		return parent.doOperationByName(op, name, opr);
 	}
 
 	@Override
-	public KVariant DoOperatonByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
+	public KVariant doOperationByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(var.toString());
-		return parent.DoOperatonByVariant(op, var, opr);
+		return parent.doOperationByVariant(op, var, opr);
 	}
 
 	public String[] getSymbol() {
 		return symbol;
 	}
+
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis) throws KSException {
-		return parent.funcCallByName(name, args, objthis);
+	public <T> T getNativeInstance(Class<T> cls) throws KSException {
+		return parent.getNativeInstance(cls);
+	}
+
+	@Override
+	public void putNativeInstance(Object nis) throws KSException {
+		parent.putNativeInstance(nis);
+	}
+
+	@Override
+	public KEnvironment getThis() throws KSException {
+		return parent.getThis();
+	}
+
+	@Override
+	public KEnvironment getSuper() throws KSException {
+		return parent.getSuper();
+	}
+
+	@Override
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+		return parent.funcCallByName(name, args, objthis,flag);
 	}
 }

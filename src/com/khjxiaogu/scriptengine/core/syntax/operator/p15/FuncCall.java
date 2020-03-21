@@ -5,7 +5,6 @@ import java.util.List;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Object.CallableFunction;
-import com.khjxiaogu.scriptengine.core.Object.Closure;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;

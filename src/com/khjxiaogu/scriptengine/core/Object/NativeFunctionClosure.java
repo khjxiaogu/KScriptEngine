@@ -4,22 +4,26 @@ import java.util.Arrays;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
+import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 
 public class NativeFunctionClosure<T> extends Closure implements CallableFunction {
 	NativeFunction<T> functhis;
 	Class<T> nativecls;
 
-	public NativeFunctionClosure(Class<T> objtype,NativeFunction<T> functhis) {
+	public NativeFunctionClosure(Class<T> objtype, NativeFunction<T> functhis) {
 		super(null);
-		nativecls=objtype;
+		nativecls = objtype;
 		this.functhis = functhis;
 	}
+
 	public NativeFunctionClosure(NativeFunction<T> functhis) {
 		super(null);
-		nativecls=null;
+		nativecls = null;
 		this.functhis = functhis;
 	}
+
 	@Override
 	public boolean isInstanceOf(String str) {
 		return str.equals("Function");
@@ -50,10 +54,9 @@ public class NativeFunctionClosure<T> extends Closure implements CallableFunctio
 		if (args != null) {
 			args = Arrays.copyOf(args, args.length);
 		}
-		if(nativecls!=null)
+		if (nativecls != null)
 			return functhis.call(env.getNativeInstance(nativecls), args);
 		else
 			return functhis.call(null, args);
 	}
-
 }

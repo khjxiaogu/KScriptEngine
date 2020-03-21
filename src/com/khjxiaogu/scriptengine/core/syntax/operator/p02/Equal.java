@@ -2,6 +2,7 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p02;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.exceptions.AssignException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
@@ -55,6 +56,6 @@ public class Equal extends DoubleOperator {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
 		if (!(super.left instanceof Assignable))
-			throw new SyntaxError("错误的赋值表达式");
+			throw new AssignException(super.left.toString());
 	}
 }

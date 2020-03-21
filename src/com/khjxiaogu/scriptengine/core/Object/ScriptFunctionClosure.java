@@ -4,7 +4,9 @@ import java.util.Arrays;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
+import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 
@@ -74,5 +76,4 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 		}
 		return functionBody.eval(tenv);
 	}
-
 }

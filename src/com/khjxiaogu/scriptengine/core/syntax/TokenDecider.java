@@ -84,7 +84,9 @@ import com.khjxiaogu.scriptengine.core.syntax.statement.DoWhileStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.ForStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.FunctionStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.IfStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.SuperStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.SwitchStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.ThisStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.VarStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WhileStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WithStatement;
@@ -422,6 +424,12 @@ public class TokenDecider implements ASTParser {
 		TokenDecider.identifiers.put("do", (reader, last) -> {
 			return new DoWhileStatement().parse(reader);
 		});
+		TokenDecider.identifiers.put("this", (reader, last) -> {
+			return new ThisStatement();
+		});
+		TokenDecider.identifiers.put("super", (reader, last) -> {
+			return new SuperStatement();
+		});
 
 	}
 
@@ -438,8 +446,7 @@ public class TokenDecider implements ASTParser {
 		 * import in
 		 * new protected property
 		 * private public synchronized
-		 * static setter +super throw
-		 * +this
+		 * static setter throw
 		 */
 		do {
 			sb.append(ch);

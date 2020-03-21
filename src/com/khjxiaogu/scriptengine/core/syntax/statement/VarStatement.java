@@ -63,16 +63,6 @@ public class VarStatement implements Visitable, ASTParser, MemberOperator, CodeN
 	}
 
 	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		return null;
-	}
-
-	@Override
-	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return null;
-	}
-
-	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		return null;
 	}

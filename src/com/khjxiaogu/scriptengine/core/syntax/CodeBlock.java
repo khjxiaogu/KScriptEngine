@@ -78,8 +78,9 @@ public class CodeBlock implements Block, Visitable {
 				if (cn.getClass() == CodeBlock.class) {
 					((CodeBlock) cn).attr = CodeBlockAttribute.OBJECT;
 					((CodeBlock) cn).init(env);
-				}else
-				cn.eval(env);
+				} else {
+					cn.eval(env);
+				}
 			}
 		} catch (ScriptException e) {
 			e.filename = name;

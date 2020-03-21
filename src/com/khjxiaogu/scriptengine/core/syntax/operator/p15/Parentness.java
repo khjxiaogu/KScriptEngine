@@ -5,7 +5,7 @@ import java.util.List;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
+import com.khjxiaogu.scriptengine.core.exceptions.AssignException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
@@ -21,7 +21,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
  * @author khjxiaogu
  * @time 2020年2月19日
  */
-public class Parentness implements CodeNode, ASTParser, MemberOperator {
+public class Parentness implements CodeNode, ASTParser, MemberOperator,Assignable {
 	CodeNode inner;
 
 	/**
@@ -55,23 +55,23 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator {
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
 		if (inner instanceof Assignable)
-			return ((MemberOperator) inner).assign(env, val);
-		throw new ScriptException("错误的赋值表达式");
+			return ((Assignable) inner).assign(env, val);
+		throw new AssignException(inner.toString());
 	}
 
 	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if (inner instanceof Assignable)
+		if (inner instanceof MemberOperator)
 			return ((MemberOperator) inner).getObject(env);
-		throw new ScriptException("错误的赋值表达式");
+		throw new AssignException(inner.toString());
 	}
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
 		if (inner instanceof Assignable)
-			return ((MemberOperator) inner).assignOperation(env, val, op);
-		throw new ScriptException("错误的赋值表达式");
+			return ((Assignable) inner).assignOperation(env, val, op);
+		throw new AssignException(inner.toString());
 	}
 
 	@Override

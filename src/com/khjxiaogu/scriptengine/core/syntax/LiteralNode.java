@@ -35,8 +35,8 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		if (isLocal())
-			return env.getMemberByNum(itoken);
-		return env.getMemberByNameEnsure(token);
+			return env.getMemberByNum(itoken,KEnvironment.MUSTEXIST);
+		return env.getMemberByName(token,KEnvironment.MUSTEXIST);
 	}
 
 	public String getToken() {
@@ -67,14 +67,14 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
 		if (isLocal())
-			return env.setMemberByNum(itoken, val);
-		return env.setMemberByNameEnsure(token, val);
+			return env.setMemberByNum(itoken, val,KEnvironment.MUSTEXIST);
+		return env.setMemberByName(token, val,KEnvironment.MUSTEXIST);
 	}
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if(env instanceof KObject)
+		if (env instanceof KObject)
 			return (KObject) env;
 		else
 			return null;
@@ -83,8 +83,8 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
 		if (isLocal())
-			return env.DoOperatonByNum(op, itoken, val);
-		return env.DoOperatonByName(op, token, val);
+			return env.doOperationByNum(op, itoken, val);
+		return env.doOperationByName(op, token, val);
 	}
 
 	@Override
@@ -94,9 +94,9 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 
 	@Override
 	public KVariant getPointing(KEnvironment env) {
-		if(itoken!=-1) {
+		if (itoken != -1)
 			return new KVariant(getToken());
-		}else
+		else
 			return new KVariant(itoken);
 	}
 
