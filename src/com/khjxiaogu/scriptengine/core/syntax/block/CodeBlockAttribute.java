@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.syntax;
+package com.khjxiaogu.scriptengine.core.syntax.block;
 
 /**
  * @author khjxiaogu

@@ -5,15 +5,15 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlockEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Default;
 
@@ -63,13 +63,13 @@ public class SwitchStatement extends CodeBlock {
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
-		char c = reader.eatAll();
+		char c = reader.eatAllSpace();
 		if (c == '(') {
 			parser.clear();
 			c = reader.eat();
 			cond = parser.parseUntil(reader, ')');
 			reader.eat();
-			c = reader.eatAll();
+			c = reader.eatAllSpace();
 			if (c == '{') {
 				c = reader.eat();
 			} else

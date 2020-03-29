@@ -3,10 +3,10 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;

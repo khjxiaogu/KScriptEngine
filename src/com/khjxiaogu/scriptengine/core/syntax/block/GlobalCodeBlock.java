@@ -1,13 +1,14 @@
-package com.khjxiaogu.scriptengine.core.syntax;
+package com.khjxiaogu.scriptengine.core.syntax.block;
 
 import java.util.ArrayList;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.GlobalEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.object.GlobalEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 
 public class GlobalCodeBlock extends CodeBlock {
 

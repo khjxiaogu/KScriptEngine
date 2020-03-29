@@ -4,15 +4,15 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
-import com.khjxiaogu.scriptengine.core.syntax.Block;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
+import com.khjxiaogu.scriptengine.core.syntax.block.Block;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 
 public class ForStatement implements Block {
 
@@ -31,7 +31,7 @@ public class ForStatement implements Block {
 			if (!reader.has()) {
 				break;
 			}
-			char c = reader.eatAll();
+			char c = reader.eatAllSpace();
 			if (!reader.has()) {
 				break;
 			}

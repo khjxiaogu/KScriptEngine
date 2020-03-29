@@ -7,6 +7,8 @@ import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidCharacterException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
@@ -114,7 +116,7 @@ public class TokenDecider implements ASTParser {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
-		char c = reader.eatAll();
+		char c = reader.eatAllSpace();
 		if (c < '!')
 			throw new InvalidCharacterException(c);
 		else if (c < '0') {

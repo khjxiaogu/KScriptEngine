@@ -1,9 +1,11 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.object.CallableFunction;
+import com.khjxiaogu.scriptengine.core.object.FunctionClosure;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
@@ -19,7 +21,7 @@ public class InContextOf extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.left.eval((KObject) super.right.eval(env).asType("Object"));
+		return new KVariant(new FunctionClosure((CallableFunction) super.left.eval(env).asType(KObject.class),super.right.eval(env).asType(KObject.class)));
 	}
 
 	@Override

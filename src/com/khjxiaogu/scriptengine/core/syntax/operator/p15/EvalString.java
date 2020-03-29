@@ -2,9 +2,9 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Parser;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlockEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 

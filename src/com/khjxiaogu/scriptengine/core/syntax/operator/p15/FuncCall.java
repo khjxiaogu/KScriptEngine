@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.CallableFunction;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
+import com.khjxiaogu.scriptengine.core.object.CallableFunction;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
@@ -29,11 +29,10 @@ public class FuncCall extends SingleOperator implements ASTParser {
 		for (int i = 0; i < args.length; i++) {
 			arg[i] = args[i].eval(env);
 		}
-		KObject obj = (KObject) func.asType("Object");
+		KObject obj = func.asType(KObject.class);
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(arg, env);
-		else
-			throw new ScriptException("对象不是函数");
+		throw new ScriptException("对象不是函数");
 	}
 
 	@Override

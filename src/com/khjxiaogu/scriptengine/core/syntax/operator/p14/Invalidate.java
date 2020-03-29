@@ -1,9 +1,9 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p14;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
@@ -23,7 +23,7 @@ public class Invalidate extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(((KObject) super.Child.eval(env).asType("Object")).invalidate());
+		return new KVariant(super.Child.eval(env).asType(KObject.class).invalidate());
 	}
 
 	@Override

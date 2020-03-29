@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.Object;
+package com.khjxiaogu.scriptengine.core.object;
 
 import java.util.ArrayList;
 import java.util.List;

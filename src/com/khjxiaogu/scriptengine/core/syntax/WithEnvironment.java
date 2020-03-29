@@ -2,8 +2,11 @@ package com.khjxiaogu.scriptengine.core.syntax;
 
 import java.util.Collection;
 
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockEnvironment;
 
 public class WithEnvironment extends CodeBlockEnvironment {
 	KObject with;

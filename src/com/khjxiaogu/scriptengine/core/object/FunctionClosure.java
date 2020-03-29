@@ -1,17 +1,24 @@
-package com.khjxiaogu.scriptengine.core.Object;
+package com.khjxiaogu.scriptengine.core.object;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
 
 public class FunctionClosure extends Closure implements CallableFunction {
-	KObject objthis;
-	CallableFunction functhis;
+	protected KObject objthis;
+	protected CallableFunction functhis;
 
-	public FunctionClosure(CallableFunction functhis, KObject objthis) {
+	public FunctionClosure(KObject functhis, KObject objthis) throws ConversionException {
 		super(objthis);
+		if(!(functhis instanceof CallableFunction)) {
+			throw new ConversionException("Object","Function");
+		}
+		
 		this.objthis = objthis;
-		this.functhis = functhis;
+		while(functhis instanceof FunctionClosure)
+			functhis=((FunctionClosure)functhis).functhis;//unwrap all closures
+		this.functhis = (CallableFunction)functhis;
 	}
 
 	@Override

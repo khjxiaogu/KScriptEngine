@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 
 public class Parser {
 	private static Parser parser = new Parser();

@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.Object;
+package com.khjxiaogu.scriptengine.core.object;
 
 public class ScriptArrayClosure extends Closure {
 

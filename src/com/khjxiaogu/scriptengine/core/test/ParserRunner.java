@@ -3,11 +3,11 @@ package com.khjxiaogu.scriptengine.core.test;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.Parser;
 import com.khjxiaogu.scriptengine.core.StringParseReader;
-import com.khjxiaogu.scriptengine.core.Object.GlobalEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.NativeFunctionClosure;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.syntax.GlobalCodeBlock;
+import com.khjxiaogu.scriptengine.core.object.GlobalEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.NativeFunctionClosure;
+import com.khjxiaogu.scriptengine.core.syntax.block.GlobalCodeBlock;
 
 public class ParserRunner {
 	public static void main(String[] args) {

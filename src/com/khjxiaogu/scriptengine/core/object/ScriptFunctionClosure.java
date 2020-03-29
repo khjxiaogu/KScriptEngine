@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.Object;
+package com.khjxiaogu.scriptengine.core.object;
 
 import java.util.Arrays;
 
@@ -7,8 +7,8 @@ import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 
 /**
  * @author khjxiaogu

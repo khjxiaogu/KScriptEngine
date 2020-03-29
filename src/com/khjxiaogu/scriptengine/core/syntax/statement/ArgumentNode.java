@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
@@ -30,7 +30,7 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 			if (!reader.has()) {
 				break;
 			}
-			char c = reader.eatAll();
+			char c = reader.eatAllSpace();
 			if (!reader.has()) {
 				break;
 			}

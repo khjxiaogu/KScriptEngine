@@ -6,6 +6,7 @@ import java.util.Arrays;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.syntax.block.Block;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 
@@ -86,7 +87,7 @@ public class StatementParser {
 
 	public CodeNode parseUntilOrBlock(ParseReader reader, char until) throws KSException {
 		while (true) {
-			char c = reader.eatAll();
+			char c = reader.eatAllSpace();
 			if (c != until) {
 				put(td.parse(reader));
 				if (last instanceof Block) {
@@ -112,7 +113,7 @@ public class StatementParser {
 	public CodeNode parseUntil(ParseReader reader, char... untils) throws KSException {
 		Arrays.parallelSort(untils);
 		while (true) {
-			char c = reader.eatAll();
+			char c = reader.eatAllSpace();
 			int srh = Arrays.binarySearch(untils, c);
 			// System.out.println(srh);
 			if (srh < 0) {
@@ -137,7 +138,7 @@ public class StatementParser {
 			if (!reader.has()) {
 				break;
 			}
-			char c = reader.eatAll();
+			char c = reader.eatAllSpace();
 			if (!reader.has()) {
 				break;
 			}

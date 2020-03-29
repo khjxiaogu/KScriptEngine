@@ -3,10 +3,10 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KObject;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
@@ -31,7 +31,7 @@ public class GetMember extends DoubleOperator implements MemberOperator,Assignab
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return ((KObject) super.left.eval(env).asType("Object")).getMemberByVariant(super.right.eval(env),KEnvironment.DEFAULT);
+		return super.left.eval(env).asType(KObject.class).getMemberByVariant(super.right.eval(env),KEnvironment.DEFAULT);
 	}
 
 	@Override

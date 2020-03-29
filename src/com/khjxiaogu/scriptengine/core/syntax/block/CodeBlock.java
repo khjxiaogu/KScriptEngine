@@ -1,14 +1,17 @@
-package com.khjxiaogu.scriptengine.core.syntax;
+package com.khjxiaogu.scriptengine.core.syntax.block;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 public class CodeBlock implements Block, Visitable {
@@ -115,7 +118,7 @@ public class CodeBlock implements Block, Visitable {
 				if (!reader.has()) {
 					break;
 				}
-				char c = reader.eatAll();
+				char c = reader.eatAllSpace();
 				if (!reader.has()) {
 					break;
 				}

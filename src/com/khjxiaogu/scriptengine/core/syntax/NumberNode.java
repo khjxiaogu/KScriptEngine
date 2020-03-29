@@ -2,10 +2,10 @@ package com.khjxiaogu.scriptengine.core.syntax;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
-import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
 
 /**
  * @author khjxiaogu
@@ -22,12 +22,12 @@ public class NumberNode implements ASTParser, CodeNode {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NumberNode(int i) throws ConvertionException {
+	public NumberNode(int i) throws ConversionException {
 		// TODO Auto-generated constructor stub
 		number.setNumber((double) i);
 	}
 
-	public NumberNode(double i) throws ConvertionException {
+	public NumberNode(double i) throws ConversionException {
 		// TODO Auto-generated constructor stub
 		number.setNumber(i);
 	}

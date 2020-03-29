@@ -3,7 +3,7 @@ package com.khjxiaogu.scriptengine.core.typeconvert;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.khjxiaogu.scriptengine.core.Object.KObject;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 
 public class TypeInfo {
 	private String name;
@@ -30,7 +30,6 @@ public class TypeInfo {
 		this.type = type;
 		TypeInfo.types.put(name, this);
 		TypeInfo.typeclasses.put(type, this);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -41,22 +40,22 @@ public class TypeInfo {
 	 */
 	public static TypeInfo forName(String name) {
 		return TypeInfo.types.get(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static TypeInfo forType(Class<?> type) {
-		/*
-		 * if(type.isAssignableFrom(KObject.class)) return forName("Object"); else
-		 * return typeclasses.get(type);
-		 */
+		TypeInfo ti=null;
+		if((ti=forTypeConstant(type))!=null) {
+			return ti;
+		}
 		for (Map.Entry<Class<?>, TypeInfo> entry : TypeInfo.typeclasses.entrySet()) {
 			if (type.isAssignableFrom(entry.getKey()))
 				return entry.getValue();
 		}
-		return TypeInfo.forName("void");
-		// TODO Auto-generated constructor stub
+		return TypeInfo.forTypeConstant(Void.class);
 	}
-
+	public static TypeInfo forTypeConstant(Class<?> type) {
+		return TypeInfo.typeclasses.get(type);
+	}
 	public static void registClassAlias(Class<?> type, String orig) {
 		TypeInfo.typeclasses.put(type, TypeInfo.types.get(orig));
 	}

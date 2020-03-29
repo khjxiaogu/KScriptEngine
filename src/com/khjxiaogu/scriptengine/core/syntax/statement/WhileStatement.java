@@ -4,15 +4,15 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
-import com.khjxiaogu.scriptengine.core.syntax.Block;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlock;
-import com.khjxiaogu.scriptengine.core.syntax.CodeBlockAttribute;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
+import com.khjxiaogu.scriptengine.core.syntax.block.Block;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 
 public class WhileStatement implements Block {
 
@@ -25,7 +25,7 @@ public class WhileStatement implements Block {
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser = new StatementParser();
-		char c = reader.eatAll();
+		char c = reader.eatAllSpace();
 		//
 
 		if (c == '(') {
@@ -35,7 +35,7 @@ public class WhileStatement implements Block {
 			reader.eat();
 		} else
 			throw new SyntaxError("错误的while表达式");
-		c = reader.eatAll();
+		c = reader.eatAllSpace();
 		if (c == '{') {
 			c = reader.eat();
 			Body = new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);

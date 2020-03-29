@@ -96,7 +96,7 @@ public class StringParseReader implements ParseReader {
 	}
 
 	@Override
-	public char eatAll() throws KSException {
+	public char eatAllSpace() throws KSException {
 		while (Character.isWhitespace(backed.charAt(pos))) {
 			pos++;
 			if (pos >= backed.length())

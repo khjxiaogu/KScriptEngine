@@ -1,13 +1,13 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 import com.khjxiaogu.scriptengine.core.typeconvert.Converter;
-import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionException;
-import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionManager;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
+import com.khjxiaogu.scriptengine.core.typeconvert.ConversionManager;
 
 /**
  * @author khjxiaogu
@@ -16,8 +16,8 @@ import com.khjxiaogu.scriptengine.core.typeconvert.ConvertionManager;
 public class TypeConvertion extends SingleOperator {
 	Converter converter;
 
-	public TypeConvertion(String Type) throws ConvertionException {
-		converter = ConvertionManager.getConvertion(Type);
+	public TypeConvertion(String Type) throws ConversionException {
+		converter = ConversionManager.getConversion(Type);
 	}
 
 	@Override

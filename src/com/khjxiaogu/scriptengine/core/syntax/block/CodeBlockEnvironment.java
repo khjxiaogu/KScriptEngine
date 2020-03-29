@@ -1,15 +1,16 @@
-package com.khjxiaogu.scriptengine.core.syntax;
+package com.khjxiaogu.scriptengine.core.syntax.block;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.Object.ArrayEnvironment;
-import com.khjxiaogu.scriptengine.core.Object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
+import com.khjxiaogu.scriptengine.core.object.ArrayEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 /**
  * @author khjxiaogu
