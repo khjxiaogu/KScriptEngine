@@ -1,8 +1,6 @@
 package com.khjxiaogu.scriptengine.core.object;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
-import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 
 public class PropertyClosure extends Closure implements KProperty {
 

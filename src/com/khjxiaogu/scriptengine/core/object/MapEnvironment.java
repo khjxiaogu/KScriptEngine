@@ -17,29 +17,29 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name,int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag) throws KSException {
 		// TODO Auto-generated method stub
 		KVariant res = map.get(name);
 		if (res == null) {
-			if((flag&KEnvironment.MUSTEXIST)==1)
+			if ((flag & KEnvironment.MUSTEXIST) == 1)
 				throw new MemberNotFoundException(name);
 			return new KVariant();
 		}
-		if((flag&KEnvironment.IGNOREPROP)!=1) {
-			if(res!=null&&res.getType().getType()==KObject.class&&res.getValue() instanceof KProperty) {
-				return ((KProperty)res.getValue()).getProp(null);
-			}
+		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
+				return ((KProperty) res.getValue()).getProp(null);
 		}
 		return res;
 	}
+
 	@Override
-	public KVariant getMemberByNum(int num,int flag) throws KSException {
+	public KVariant getMemberByNum(int num, int flag) throws KSException {
 		// TODO Auto-generated method stub
 		throw new MemberNotFoundException("%" + num);
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var,int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
 		// TODO Auto-generated method stub
 		KVariant res = null;
 		String name = var.toString();
@@ -47,24 +47,23 @@ public class MapEnvironment implements KEnvironment {
 		if (res == null) {
 			res = new KVariant();
 		}
-		if((flag&KEnvironment.IGNOREPROP)!=1) {
-			if(res!=null&&res.getType().getType()==KObject.class&&res.getValue() instanceof KProperty) {
-				return ((KProperty)res.getValue()).getProp(null);
-			}
+		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
+				return ((KProperty) res.getValue()).getProp(null);
 		}
 		return res;
 	}
 
 	@Override
-	public KVariant setMemberByName(String name, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
 		// TODO Auto-generated method stub
-		if((flag&KEnvironment.MUSTEXIST)==1)
-			if(!map.containsKey(name))
+		if ((flag & KEnvironment.MUSTEXIST) == 1)
+			if (!map.containsKey(name))
 				throw new MemberNotFoundException(name);
-		if((flag&KEnvironment.IGNOREPROP)!=1) {
-			KVariant va=map.get(name);
-			if(va!=null&&va.getType().getType()==KObject.class&&va.getValue() instanceof KProperty) {
-				((KProperty)va.getValue()).setProp(val,null);
+		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			KVariant va = map.get(name);
+			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
+				((KProperty) va.getValue()).setProp(val, null);
 				return val;
 			}
 		}
@@ -73,13 +72,13 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant setMemberByNum(int num, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByNum(int num, KVariant val, int flag) throws KSException {
 		// TODO Auto-generated method stub
 		String name = Integer.toString(num);
-		if((flag&KEnvironment.IGNOREPROP)!=1) {
-			KVariant va=map.get(name);
-			if(va!=null&&va.getType().getType()==KObject.class&&va.getValue() instanceof KProperty) {
-				((KProperty)va.getValue()).setProp(val,null);
+		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			KVariant va = map.get(name);
+			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
+				((KProperty) va.getValue()).setProp(val, null);
 				return val;
 			}
 		}
@@ -88,14 +87,14 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant setMemberByVariant(KVariant var, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 		// TODO Auto-generated method stub
 		String name = null;
 		name = var.toString();
-		if((flag&KEnvironment.IGNOREPROP)!=1) {
-			KVariant va=map.get(name);
-			if(va!=null&&va.getType().getType()==KObject.class&&va.getValue() instanceof KProperty) {
-				((KProperty)va.getValue()).setProp(val,null);
+		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			KVariant va = map.get(name);
+			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
+				((KProperty) va.getValue()).setProp(val, null);
 				return val;
 			}
 		}
@@ -184,7 +183,7 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public boolean hasMemberByName(String name,int flag) throws KSException {
+	public boolean hasMemberByName(String name, int flag) throws KSException {
 		return map.containsKey(name);
 	}
 
@@ -199,12 +198,12 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		throw new MemberNotFoundException("%" + num);
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		KVariant res = map.get(name);
 		if (res == null)
 			throw new MemberNotFoundException(name);
@@ -216,15 +215,15 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public void EnumMembers(Enumerator cosumer,int flag) throws KSException {
+	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
 		for (Map.Entry<String, KVariant> me : map.entrySet()) {
-			KVariant va=me.getValue();
-			if((flag&KEnvironment.IGNOREPROP)!=1) {
-				if(va!=null&&va.getType().getType()==KObject.class&&va.getValue() instanceof KProperty) {
-					va=((KProperty)va.getValue()).getProp(null);
+			KVariant va = me.getValue();
+			if ((flag & KEnvironment.IGNOREPROP) != 1) {
+				if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
+					va = ((KProperty) va.getValue()).getProp(null);
 				}
 			}
-			if (!cosumer.execute(new KVariant(me.getKey()),va)) {
+			if (!cosumer.execute(new KVariant(me.getKey()), va)) {
 				break;
 			}
 		}

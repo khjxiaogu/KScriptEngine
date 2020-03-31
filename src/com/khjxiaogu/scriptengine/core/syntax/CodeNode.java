@@ -17,11 +17,12 @@ import com.khjxiaogu.scriptengine.core.object.KEnvironment;
  *          time: 2020年3月29日
  */
 public interface CodeNode extends Cloneable {
-	
+
 	/**
 	 * Eval in specific environment.<br />
 	 *
-	 * @param env envrionment for eval<br />执行上下文
+	 * @param env envrionment for eval<br />
+	 *            执行上下文
 	 * @return return result <br />
 	 *         返回结果
 	 * @throws KSException Any Engine Exception occurred<br />

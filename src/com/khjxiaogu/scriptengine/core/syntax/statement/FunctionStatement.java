@@ -11,7 +11,6 @@ import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.ScriptFunctionClosure;
-import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.BlockClosure;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
@@ -36,10 +35,12 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		if (itoken != -1) {
-			env.setMemberByNum(itoken, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),KEnvironment.DEFAULT);
+			env.setMemberByNum(itoken, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
+					KEnvironment.DEFAULT);
 			return null;
 		} else if (name != null) {
-			env.setMemberByName(name, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),KEnvironment.THISONLY);
+			env.setMemberByName(name, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
+					KEnvironment.THISONLY);
 			return null;
 		} else
 			return new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
@@ -121,7 +122,6 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 	@Override
 	public void init(KEnvironment env) throws KSException {
 	}
-
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {

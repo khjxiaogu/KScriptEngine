@@ -19,7 +19,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
  * @author khjxiaogu
  * @time 2020年2月16日 file:OperatorGetMember.java x[x]
  */
-public class GetMember extends DoubleOperator implements MemberOperator,Assignable {
+public class GetMember extends DoubleOperator implements MemberOperator, Assignable {
 
 	/**
 	 *
@@ -31,7 +31,8 @@ public class GetMember extends DoubleOperator implements MemberOperator,Assignab
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.left.eval(env).asType(KObject.class).getMemberByVariant(super.right.eval(env),KEnvironment.DEFAULT);
+		return super.left.eval(env).asType(KObject.class).getMemberByVariant(super.right.eval(env),
+				KEnvironment.DEFAULT);
 	}
 
 	@Override
@@ -54,14 +55,15 @@ public class GetMember extends DoubleOperator implements MemberOperator,Assignab
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		return ((MemberOperator) super.left).getObject(env).setMemberByVariant(super.right.eval(env), val,KEnvironment.DEFAULT);
+		return ((MemberOperator) super.left).getObject(env).setMemberByVariant(super.right.eval(env), val,
+				KEnvironment.DEFAULT);
 	}
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return (KObject) ((MemberOperator) super.left).getObject(env).getMemberByVariant(super.right.eval(env),KEnvironment.DEFAULT)
-				.toType("Object");
+		return (KObject) ((MemberOperator) super.left).getObject(env)
+				.getMemberByVariant(super.right.eval(env), KEnvironment.DEFAULT).toType("Object");
 	}
 
 	@Override

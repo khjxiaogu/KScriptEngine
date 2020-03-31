@@ -3,7 +3,6 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p02;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.AssignException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;

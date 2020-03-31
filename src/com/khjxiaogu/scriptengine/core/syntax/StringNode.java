@@ -18,7 +18,7 @@ public class StringNode implements CodeNode, ASTParser {
 		StringBuilder sb = new StringBuilder();
 		char start = reader.read();
 		char c = reader.eat();
-		//System.out.println(c);
+		// System.out.println(c);
 		// System.out.println(start);
 		while (c != start) {
 			if (c == '\\') {
@@ -54,7 +54,7 @@ public class StringNode implements CodeNode, ASTParser {
 				case 'v':
 					sb.append('\u000B');
 					break;
-				case 'X'://\x0008
+				case 'X':// \x0008
 				case 'x':
 					StringBuilder x = new StringBuilder(8);
 					char c1 = reader.eat();
@@ -70,7 +70,7 @@ public class StringNode implements CodeNode, ASTParser {
 					sb.append((char) Integer.parseInt(x.toString(), 16));
 					break;
 				}
-				c=reader.eat();
+				c = reader.eat();
 				continue;
 			}
 			sb.append(c);

@@ -6,7 +6,6 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.AssignException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
@@ -21,7 +20,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
  * @author khjxiaogu
  * @time 2020年2月19日
  */
-public class Parentness implements CodeNode, ASTParser, MemberOperator,Assignable {
+public class Parentness implements CodeNode, ASTParser, MemberOperator, Assignable {
 	CodeNode inner;
 
 	/**

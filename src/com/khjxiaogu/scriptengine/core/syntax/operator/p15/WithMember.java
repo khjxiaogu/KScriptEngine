@@ -16,7 +16,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
-public class WithMember extends SingleOperator implements MemberOperator,Assignable {
+public class WithMember extends SingleOperator implements MemberOperator, Assignable {
 
 	public WithMember() {
 	}
@@ -25,7 +25,8 @@ public class WithMember extends SingleOperator implements MemberOperator,Assigna
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		if (!(env instanceof WithEnvironment))
 			throw new SyntaxError("错误的.");
-		return ((WithEnvironment) env).getWith().setMemberByName(((LiteralNode) super.Child).getToken(), val,KEnvironment.MUSTEXIST);
+		return ((WithEnvironment) env).getWith().setMemberByName(((LiteralNode) super.Child).getToken(), val,
+				KEnvironment.MUSTEXIST);
 	}
 
 	@Override
@@ -66,7 +67,8 @@ public class WithMember extends SingleOperator implements MemberOperator,Assigna
 	public KVariant eval(KEnvironment env) throws KSException {
 		if (!(env instanceof WithEnvironment))
 			throw new SyntaxError("错误的.");
-		return ((WithEnvironment) env).getWith().getMemberByName(((LiteralNode) super.Child).getToken(),KEnvironment.MUSTEXIST);
+		return ((WithEnvironment) env).getWith().getMemberByName(((LiteralNode) super.Child).getToken(),
+				KEnvironment.MUSTEXIST);
 	}
 
 	@Override

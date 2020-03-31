@@ -46,56 +46,56 @@ public class ArrayEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name,int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag) throws KSException {
 		throw new MemberNotFoundException(name);
 	}
 
 	@Override
-	public KVariant getMemberByNum(int num,int flag) throws KSException {
+	public KVariant getMemberByNum(int num, int flag) throws KSException {
 		if (num < offset)
-			return parent.getMemberByNum(num,flag);
+			return parent.getMemberByNum(num, flag);
 		if (num - offset >= list.length)
 			throw new MemberNotFoundException("%" + num);
 		KVariant v;
 		if ((v = list[num - offset]) == null)
 			throw new MemberNotFoundException("%" + num);
-		if((flag&KEnvironment.IGNOREPROP)!=1) {
-			if(v.getType().getType()==KObject.class&&v.getValue() instanceof KProperty) {
-				return ((KProperty)v.getValue()).getProp(null);
-			}
+		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			if (v.getType().getType() == KObject.class && v.getValue() instanceof KProperty)
+				return ((KProperty) v.getValue()).getProp(null);
 		}
 		return v;
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var,int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
 		throw new MemberNotFoundException(var.toString());
 	}
 
 	@Override
-	public KVariant setMemberByName(String name, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
 		throw new MemberNotFoundException(name);
 	}
 
 	@Override
-	public KVariant setMemberByNum(int num, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByNum(int num, KVariant val, int flag) throws KSException {
 		if (num < offset)
-			return parent.setMemberByNum(num, val,flag);
-		KVariant va=list[num - offset];
-		if((flag&KEnvironment.IGNOREPROP)!=1) {
-			if(va!=null&&va.getType().getType()==KObject.class&&va.getValue() instanceof KProperty) {
-				((KProperty)va.getValue()).setProp(val,null);
+			return parent.setMemberByNum(num, val, flag);
+		KVariant va = list[num - offset];
+		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
+				((KProperty) va.getValue()).setProp(val, null);
 			}
 		}
 		return list[num - offset] = val;
 	}
 
 	@Override
-	public KVariant setMemberByVariant(KVariant var, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 		throw new MemberNotFoundException(var.toString());
 	}
+
 	@Override
-	public boolean hasMemberByName(String name,int flag) throws KSException {
+	public boolean hasMemberByName(String name, int flag) throws KSException {
 		throw new MemberNotFoundException(name);
 	}
 
@@ -205,11 +205,11 @@ public class ArrayEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		KVariant res = list[num];
 		if (res == null) {
 			if (parent != null)
-				return parent.funcCallByNum(num, args, objthis,flag);
+				return parent.funcCallByNum(num, args, objthis, flag);
 		}
 		if (res == null)
 			throw new MemberNotFoundException("%" + num);
@@ -221,20 +221,20 @@ public class ArrayEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		throw new MemberNotFoundException(name);
 	}
 
 	@Override
-	public void EnumMembers(Enumerator cosumer,int flag) throws KSException {
+	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
 		for (int i = 0; i < list.length; i++) {
-			KVariant va=list[i];
-			if((flag&KEnvironment.IGNOREPROP)!=1) {
-				if(va!=null&&va.getType().getType()==KObject.class&&va.getValue() instanceof KProperty) {
-					va=((KProperty)va.getValue()).getProp(null);
+			KVariant va = list[i];
+			if ((flag & KEnvironment.IGNOREPROP) != 1) {
+				if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
+					va = ((KProperty) va.getValue()).getProp(null);
 				}
 			}
-			if (!cosumer.execute(new KVariant(i),va)) {
+			if (!cosumer.execute(new KVariant(i), va)) {
 				break;
 			}
 		}
@@ -249,10 +249,12 @@ public class ArrayEnvironment implements KEnvironment {
 	public void putNativeInstance(Object nis) throws KSException {
 		throw new ContextException();
 	}
+
 	@Override
 	public KEnvironment getThis() throws KSException {
 		throw new ScriptException("无法定位this的类。");
 	}
+
 	@Override
 	public KEnvironment getSuper() throws KSException {
 		throw new InvalidSuperClassException();

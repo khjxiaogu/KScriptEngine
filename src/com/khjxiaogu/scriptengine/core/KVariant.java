@@ -7,9 +7,9 @@ package com.khjxiaogu.scriptengine.core;
 
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
-import com.khjxiaogu.scriptengine.core.typeconvert.Converter;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionManager;
+import com.khjxiaogu.scriptengine.core.typeconvert.Converter;
 import com.khjxiaogu.scriptengine.core.typeconvert.TypeInfo;
 
 // TODO: Auto-generated Javadoc
@@ -20,25 +20,25 @@ import com.khjxiaogu.scriptengine.core.typeconvert.TypeInfo;
  * @time 2019年8月23日 file:KVariant.java
  */
 public class KVariant implements Cloneable {
-	
+
 	/**
 	 * The type.<br />
-	 * 成员 type.
+	 * 变量类型.
 	 */
 	private TypeInfo type;
-	
+
 	/**
 	 * The value.<br />
-	 * 成员 value.
+	 * 变量值.
 	 */
 	private Object value;
-	
+
 	/**
 	 * Constant FALSE.<br />
 	 * 常量 FALSE.
 	 */
 	public final static KVariant FALSE = new KVariant(false);
-	
+
 	/**
 	 * Constant TRUE.<br />
 	 * 常量 TRUE.
@@ -46,30 +46,30 @@ public class KVariant implements Cloneable {
 	public final static KVariant TRUE = new KVariant(true);
 
 	/**
-	 * Instantiates a new k variant.<br />
-	 * 新建一个k variant类<br />
+	 * Instantiates a new KVariant.<br />
+	 * 新建一个KVariant类<br />
 	 */
 	public KVariant() {
 		type = TypeInfo.forTypeConstant(Void.class);
 		value = null;
 	}
-	
+
 	/**
-	 * Instantiates a new k variant with a k variant class.<br />
-	 * 使用一个k variant新建一个k variant类<br />
+	 * Copy construct KVariant.<br />
+	 * 复制一个KVariant类<br />
 	 *
-	 * @param ref the ref<br />
+	 * @param ref the class to copy<br />
 	 */
 	public KVariant(KVariant ref) {
 		type = ref.type;
 		value = ref.value;
 	}
-	
+
 	/**
-	 * Instantiates a new k variant with a k object class.<br />
-	 * 使用一个k object新建一个k variant类<br />
+	 * Instantiates a new KVariant with a KObject object as value.<br />
+	 * 使用一个KObject作为值新建一个KVariant类<br />
 	 *
-	 * @param val the val<br />
+	 * @param val the value<br />
 	 */
 	public KVariant(KObject val) {
 		type = TypeInfo.forTypeConstant(KObject.class);
@@ -77,10 +77,10 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Instantiates a new k variant with a double class.<br />
-	 * 使用一个double新建一个k variant类<br />
+	 * Instantiates a new KVariant with a Double object as value.<br />
+	 * 使用一个Double作为值新建一个KVariant类<br />
 	 *
-	 * @param val the val<br />
+	 * @param val the value<br />
 	 */
 	public KVariant(Double val) {
 		try {
@@ -90,11 +90,12 @@ public class KVariant implements Cloneable {
 			value = 0;
 		}
 	}
+
 	/**
-	 * Instantiates a new k variant with a double class.<br />
-	 * 使用一个double新建一个k variant类<br />
+	 * Instantiates a new KVariant with a double object as value.<br />
+	 * 使用一个double作为值新建一个KVariant类<br />
 	 *
-	 * @param val the val<br />
+	 * @param val the value<br />
 	 */
 	public KVariant(double val) {
 		try {
@@ -104,11 +105,12 @@ public class KVariant implements Cloneable {
 			value = 0;
 		}
 	}
+
 	/**
-	 * Instantiates a new k variant with a integer class.<br />
-	 * 使用一个integer新建一个k variant类<br />
+	 * Instantiates a new KVariant with a Integer object as value.<br />
+	 * 使用一个Integer作为值新建一个KVariant类<br />
 	 *
-	 * @param val the val<br />
+	 * @param val the value <br />
 	 */
 	public KVariant(Integer val) {
 		type = TypeInfo.forTypeConstant(Integer.class);
@@ -116,10 +118,10 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Instantiates a new k variant with a int class.<br />
-	 * 使用一个int新建一个k variant类<br />
+	 * Instantiates a new KVariant with a integer value.<br />
+	 * 使用一个整数作为值新建一个KVariant类<br />
 	 *
-	 * @param val the val<br />
+	 * @param val the value<br />
 	 */
 	public KVariant(int val) {
 		type = TypeInfo.forTypeConstant(Integer.class);
@@ -127,10 +129,10 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Instantiates a new k variant with a string class.<br />
-	 * 使用一个string新建一个k variant类<br />
+	 * Instantiates a new KVariant with a String object as value.<br />
+	 * 使用一个String作为值新建一个KVariant类<br />
 	 *
-	 * @param val the val<br />
+	 * @param val the value<br />
 	 */
 	public KVariant(String val) {
 		type = TypeInfo.forTypeConstant(String.class);
@@ -138,10 +140,10 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Instantiates a new k variant with a boolean class.<br />
-	 * 使用一个boolean新建一个k variant类<br />
+	 * Instantiates a new KVariant with a boolean object as value.<br />
+	 * 使用一个boolean作为值新建一个KVariant类<br />
 	 *
-	 * @param val the val<br />
+	 * @param val the value<br />
 	 */
 	public KVariant(boolean val) {
 		type = TypeInfo.forTypeConstant(Integer.class);
@@ -149,20 +151,24 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Instantiates a new k variant with a object class.<br />
-	 * 使用一个object新建一个k variant类<br />
+	 * Instantiates a new KVariant with a Object object as value,which would
+	 * automatic infer its type.<br />
+	 * 使用一个Object作为值新建一个KVariant类，并自动推断object的类型<br />
 	 *
 	 * @param val the val<br />
+	 *
 	 */
 	public KVariant(Object val) {
-		type = TypeInfo.forTypeConstant(val.getClass());
+		type = TypeInfo.forType(val.getClass());
 		value = val;
 	}
+
 	/**
-	 * Instantiates a new k variant.<br />
-	 * 新建一个k variant类<br />
+	 * Instantiates a new KVariant,specified type and value<br />
+	 * 新建一个指定类型和值KVariant类。<br />
+	 * .
 	 *
-	 * @param val  the val<br />
+	 * @param val  the value<br />
 	 * @param type the type<br />
 	 */
 	public KVariant(Object val, TypeInfo type) {
@@ -171,20 +177,21 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Instantiates a new k variant.<br />
-	 * 新建一个k variant类<br />
+	 * Instantiates a new KVariant,specified type and value<br />
+	 * 新建一个指定类型和值KVariant类。<br />
+	 * .
 	 *
-	 * @param val  the val<br />
+	 * @param val  the value<br />
 	 * @param type the type<br />
 	 */
 	public KVariant(Object val, String type) {
-		this.type = TypeInfo.forTypeConstant(Integer.class);
+		this.type = TypeInfo.forName(type);
 		value = val;
 	}
 
 	/**
 	 * Gets the type.<br />
-	 * 获取 type.
+	 * 获取类型.
 	 *
 	 * @return type<br />
 	 */
@@ -194,7 +201,7 @@ public class KVariant implements Cloneable {
 
 	/**
 	 * Gets the value.<br />
-	 * 获取 value.
+	 * 获取值.
 	 *
 	 * @return value<br />
 	 */
@@ -203,11 +210,12 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Set value.<br />
+	 * copy value from another variant.<br />
+	 * 从其他变量复制值
 	 *
-	 * @param ref the ref<br />
-	 * @return return set value <br />
-	 *         返回 k variant
+	 * @param ref the variant to copy<br />
+	 * @return return this variant <br />
+	 *         返回本对象
 	 */
 	public KVariant setValue(KVariant ref) {
 		type = ref.type;
@@ -216,11 +224,12 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Set.<br />
+	 * Set value to an object,which would automatic infer its type.<br />
+	 * 设置值，自动推断类型
 	 *
-	 * @param ref the ref<br />
-	 * @return return set <br />
-	 *         返回 k variant
+	 * @param ref the value<br />
+	 * @return return this variant<br />
+	 *         返回本对象
 	 */
 	public KVariant set(Object ref) {
 		type = TypeInfo.forType(ref.getClass());
@@ -229,12 +238,13 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * As number.<br />
+	 * Convert variant to number.<br />
 	 * 转换为数字
-	 * @return return as number <br />
+	 *
+	 * @return return new type <br />
 	 *         返回类型
-	 * @throws ConversionException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
+	 * @throws ConversionException if convert fails<br />
+	 *                             如果转换失败
 	 */
 	public TypeInfo asNumber() throws ConversionException {
 		if (value instanceof Integer || value instanceof Double)
@@ -254,12 +264,12 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Gets the number.<br />
-	 * 获取 number.
+	 * Gets the number value,does NOT change this variant.<br />
+	 * 获取数值，不转换变量.
 	 *
 	 * @return number<br />
-	 * @throws ConversionException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
+	 * @throws ConversionException if convert fails<br />
+	 *                             如果转换失败
 	 */
 	public Double getNumber() throws ConversionException {
 		try {
@@ -273,12 +283,12 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * Gets the int.<br />
-	 * 获取 int.
+	 * Gets the integer value,does NOT change this variant.<br />
+	 * 获取整数值，不转换变量.
 	 *
-	 * @return int<br />
-	 * @throws ConversionException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
+	 * @return result<br />
+	 * @throws ConversionException if convert fails<br />
+	 *                             如果转换失败
 	 */
 	public Integer getInt() throws ConversionException {
 		if (!(value instanceof Integer))
@@ -287,13 +297,14 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * set number.<br />
-	 * 设置 number.
+	 * set as number,would turn double to integer if possible,if double type should
+	 * be keep,use {@link #setDouble(Double)} instead<br />
+	 * 设置值为数值，会把没有小数部分的实数转换为整数，如果需要保留类型，请使用{@link #setDouble(Double)}.
 	 *
-	 * @param val 设置为 number<br />
-	 *            set to number.
-	 * @throws ConversionException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
+	 * @param val number to set to.<br />
+	 *            设置为的值
+	 * @throws ConversionException if convert fails<br />
+	 *                             如果转换失败
 	 */
 	public void setNumber(Double val) throws ConversionException {
 		value = val;
@@ -307,11 +318,25 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * set number.<br />
-	 * 设置 number.
+	 * set value to double.<br />
+	 * 设置小数值.
 	 *
-	 * @param val 设置为 number<br />
-	 *            set to number.
+	 * @param val value to set to.<br />
+	 *            设置为的值
+	 * @throws ConversionException if convert fails<br />
+	 *                             如果转换失败
+	 */
+	public void setDouble(Double val) throws ConversionException {
+		value = val;
+		type = TypeInfo.forTypeConstant(Double.class);
+	}
+
+	/**
+	 * set number to a integer value.<br />
+	 * 设置值为整数.
+	 *
+	 * @param val number to set<br />
+	 *            要设置的数值.
 	 */
 	public void setNumber(int val) {
 		value = val;
@@ -319,15 +344,17 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * get the variant to specific type,changes the original variant.
+	 * get the variant as a specific type,changes to the original variant.
+	 * 转换变量类型为目标类型。
 	 *
-	 * @param <T>    the generic type<br />
-	 *               泛型参数
+	 * @param <T>    the target type<br />
+	 *               目标类型
 	 * @param toType the to type<br />
-	 * @return return as type <br />
-	 *         返回 t
-	 * @throws ConversionException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
+	 *               目标类型
+	 * @return return value converted <br />
+	 *         返回转换后的值
+	 * @throws ConversionException if convert fails<br />
+	 *                             如果转换失败
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T asType(Class<T> toType) throws ConversionException {
@@ -339,7 +366,8 @@ public class KVariant implements Cloneable {
 	}
 
 	/**
-	 * get the variant to specific type.
+	 * get the value as a specific type.
+	 * 获得对应变量的目标类型的值
 	 *
 	 * @param <T>    the generic type<br />
 	 *               泛型参数

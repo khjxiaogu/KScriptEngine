@@ -24,7 +24,7 @@ public class ParserRunner {
 								System.out.println(params[0].toString());
 							}
 							return null;
-						})),KEnvironment.DEFAULT);
+						})), KEnvironment.DEFAULT);
 				cn.parse(new StringParseReader(s));
 				System.out.println("语法解析结果：");
 				System.out.println(cn.toString());

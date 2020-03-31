@@ -9,7 +9,6 @@ import com.khjxiaogu.scriptengine.core.object.Closure;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
-import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;

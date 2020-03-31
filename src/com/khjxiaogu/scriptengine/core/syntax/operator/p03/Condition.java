@@ -23,7 +23,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
  *       file:Conditon.java
  *       x?x:x
  */
-public class Condition implements Operator, ASTParser, MemberOperator,Assignable {
+public class Condition implements Operator, ASTParser, MemberOperator, Assignable {
 	CodeNode cond;
 	CodeNode first;
 	CodeNode other;

@@ -5,9 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.khjxiaogu.scriptengine.core.object.KObject;
 
-public class TypeInfo {
-	private String name;
-	private Class<?> type;
+public final class TypeInfo {
+	private final String name;
+	private final Class<?> type;
 	private static Map<String, TypeInfo> types = new ConcurrentHashMap<>();
 	private static Map<Class<?>, TypeInfo> typeclasses = new ConcurrentHashMap<>();
 	static {
@@ -43,19 +43,20 @@ public class TypeInfo {
 	}
 
 	public static TypeInfo forType(Class<?> type) {
-		TypeInfo ti=null;
-		if((ti=forTypeConstant(type))!=null) {
+		TypeInfo ti = null;
+		if ((ti = TypeInfo.forTypeConstant(type)) != null)
 			return ti;
-		}
 		for (Map.Entry<Class<?>, TypeInfo> entry : TypeInfo.typeclasses.entrySet()) {
 			if (type.isAssignableFrom(entry.getKey()))
 				return entry.getValue();
 		}
 		return TypeInfo.forTypeConstant(Void.class);
 	}
+
 	public static TypeInfo forTypeConstant(Class<?> type) {
 		return TypeInfo.typeclasses.get(type);
 	}
+
 	public static void registClassAlias(Class<?> type, String orig) {
 		TypeInfo.typeclasses.put(type, TypeInfo.types.get(orig));
 	}

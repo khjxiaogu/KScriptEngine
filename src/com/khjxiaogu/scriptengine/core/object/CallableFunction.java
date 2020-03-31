@@ -13,17 +13,22 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
  * Interface CallableFunction.
  * interface for a function that can be called.
  * 可以被调用的函数对象接口
+ *
  * @author: khjxiaogu
  *          file: CallableFunction.java
  *          time: 2020年3月29日
  */
 public interface CallableFunction extends KObject {
-	
+
 	/**
 	 * call function.<br />
 	 * 执行函数
-	 * @param args the arguments<br />参数
-	 * @param env  the override environment,null to execute in default environment<br />覆写的环境，填入null以默认上下文执行
+	 *
+	 * @param args the arguments<br />
+	 *             参数
+	 * @param env  the override environment,null to execute in default
+	 *             environment<br />
+	 *             覆写的环境，填入null以默认上下文执行
 	 * @return return result<br />
 	 *         返回结果
 	 * @throws KSException Any Engine Exception occurred<br />

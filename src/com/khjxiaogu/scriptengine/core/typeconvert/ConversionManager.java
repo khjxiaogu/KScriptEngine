@@ -20,7 +20,7 @@ import com.khjxiaogu.scriptengine.core.object.KProperty;
  *          time: 2020年3月29日
  */
 public class ConversionManager {
-	
+
 	/**
 	 * The conversion table.<br />
 	 * 转换表.
@@ -35,7 +35,7 @@ public class ConversionManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	static {//注册转换器
+	static {// 注册转换器
 		new TypeConverter<>(Integer.class, Double.class, (obj) -> {
 			return (double) obj;
 		});
@@ -117,7 +117,9 @@ public class ConversionManager {
 	/**
 	 * Register conversion.<br />
 	 * 注册转换方法
-	 * @param typeConverter the type converter<br />转换器
+	 *
+	 * @param typeConverter the type converter<br />
+	 *                      转换器
 	 */
 	public static void registConversion(TypeConverter<?, ?> typeConverter) {
 		TypeInfo toType = typeConverter.getTo();
@@ -133,9 +135,12 @@ public class ConversionManager {
 	 * Gets the conversion by type info.<br />
 	 * 根据类型信息获取对应输入输出的转换器.
 	 *
-	 * @param fromType from type<br />输入类型
-	 * @param toType   to type<br />输出类型
-	 * @return converter<br />转换器
+	 * @param fromType from type<br />
+	 *                 输入类型
+	 * @param toType   to type<br />
+	 *                 输出类型
+	 * @return converter<br />
+	 *         转换器
 	 * @throws ConversionException if an conversion exception occurred.<br />
 	 *                             如果转换异常发生了
 	 */
@@ -150,9 +155,12 @@ public class ConversionManager {
 	 * Gets the conversion by name.<br />
 	 * 根据类型名获取输入输出的转换器.
 	 *
-	 * @param fromType from type<br />输入类型
-	 * @param toType   to type<br />输出类型
-	 * @return converter<br />转换器
+	 * @param fromType from type<br />
+	 *                 输入类型
+	 * @param toType   to type<br />
+	 *                 输出类型
+	 * @return converter<br />
+	 *         转换器
 	 * @throws ConversionException if an conversion exception occurred.<br />
 	 *                             如果转换异常发生了
 	 */
@@ -167,7 +175,8 @@ public class ConversionManager {
 	 * Gets the output conversion by output type info.<br />
 	 * 根据输出类型信息获取对应的转换器
 	 *
-	 * @param toType to type<br />输出类型
+	 * @param toType to type<br />
+	 *               输出类型
 	 * @return conversion<br />
 	 * @throws ConversionException if an conversion exception occurred.<br />
 	 *                             如果转换异常发生了
@@ -183,7 +192,8 @@ public class ConversionManager {
 	 * Gets the output conversion by output type name.<br />
 	 * 根据输出类型名获取对应的转换器
 	 *
-	 * @param toType to type<br />输出类型
+	 * @param toType to type<br />
+	 *               输出类型
 	 * @return conversion<br />
 	 * @throws ConversionException if an conversion exception occurred.<br />
 	 *                             如果转换异常发生了
@@ -200,7 +210,8 @@ public class ConversionManager {
 	 * Gets the conversion by output type.<br />
 	 * 根据输出类型获取对应的转换器
 	 *
-	 * @param toType to type<br />输出类型
+	 * @param toType to type<br />
+	 *               输出类型
 	 * @return conversion<br />
 	 * @throws ConversionException if an conversion exception occurred.<br />
 	 *                             如果转换异常发生了
@@ -216,8 +227,11 @@ public class ConversionManager {
 	/**
 	 * Check if from type can be convert to to type.<br />
 	 * 检查输入类型是否可以被转换为输出类型
-	 * @param fromType from type<br />输入类型
-	 * @param toType   to type<br />输出类型
+	 *
+	 * @param fromType from type<br />
+	 *                 输入类型
+	 * @param toType   to type<br />
+	 *                 输出类型
 	 * @return true, if conversion exists<br />
 	 *         如果转换存在，返回true。
 	 */

@@ -6,7 +6,6 @@ import java.util.List;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
@@ -24,7 +23,7 @@ public class ExtendableClosure extends Closure {
 	private String clsname;
 	private KObject SuperClass = null;
 	private List<Object> natives = new ArrayList<>();
-	
+
 	public ExtendableClosure(String name, KObject sbclass) {
 		super(new MapEnvironment());
 		clsname = name;
@@ -38,63 +37,63 @@ public class ExtendableClosure extends Closure {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name,int flag) throws KSException {
-		if ( !Closure.hasMemberByName(name,KEnvironment.THISONLY))
-			if(SuperClass != null) {
-				if(SuperClass.hasMemberByName(name,KEnvironment.THISONLY))
-				return SuperClass.getMemberByName(name,flag);
-			}else if((flag&KEnvironment.THISONLY)!=1)
+	public KVariant getMemberByName(String name, int flag) throws KSException {
+		if (!Closure.hasMemberByName(name, KEnvironment.THISONLY))
+			if (SuperClass != null) {
+				if (SuperClass.hasMemberByName(name, KEnvironment.THISONLY))
+					return SuperClass.getMemberByName(name, flag);
+			} else if ((flag & KEnvironment.THISONLY) != 1)
 				return GlobalEnvironment.getGlobal().getMemberByName(name, flag);
-		return Closure.getMemberByName(name,flag);
+		return Closure.getMemberByName(name, flag);
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var,int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
 		if (SuperClass != null && !Closure.hasMemberByVariant(var) && SuperClass.hasMemberByVariant(var))
-			return SuperClass.getMemberByVariant(var,flag);
-		
-		return Closure.getMemberByVariant(var,flag);
+			return SuperClass.getMemberByVariant(var, flag);
+
+		return Closure.getMemberByVariant(var, flag);
 	}
 
 	@Override
-	public KVariant setMemberByName(String name, KVariant val,int flag) throws KSException {
-		if ( !Closure.hasMemberByName(name,KEnvironment.THISONLY))
-			if(SuperClass != null) {
-				if(SuperClass.hasMemberByName(name,KEnvironment.THISONLY))
-					return SuperClass.setMemberByName(name, val,flag);
-			}else if((flag&KEnvironment.THISONLY)!=1)
-				return GlobalEnvironment.getGlobal().setMemberByName(name,val, flag);
-		return Closure.setMemberByName(name, val,flag);
+	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
+		if (!Closure.hasMemberByName(name, KEnvironment.THISONLY))
+			if (SuperClass != null) {
+				if (SuperClass.hasMemberByName(name, KEnvironment.THISONLY))
+					return SuperClass.setMemberByName(name, val, flag);
+			} else if ((flag & KEnvironment.THISONLY) != 1)
+				return GlobalEnvironment.getGlobal().setMemberByName(name, val, flag);
+		return Closure.setMemberByName(name, val, flag);
 	}
 
 	@Override
-	public KVariant setMemberByVariant(KVariant var, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 		if (SuperClass != null && !Closure.hasMemberByVariant(var) && SuperClass.hasMemberByVariant(var))
-			return SuperClass.setMemberByVariant(var, val,flag);
-		return Closure.setMemberByVariant(var, val,flag);
+			return SuperClass.setMemberByVariant(var, val, flag);
+		return Closure.setMemberByVariant(var, val, flag);
 	}
 
-
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		if (name == null)
 			return ((CallableFunction) this).FuncCall(args, objthis);
-		if ( !Closure.hasMemberByName(name,KEnvironment.THISONLY))
-			if(SuperClass != null) {
-				if(SuperClass.hasMemberByName(name,KEnvironment.THISONLY))
-					return SuperClass.funcCallByName(name, args, objthis,flag);
-			}else if((flag&KEnvironment.THISONLY)!=1)
+		if (!Closure.hasMemberByName(name, KEnvironment.THISONLY))
+			if (SuperClass != null) {
+				if (SuperClass.hasMemberByName(name, KEnvironment.THISONLY))
+					return SuperClass.funcCallByName(name, args, objthis, flag);
+			} else if ((flag & KEnvironment.THISONLY) != 1)
 				return GlobalEnvironment.getGlobal().funcCallByName(name, args, objthis, flag);
-		return Closure.funcCallByName(name, args, objthis,flag);
+		return Closure.funcCallByName(name, args, objthis, flag);
 	}
 
 	@Override
-	public boolean hasMemberByName(String name,int flag) throws KSException {
+	public boolean hasMemberByName(String name, int flag) throws KSException {
 		if (name == null)
 			return true;
-		if (Closure.hasMemberByName(name,KEnvironment.THISONLY) || (SuperClass == null && SuperClass.hasMemberByName(name,KEnvironment.THISONLY)))
+		if (Closure.hasMemberByName(name, KEnvironment.THISONLY)
+				|| SuperClass == null && SuperClass.hasMemberByName(name, KEnvironment.THISONLY))
 			return true;
-		if((flag&KEnvironment.THISONLY)!=1)
+		if ((flag & KEnvironment.THISONLY) != 1)
 			return false;
 		else
 			return GlobalEnvironment.getGlobal().hasMemberByName(name, flag);
@@ -133,8 +132,8 @@ public class ExtendableClosure extends Closure {
 
 	@Override
 	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		if (SuperClass != null && !Closure.hasMemberByName(name,KEnvironment.DEFAULT))
-			if(SuperClass.hasMemberByName(name,KEnvironment.THISONLY))
+		if (SuperClass != null && !Closure.hasMemberByName(name, KEnvironment.DEFAULT))
+			if (SuperClass.hasMemberByName(name, KEnvironment.THISONLY))
 				return SuperClass.doOperationByName(op, name, opr);
 			else
 				return GlobalEnvironment.getGlobal().doOperationByName(op, name, opr);
@@ -183,10 +182,10 @@ public class ExtendableClosure extends Closure {
 					if (obj instanceof KProperty) {
 						v = new KVariant(new PropertyClosure((KProperty) obj, newInst));
 					} else if (obj instanceof CallableFunction) {
-						v = new KVariant(new FunctionClosure((CallableFunction) obj, newInst));
+						v = new KVariant(new FunctionClosure(obj, newInst));
 					} else
 						return true;
-					newInst.setMemberByVariant(k, v,KEnvironment.DEFAULT);
+					newInst.setMemberByVariant(k, v, KEnvironment.DEFAULT);
 				}
 			} catch (KSException e) {
 				// TODO Auto-generated catch block
@@ -194,13 +193,13 @@ public class ExtendableClosure extends Closure {
 				throw e;
 			}
 			return true;
-		},KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
+		}, KEnvironment.IGNOREPROP | KEnvironment.THISONLY);
 		return newInst;
 	}
 
 	@Override
-	public void EnumMembers(Enumerator cosumer,int flag) throws KSException {
-		Closure.EnumMembers(cosumer,flag);
+	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
+		Closure.EnumMembers(cosumer, flag);
 	}
 
 	@Override
@@ -217,6 +216,7 @@ public class ExtendableClosure extends Closure {
 		}
 		return null;
 	}
+
 	@Override
 	public KEnvironment getThis() throws ScriptException {
 		return this;

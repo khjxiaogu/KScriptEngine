@@ -10,7 +10,7 @@ package com.khjxiaogu.scriptengine.core.syntax;
  * Enum AssignOperation.
  * a enum of assign operations.
  * 赋值操作的枚举
- * 
+ *
  * @author khjxiaogu
  * @time 2020年3月2日
  *       project:khjScriptEngine

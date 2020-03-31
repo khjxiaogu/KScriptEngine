@@ -19,7 +19,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
  * @author khjxiaogu
  * @time 2020年2月16日
  */
-public class Member extends DoubleOperator implements MemberOperator,Assignable {
+public class Member extends DoubleOperator implements MemberOperator, Assignable {
 
 	/**
 	 *
@@ -31,7 +31,8 @@ public class Member extends DoubleOperator implements MemberOperator,Assignable 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.left.eval(env).asType(KObject.class).getMemberByName(((LiteralNode) super.right).getToken(),KEnvironment.MUSTEXIST);
+		return super.left.eval(env).asType(KObject.class).getMemberByName(((LiteralNode) super.right).getToken(),
+				KEnvironment.MUSTEXIST);
 	}
 
 	@Override
@@ -49,7 +50,8 @@ public class Member extends DoubleOperator implements MemberOperator,Assignable 
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		return ((MemberOperator) super.left).getObject(env).setMemberByName(((LiteralNode) super.right).getToken(), val,KEnvironment.MUSTEXIST);
+		return ((MemberOperator) super.left).getObject(env).setMemberByName(((LiteralNode) super.right).getToken(), val,
+				KEnvironment.MUSTEXIST);
 	}
 
 	@Override
@@ -68,8 +70,8 @@ public class Member extends DoubleOperator implements MemberOperator,Assignable 
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return ((MemberOperator) super.left).getObject(env).doOperationByName(op, ((LiteralNode) super.right).getToken(),
-				val);
+		return ((MemberOperator) super.left).getObject(env).doOperationByName(op,
+				((LiteralNode) super.right).getToken(), val);
 	}
 
 	@Override

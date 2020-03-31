@@ -35,8 +35,8 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		if (isLocal())
-			return env.getMemberByNum(itoken,KEnvironment.MUSTEXIST);
-		return env.getMemberByName(token,KEnvironment.MUSTEXIST);
+			return env.getMemberByNum(itoken, KEnvironment.MUSTEXIST);
+		return env.getMemberByName(token, KEnvironment.MUSTEXIST);
 	}
 
 	public String getToken() {
@@ -67,8 +67,8 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
 		if (isLocal())
-			return env.setMemberByNum(itoken, val,KEnvironment.MUSTEXIST);
-		return env.setMemberByName(token, val,KEnvironment.MUSTEXIST);
+			return env.setMemberByNum(itoken, val, KEnvironment.MUSTEXIST);
+		return env.setMemberByName(token, val, KEnvironment.MUSTEXIST);
 	}
 
 	@Override

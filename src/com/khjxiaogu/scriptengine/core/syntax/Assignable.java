@@ -18,12 +18,15 @@ import com.khjxiaogu.scriptengine.core.object.KEnvironment;
  *          time: 2020年3月29日
  */
 public interface Assignable {
-	
+
 	/**
 	 * Assign current node with value.<br />
 	 * 给当前节点指向的值赋值
-	 * @param env the environment<br />执行上下文
-	 * @param val the value to assign<br />要进行的赋值
+	 *
+	 * @param env the environment<br />
+	 *            执行上下文
+	 * @param val the value to assign<br />
+	 *            要进行的赋值
 	 * @return return assigned value <br />
 	 *         返回赋值后的值
 	 * @throws KSException Any Engine Exception occurred<br />
@@ -34,9 +37,13 @@ public interface Assignable {
 	/**
 	 * Do assign operation, such as +=.<br />
 	 * 执行形同+=的赋值运算符
-	 * @param env the environment<br />执行上下文
-	 * @param val the value to assign<br />要进行的赋值
-	 * @param op  the operation to execute<br />要执行的元素
+	 *
+	 * @param env the environment<br />
+	 *            执行上下文
+	 * @param val the value to assign<br />
+	 *            要进行的赋值
+	 * @param op  the operation to execute<br />
+	 *            要执行的元素
 	 * @return return assigned value <br />
 	 *         返回赋值后的值
 	 * @throws KSException Any Engine Exception occurred<br />

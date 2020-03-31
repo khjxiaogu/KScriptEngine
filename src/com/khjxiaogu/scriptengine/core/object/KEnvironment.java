@@ -24,6 +24,7 @@ public interface KEnvironment {
 	/**
 	 * Functional Interface Enumerator.For EnumMembers method.<br />
 	 * 函数式接口，用于作为EnumMembers方法的参数
+	 *
 	 * @author: khjxiaogu
 	 *          file: KEnvironment.java
 	 *          time: 2020年3月20日
@@ -72,6 +73,7 @@ public interface KEnvironment {
 	/**
 	 * Delete member by name.<br />
 	 * 根据名字删除成员
+	 *
 	 * @param name the name of member<br />
 	 * @return true, if delete succeed<br />
 	 *         如果删除成功，返回true。
@@ -83,17 +85,22 @@ public interface KEnvironment {
 	/**
 	 * Delete member by index number.<br />
 	 * 根据索引删除成员
-	 * @param num the index number<br />成员索引
+	 *
+	 * @param num the index number<br />
+	 *            成员索引
 	 * @return true, if delete succeed<br />
 	 *         如果删除成功，返回true。
 	 * @throws KSException Any Engine Exception occurred<br />
 	 *                     引擎执行发生的异常。
 	 */
 	public boolean deleteMemberByNum(int num) throws KSException;
+
 	/**
 	 * Delete member by variant value.<br />
 	 * 根据变量值删除成员
-	 * @param var the value<br />变量值
+	 *
+	 * @param var the value<br />
+	 *            变量值
 	 * @return true, if delete succeed<br />
 	 *         如果删除成功，返回true。
 	 * @throws KSException Any Engine Exception occurred<br />
@@ -104,9 +111,13 @@ public interface KEnvironment {
 	/**
 	 * Do operation by name.<br />
 	 * 根据成员名对成员进行操作。
-	 * @param op   the opcode<br />操作符
-	 * @param name the member name<br />成员名
-	 * @param opr  the operand<br />操作数
+	 *
+	 * @param op   the opcode<br />
+	 *             操作符
+	 * @param name the member name<br />
+	 *             成员名
+	 * @param opr  the operand<br />
+	 *             操作数
 	 * @return return value after operation<br />
 	 *         返回 计算结果
 	 * @throws KSException Any Engine Exception occurred<br />
@@ -117,9 +128,13 @@ public interface KEnvironment {
 	/**
 	 * Do operation by index number.<br />
 	 * 根据索引对成员进行操作
-	 * @param op  the opcode<br />操作符
-	 * @param num the index number<br />成员索引
-	 * @param opr the operand<br />操作数
+	 *
+	 * @param op  the opcode<br />
+	 *            操作符
+	 * @param num the index number<br />
+	 *            成员索引
+	 * @param opr the operand<br />
+	 *            操作数
 	 * @return return value after operation<br />
 	 *         返回 计算结果
 	 * @throws KSException Any Engine Exception occurred<br />
@@ -130,15 +145,20 @@ public interface KEnvironment {
 	/**
 	 * Do operation by variant value.<br />
 	 * 根据变量值对成员进行操作
-	 * @param op  the opcode<br />操作符
-	 * @param var the variant value<br />变量值
-	 * @param opr the operand<br />操作数
+	 *
+	 * @param op  the opcode<br />
+	 *            操作符
+	 * @param var the variant value<br />
+	 *            变量值
+	 * @param opr the operand<br />
+	 *            操作数
 	 * @return return do operaton by variant <br />
 	 *         返回 k variant
 	 * @throws KSException Any Engine Exception occured<br />
 	 *                     引擎执行发生的异常。
 	 */
 	public KVariant doOperationByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException;
+
 	/**
 	 * Enum members.<br />
 	 *
@@ -328,22 +348,22 @@ public interface KEnvironment {
 	 *                     引擎执行发生的异常。
 	 */
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException;
-	
+
 	/**
 	 * Gets the this object.<br />
 	 * 类内获取 this.
 	 *
 	 * @return this<br />
-	 * @throws ScriptException 
+	 * @throws ScriptException
 	 */
 	public KEnvironment getThis() throws KSException;
-	
+
 	/**
 	 * Gets the super class.<br />
 	 * 类内获取超类.
 	 *
 	 * @return super<br />
-	 * @throws InvalidSuperClassException 
+	 * @throws InvalidSuperClassException
 	 */
 	public KEnvironment getSuper() throws KSException;
 }

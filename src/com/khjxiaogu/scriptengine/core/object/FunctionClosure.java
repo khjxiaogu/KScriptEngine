@@ -11,14 +11,14 @@ public class FunctionClosure extends Closure implements CallableFunction {
 
 	public FunctionClosure(KObject functhis, KObject objthis) throws ConversionException {
 		super(objthis);
-		if(!(functhis instanceof CallableFunction)) {
-			throw new ConversionException("Object","Function");
-		}
-		
+		if (!(functhis instanceof CallableFunction))
+			throw new ConversionException("Object", "Function");
+
 		this.objthis = objthis;
-		while(functhis instanceof FunctionClosure)
-			functhis=((FunctionClosure)functhis).functhis;//unwrap all closures
-		this.functhis = (CallableFunction)functhis;
+		while (functhis instanceof FunctionClosure) {
+			functhis = ((FunctionClosure) functhis).functhis;// unwrap all closures
+		}
+		this.functhis = (CallableFunction) functhis;
 	}
 
 	@Override
@@ -46,13 +46,11 @@ public class FunctionClosure extends Closure implements CallableFunction {
 		return functhis.newInstance();
 	}
 
-
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		if (name != null)
 			throw new MemberNotFoundException(name);
 		return FuncCall(args, objthis);
 	}
-
 
 }

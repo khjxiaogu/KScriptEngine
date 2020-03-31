@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
-import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
@@ -118,39 +117,38 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name,int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.getMemberByName(name,flag);
+		return parent.getMemberByName(name, flag);
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var,int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(var.toString());
-		return parent.getMemberByVariant(var,flag);
+		return parent.getMemberByVariant(var, flag);
 	}
 
-
 	@Override
-	public KVariant setMemberByName(String name, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.setMemberByName(name, val,flag);
+		return parent.setMemberByName(name, val, flag);
 	}
 
 	@Override
-	public KVariant setMemberByVariant(KVariant var, KVariant val,int flag) throws KSException {
+	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(var.toString());
-		return parent.setMemberByVariant(var, val,flag);
+		return parent.setMemberByVariant(var, val, flag);
 	}
 
 	@Override
-	public boolean hasMemberByName(String name,int flag) throws KSException {
+	public boolean hasMemberByName(String name, int flag) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.hasMemberByName(name,flag);
+		return parent.hasMemberByName(name, flag);
 	}
 
 	@Override
@@ -206,7 +204,7 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis,int flag) throws KSException {
-		return parent.funcCallByName(name, args, objthis,flag);
+	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+		return parent.funcCallByName(name, args, objthis, flag);
 	}
 }
