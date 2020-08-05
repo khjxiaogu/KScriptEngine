@@ -1,5 +1,7 @@
 package com.khjxiaogu.scriptengine.core.syntax.statement;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
@@ -13,6 +15,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.Block;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
+import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockEnvironment;
 
 public class ForStatement implements Block {
 
@@ -20,7 +23,9 @@ public class ForStatement implements Block {
 	private CodeNode Cond;
 	private CodeNode Incr;
 	private CodeNode Body;
-
+	int numvars;
+	int off;
+	String[] symbol;
 	public ForStatement() {
 	}
 
@@ -66,8 +71,9 @@ public class ForStatement implements Block {
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		for (Init.eval(env); Cond.eval(env).asBoolean(); Incr.eval(env)) {
-			Body.eval(env);
+		KEnvironment forenv=new CodeBlockEnvironment(env, off, numvars);
+		for (Init.eval(forenv); Cond.eval(forenv).asBoolean(); Incr.eval(forenv)) {
+			Body.eval(forenv);
 		}
 		return null;
 	}
@@ -79,10 +85,14 @@ public class ForStatement implements Block {
 
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(Init, parentMap);
-		Visitable.Visit(Cond, parentMap);
-		Visitable.Visit(Incr, parentMap);
-		Visitable.Visit(Body, parentMap);
+		List<String> allnodes = new ArrayList<String>(parentMap);
+		off=allnodes.size();
+		Visitable.Visit(Init, allnodes);
+		Visitable.Visit(Cond, allnodes);
+		Visitable.Visit(Incr, allnodes);
+		numvars=allnodes.size()-off;
+		Visitable.Visit(Body, allnodes);
+		
 	}
 
 	@Override

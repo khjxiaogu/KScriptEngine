@@ -25,7 +25,7 @@ public class ParserRunner {
 							}
 							return null;
 						})), KEnvironment.DEFAULT);
-				cn.parse(new StringParseReader(s));
+				cn.parse(new StringParseReader(s+";"));
 				System.out.println("语法解析结果：");
 				System.out.println(cn.toString());
 				System.out.println("在global上下文执行结果：");

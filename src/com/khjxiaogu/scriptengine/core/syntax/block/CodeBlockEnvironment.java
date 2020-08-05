@@ -22,7 +22,17 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	private KVariant ret;
 	CodeBlockAttribute attr;
 	protected String[] symbol;
-
+	/**
+	 * @param parent
+	 */
+	public CodeBlockEnvironment(KEnvironment parent, int offset, int size) {
+		super(parent, offset, size);
+		symbol = new String[size];
+		Arrays.fill(getSymbol(), "");
+		this.block =null;
+		this.attr = CodeBlockAttribute.BREAKABLE;
+		// TODO Auto-generated constructor stub
+	}
 	/**
 	 * @param parent
 	 */

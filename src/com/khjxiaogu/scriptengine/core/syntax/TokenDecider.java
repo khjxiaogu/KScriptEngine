@@ -414,7 +414,7 @@ public class TokenDecider implements ASTParser {
 			return new Return();
 		});
 		TokenDecider.identifiers.put("real", (reader, last) -> {
-			return new TypeConversion("real");
+			return new TypeConversion("Real");
 		});
 		TokenDecider.identifiers.put("string", (reader, last) -> {
 			return new TypeConversion("String");

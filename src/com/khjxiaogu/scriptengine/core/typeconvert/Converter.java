@@ -61,7 +61,7 @@ public class Converter {
 			return new KVariant(in);
 		TypeConverter<?, ?> converter;
 		if ((converter = converters.get(t)) != null)
-			return new KVariant(converter.from(in), type);
+			return new KVariant(converter.from(in.getValue()), type);
 		throw new ConversionException(t, type);
 	}
 

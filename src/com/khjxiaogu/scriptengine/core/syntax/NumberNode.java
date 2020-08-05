@@ -41,8 +41,9 @@ public class NumberNode extends ConstantNode implements ASTParser, CodeNode {
 		boolean oct = false;
 		int degit = 10;
 		char c = reader.read();
+		
 		char c2 = reader.read(1);
-		if (c == '0') {
+		if (c == '0'&&c2!='.') {
 			if (c2 == 'x' || c2 == 'X') {
 				hex = true;
 				degit = 16;
