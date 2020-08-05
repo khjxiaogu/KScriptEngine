@@ -5,6 +5,7 @@
  */
 package com.khjxiaogu.scriptengine.core;
 
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
@@ -85,7 +86,7 @@ public class KVariant implements Cloneable {
 	public KVariant(Double val) {
 		try {
 			setNumber(val);
-		} catch (ConversionException e) {
+		} catch (KSException e) {
 			type = TypeInfo.forTypeConstant(Integer.class);
 			value = 0;
 		}
@@ -100,7 +101,7 @@ public class KVariant implements Cloneable {
 	public KVariant(double val) {
 		try {
 			setNumber(val);
-		} catch (ConversionException e) {
+		} catch (KSException e) {
 			type = TypeInfo.forTypeConstant(Integer.class);
 			value = 0;
 		}
@@ -243,10 +244,9 @@ public class KVariant implements Cloneable {
 	 *
 	 * @return return new type <br />
 	 *         返回类型
-	 * @throws ConversionException if convert fails<br />
-	 *                             如果转换失败
+	 * @throws KSException 
 	 */
-	public TypeInfo asNumber() throws ConversionException {
+	public TypeInfo asNumber() throws KSException {
 		if (value instanceof Integer || value instanceof Double)
 			return type;
 		try {
@@ -268,10 +268,9 @@ public class KVariant implements Cloneable {
 	 * 获取数值，不转换变量.
 	 *
 	 * @return number<br />
-	 * @throws ConversionException if convert fails<br />
-	 *                             如果转换失败
+	 * @throws KSException 
 	 */
-	public Double getNumber() throws ConversionException {
+	public Double getNumber() throws KSException {
 		try {
 			if (!(value instanceof Double))
 				return (Double) ConversionManager.getConversion(Double.class).from(this);
@@ -287,10 +286,9 @@ public class KVariant implements Cloneable {
 	 * 获取整数值，不转换变量.
 	 *
 	 * @return result<br />
-	 * @throws ConversionException if convert fails<br />
-	 *                             如果转换失败
+	 * @throws KSException 
 	 */
-	public Integer getInt() throws ConversionException {
+	public Integer getInt() throws KSException {
 		if (!(value instanceof Integer))
 			return (Integer) ConversionManager.getConversion(Integer.class).from(this);
 		return (Integer) value;
@@ -303,10 +301,10 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val number to set to.<br />
 	 *            设置为的值
-	 * @throws ConversionException if convert fails<br />
+	 * @throws KSException if convert fails<br />
 	 *                             如果转换失败
 	 */
-	public void setNumber(Double val) throws ConversionException {
+	public void setNumber(Double val) throws KSException {
 		value = val;
 		double realV = (Double) value;
 		if (realV == (int) realV) {
@@ -323,10 +321,10 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val value to set to.<br />
 	 *            设置为的值
-	 * @throws ConversionException if convert fails<br />
+	 * @throws KSException if convert fails<br />
 	 *                             如果转换失败
 	 */
-	public void setDouble(Double val) throws ConversionException {
+	public void setDouble(Double val) throws KSException {
 		value = val;
 		type = TypeInfo.forTypeConstant(Double.class);
 	}
@@ -353,11 +351,11 @@ public class KVariant implements Cloneable {
 	 *               目标类型
 	 * @return return value converted <br />
 	 *         返回转换后的值
-	 * @throws ConversionException if convert fails<br />
+	 * @throws KSException if convert fails<br />
 	 *                             如果转换失败
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T asType(Class<T> toType) throws ConversionException {
+	public <T> T asType(Class<T> toType) throws KSException {
 		if (toType.isInstance(value))
 			return (T) value;
 		Converter conv = ConversionManager.getConversion(toType);
@@ -374,11 +372,11 @@ public class KVariant implements Cloneable {
 	 * @param toType the to type<br />
 	 * @return return to type <br />
 	 *         返回 t
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T toType(Class<T> toType) throws ConversionException {
+	public <T> T toType(Class<T> toType) throws KSException {
 		if (toType.isInstance(value))
 			return (T) value;
 		return (T) ConversionManager.getConversion(toType).from(this);
@@ -390,10 +388,10 @@ public class KVariant implements Cloneable {
 	 * @param name the name<br />
 	 * @return return to type <br />
 	 *         返回 object
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public Object toType(String name) throws ConversionException {
+	public Object toType(String name) throws KSException {
 		if (type.getName().equals(name))
 			return value;
 		return ConversionManager.getConversion(name).from(this);
@@ -405,10 +403,10 @@ public class KVariant implements Cloneable {
 	 * @param name the name<br />
 	 * @return return as type <br />
 	 *         返回 object
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public Object asType(String name) throws ConversionException {
+	public Object asType(String name) throws KSException {
 		if (type.getName().equals(name))
 			return value;
 		Converter conv = ConversionManager.getConversion(name);
@@ -422,10 +420,10 @@ public class KVariant implements Cloneable {
 	 * @param dir the dir<br />
 	 * @return return self increment <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant selfIncrement(Associative dir) throws ConversionException {
+	public KVariant selfIncrement(Associative dir) throws KSException {
 		asNumber();
 		if (dir == Associative.LEFT) {
 			if (value instanceof Integer) {
@@ -450,10 +448,10 @@ public class KVariant implements Cloneable {
 	 * @param dir the dir<br />
 	 * @return return self decrement <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant selfDecrement(Associative dir) throws ConversionException {
+	public KVariant selfDecrement(Associative dir) throws KSException {
 		asNumber();
 		if (dir == Associative.LEFT) {
 			if (value instanceof Integer) {
@@ -478,10 +476,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return multiply <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant multiply(KVariant By) throws ConversionException {
+	public KVariant multiply(KVariant By) throws KSException {
 		return new KVariant(getNumber() * By.getNumber());
 
 	}
@@ -492,10 +490,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return mod <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant mod(KVariant By) throws ConversionException {
+	public KVariant mod(KVariant By) throws KSException {
 		return new KVariant(Math.floorMod(getInt(), By.getInt()));
 	}
 
@@ -505,10 +503,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return floor divide <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant floorDivide(KVariant By) throws ConversionException {
+	public KVariant floorDivide(KVariant By) throws KSException {
 		return new KVariant(Math.floorDiv(getInt(), By.getInt()));
 	}
 
@@ -518,10 +516,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return divide <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant divide(KVariant By) throws ConversionException {
+	public KVariant divide(KVariant By) throws KSException {
 		return new KVariant(getNumber() / By.getNumber());
 	}
 
@@ -531,10 +529,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return add <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant add(KVariant By) throws ConversionException {
+	public KVariant add(KVariant By) throws KSException {
 		if (type.getType() != String.class && By.getType().getType() != String.class)
 			return new KVariant(getNumber() + By.getNumber());
 		else
@@ -547,10 +545,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return minus <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant minus(KVariant By) throws ConversionException {
+	public KVariant minus(KVariant By) throws KSException {
 		return new KVariant(getNumber() - By.getNumber());
 	}
 
@@ -560,10 +558,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return rsh <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant RSH(int by) throws ConversionException {
+	public KVariant RSH(int by) throws KSException {
 		Integer value = getInt();
 		return new KVariant(value >> by);
 	}
@@ -574,10 +572,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return lsh <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant LSH(int by) throws ConversionException {
+	public KVariant LSH(int by) throws KSException {
 		Integer value = getInt();
 		return new KVariant(value << by);
 	}
@@ -588,10 +586,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return arsh <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant ARSH(int by) throws ConversionException {
+	public KVariant ARSH(int by) throws KSException {
 		Integer value = getInt();
 		return new KVariant(value >>> by);
 	}
@@ -602,10 +600,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return lt <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant LT(KVariant by) throws ConversionException {
+	public KVariant LT(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo(by.toType(String.class)) < 0);
 		Double value = getNumber();
@@ -618,10 +616,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return gt <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant GT(KVariant by) throws ConversionException {
+	public KVariant GT(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo(by.toType(String.class)) > 0);
 		Double value = getNumber();
@@ -634,10 +632,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return loet <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant LOET(KVariant by) throws ConversionException {
+	public KVariant LOET(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo(by.toType(String.class)) <= 0);
 		Double value = getNumber();
@@ -650,10 +648,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return goet <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant GOET(KVariant by) throws ConversionException {
+	public KVariant GOET(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
 			return new KVariant(((String) value).compareTo(by.toType(String.class)) >= 0);
 		Double value = getNumber();
@@ -681,10 +679,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return band <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant BAND(KVariant by) throws ConversionException {
+	public KVariant BAND(KVariant by) throws KSException {
 		Integer value = getInt();
 		return new KVariant(value & by.getInt());
 	}
@@ -695,10 +693,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return bor <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant BOR(KVariant by) throws ConversionException {
+	public KVariant BOR(KVariant by) throws KSException {
 		Integer value = getInt();
 		return new KVariant(value | by.getInt());
 	}
@@ -709,10 +707,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return bxor <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant BXOR(KVariant by) throws ConversionException {
+	public KVariant BXOR(KVariant by) throws KSException {
 		Integer value = getInt();
 		return new KVariant(value ^ by.getInt());
 	}
@@ -735,10 +733,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return multiplyby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant multiplyby(KVariant By) throws ConversionException {
+	public KVariant multiplyby(KVariant By) throws KSException {
 		setNumber(getNumber() * By.getNumber());
 		return this;
 	}
@@ -749,10 +747,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return modby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant modby(KVariant By) throws ConversionException {
+	public KVariant modby(KVariant By) throws KSException {
 		setNumber(Math.floorMod(getInt(), By.getInt()));
 		return this;
 	}
@@ -763,10 +761,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return floor divideby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant floorDivideby(KVariant By) throws ConversionException {
+	public KVariant floorDivideby(KVariant By) throws KSException {
 		setNumber(Math.floorDiv(getInt(), By.getInt()));
 		return this;
 	}
@@ -777,10 +775,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return divideby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant divideby(KVariant By) throws ConversionException {
+	public KVariant divideby(KVariant By) throws KSException {
 		setNumber(getNumber() / By.getNumber());
 		return this;
 	}
@@ -791,10 +789,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return addby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant addby(KVariant By) throws ConversionException {
+	public KVariant addby(KVariant By) throws KSException {
 		if (type.getType() != String.class && By.getType().getType() != String.class) {
 			setNumber(getNumber() + By.getNumber());
 			return this;
@@ -809,10 +807,10 @@ public class KVariant implements Cloneable {
 	 * @param By the by<br />
 	 * @return return minusby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant minusby(KVariant By) throws ConversionException {
+	public KVariant minusby(KVariant By) throws KSException {
 		setNumber(getNumber() - By.getNumber());
 		return this;
 	}
@@ -823,10 +821,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return RS hby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant RSHby(int by) throws ConversionException {
+	public KVariant RSHby(int by) throws KSException {
 		setNumber(getInt() >> by);
 		return this;
 	}
@@ -837,10 +835,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return LS hby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant LSHby(int by) throws ConversionException {
+	public KVariant LSHby(int by) throws KSException {
 		setNumber(getInt() << by);
 		return this;
 	}
@@ -851,10 +849,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return ARS hby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant ARSHby(int by) throws ConversionException {
+	public KVariant ARSHby(int by) throws KSException {
 		setNumber(getInt() >>> by);
 		return this;
 	}
@@ -865,10 +863,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return BAN dby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant BANDby(KVariant by) throws ConversionException {
+	public KVariant BANDby(KVariant by) throws KSException {
 		setNumber(getInt() & by.getInt());
 		return this;
 	}
@@ -879,10 +877,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return BO rby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant BORby(KVariant by) throws ConversionException {
+	public KVariant BORby(KVariant by) throws KSException {
 		setNumber(getInt() | by.getInt());
 		return this;
 	}
@@ -893,10 +891,10 @@ public class KVariant implements Cloneable {
 	 * @param by the by<br />
 	 * @return return BXO rby <br />
 	 *         返回 k variant
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant BXORby(KVariant by) throws ConversionException {
+	public KVariant BXORby(KVariant by) throws KSException {
 		setNumber(getInt() ^ by.getInt());
 		return this;
 	}
@@ -919,7 +917,7 @@ public class KVariant implements Cloneable {
 			return value.equals(by.value);
 		try {
 			return getNumber().equals(by.getNumber());
-		} catch (ConversionException e) {
+		} catch (KSException e) {
 			return false;
 		}
 	}
@@ -948,7 +946,7 @@ public class KVariant implements Cloneable {
 	public String toString() {
 		try {
 			return toType(String.class);
-		} catch (ConversionException e) {
+		} catch (KSException e) {
 			return "(" + type.getName() + ")" + hashCode();
 		}
 	}
@@ -958,10 +956,10 @@ public class KVariant implements Cloneable {
 	 *
 	 * @return return as string <br />
 	 *         返回 string
-	 * @throws ConversionException if an convertion exception occured.<br />
+	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public String asString() throws ConversionException {
+	public String asString() throws KSException {
 		return asType(String.class);
 	}
 

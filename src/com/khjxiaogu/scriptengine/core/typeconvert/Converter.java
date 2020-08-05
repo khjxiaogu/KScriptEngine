@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 /**
  * Class Converter.
@@ -52,10 +53,9 @@ public class Converter {
 	 *           输入
 	 * @return return conversion result <br />
 	 *         返回转换结果
-	 * @throws ConversionException if no such conversion.<br />
-	 *                             如果没有这种转换
+	 * @throws KSException 
 	 */
-	public KVariant convert(KVariant in) throws ConversionException {
+	public KVariant convert(KVariant in) throws KSException {
 		TypeInfo t = in.getType();
 		if (t.equals(type))
 			return new KVariant(in);
@@ -73,10 +73,9 @@ public class Converter {
 	 *           输入
 	 * @return return result value<br />
 	 *         返回转换结果值
-	 * @throws ConversionException if no such conversion.<br />
-	 *                             如果没有这种转换
+	 * @throws KSException 
 	 */
-	public Object from(KVariant in) throws ConversionException {
+	public Object from(KVariant in) throws KSException {
 		TypeInfo t = in.getType();
 		if (t.equals(type))
 			return in.getValue();

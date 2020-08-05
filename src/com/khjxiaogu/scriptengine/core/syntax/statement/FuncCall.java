@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
+package com.khjxiaogu.scriptengine.core.syntax.statement;
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
-import com.khjxiaogu.scriptengine.core.syntax.statement.ArgumentNode;
 
 public class FuncCall extends SingleOperator implements ASTParser {
 	CodeNode[] args;
@@ -29,7 +28,7 @@ public class FuncCall extends SingleOperator implements ASTParser {
 		for (int i = 0; i < args.length; i++) {
 			arg[i] = args[i].eval(env);
 		}
-		KObject obj = func.asType(KObject.class);
+		KObject obj = func.toType(KObject.class);
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(arg, env);
 		throw new ScriptException("对象不是函数");

@@ -11,31 +11,25 @@ import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
  * @author khjxiaogu
  * @time 2020年2月19日 file:NumberNode.java
  */
-public class NumberNode implements ASTParser, CodeNode {
+public class NumberNode extends ConstantNode implements ASTParser, CodeNode {
 
 	/**
 	 *
 	 */
-	KVariant number = new KVariant();
+	
 
 	public NumberNode() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NumberNode(int i) throws ConversionException {
+	public NumberNode(int i) throws KSException {
 		// TODO Auto-generated constructor stub
-		number.setNumber((double) i);
+		value.setNumber((double) i);
 	}
 
-	public NumberNode(double i) throws ConversionException {
+	public NumberNode(double i) throws KSException {
 		// TODO Auto-generated constructor stub
-		number.setNumber(i);
-	}
-
-	@Override
-	public KVariant eval(KEnvironment env) throws KSException {
-		// TODO Auto-generated method stub
-		return number;
+		value.setNumber(i);
 	}
 
 	@Override
@@ -85,13 +79,10 @@ public class NumberNode implements ASTParser, CodeNode {
 			c = reader.eat();
 		}
 		value /= dot;
-		number.setNumber(value);
+		this.value.setNumber(value);
 		// TODO Auto-generated method stub
 		return this;
 	}
 
-	@Override
-	public String toString() {
-		return number.toString();
-	}
+
 }

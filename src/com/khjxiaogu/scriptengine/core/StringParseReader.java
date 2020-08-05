@@ -8,6 +8,8 @@ import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
  * @time 2020年2月20日 file:StringParseReader.java
  */
 public class StringParseReader implements ParseReader {
+
+
 	String backed;
 	int pos = 0;
 	String name;
@@ -104,5 +106,11 @@ public class StringParseReader implements ParseReader {
 		}
 		return read();
 	}
-
+	@Override
+	public void eatLine() throws KSException {
+		if(read()!='\n') {
+			while(eat()!='\n');
+		}
+		eat();
+	}
 }

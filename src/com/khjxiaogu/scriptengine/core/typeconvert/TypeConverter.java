@@ -5,6 +5,8 @@
  */
 package com.khjxiaogu.scriptengine.core.typeconvert;
 
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+
 // TODO: Auto-generated Javadoc
 /**
  * Class TypeConverter.
@@ -20,6 +22,10 @@ package com.khjxiaogu.scriptengine.core.typeconvert;
  *          time: 2020年3月29日
  */
 public class TypeConverter<From, To> {
+	@FunctionalInterface
+	interface TypeConversionFunction<From, To> {
+		public To Convert(From original) throws KSException;
+	}
 
 	/**
 	 * The conversion function.<br />
@@ -66,11 +72,10 @@ public class TypeConverter<From, To> {
 	 *           输入类型
 	 * @return return convert result <br />
 	 *         返回转换结果
-	 * @throws ConversionException if an conversion exception occurred.<br />
-	 *                             如果conversion exception发生了
+	 * @throws KSException 
 	 */
 	@SuppressWarnings("unchecked")
-	public Object from(Object in) throws ConversionException {
+	public To from(Object in) throws KSException {
 		return func.Convert((From) in);
 	}
 

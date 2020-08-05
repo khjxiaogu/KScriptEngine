@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KProperty;
+import com.khjxiaogu.scriptengine.core.object.KOctet;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -60,8 +61,8 @@ public class ConversionManager {
 		new TypeConverter<>(Void.class, KObject.class, (obj) -> {
 			return null;
 		});
-		new TypeConverter<>(Void.class, byte[].class, (obj) -> {
-			return new byte[0];
+		new TypeConverter<>(Void.class, KOctet.class, (obj) -> {
+			return KOctet.NullOctet;
 		});
 		new TypeConverter<>(String.class, Integer.class, (obj) -> {
 			try {
@@ -77,32 +78,32 @@ public class ConversionManager {
 				return 0D;
 			}
 		});
-		new TypeConverter<>(String.class, byte[].class, (obj) -> {
-			return obj.getBytes();
+		new TypeConverter<>(String.class, KOctet.class, (obj) -> {
+			return new KOctet(obj.getBytes());
 		});
 		new TypeConverter<>(KObject.class, String.class, (obj) -> {
 			if (obj instanceof KProperty)
-				return (String) ((KProperty) obj).getProp(null).toType("String");
+				return ((KProperty) obj).getProp(null).toType(String.class);
 			return obj.toString();
 		});
 		new TypeConverter<>(KObject.class, Integer.class, (obj) -> {
 			if (obj instanceof KProperty)
-				return (Integer) ((KProperty) obj).getProp(null).toType("Integer");
+				return ((KProperty) obj).getProp(null).toType(Integer.class);
 			throw new ConversionException("Object", "Integer");
 		});
 		new TypeConverter<>(KObject.class, Double.class, (obj) -> {
 			if (obj instanceof KProperty)
-				return (Double) ((KProperty) obj).getProp(null).toType("Real");
+				return ((KProperty) obj).getProp(null).toType(Double.class);
 			throw new ConversionException("Object", "Real");
 		});
-		new TypeConverter<>(KObject.class, byte[].class, (obj) -> {
+		new TypeConverter<>(KObject.class, KOctet.class, (obj) -> {
 			if (obj instanceof KProperty)
-				return (byte[]) ((KProperty) obj).getProp(null).toType("Octet");
+				return ((KProperty) obj).getProp(null).toType(KOctet.class);
 			throw new ConversionException("Object", "Octet");
 		});
-		new TypeConverter<>(byte[].class, String.class, (obj) -> {
+		new TypeConverter<>(KOctet.class, String.class, (obj) -> {
 			StringBuilder sb = new StringBuilder("<% ");
-			for (byte element : obj) {
+			for (byte element : obj.getBytes()) {
 				if (element < 0x10) {
 					sb.append("0");
 				}
@@ -111,6 +112,9 @@ public class ConversionManager {
 			}
 			sb.append("%>");
 			return sb.toString();
+		});
+		new TypeConverter<>(KOctet.class, KObject.class, (obj) -> {
+			return obj.getObject();
 		});
 	}
 

@@ -13,10 +13,10 @@ import com.khjxiaogu.scriptengine.core.typeconvert.Converter;
  * @author khjxiaogu
  * @time 2020年2月16日 file:OperatorTypeConvertion.java type(x) or (type)x
  */
-public class TypeConvertion extends SingleOperator {
+public class TypeConversion extends SingleOperator {
 	Converter converter;
 
-	public TypeConvertion(String Type) throws ConversionException {
+	public TypeConversion(String Type) throws ConversionException {
 		converter = ConversionManager.getConversion(Type);
 	}
 

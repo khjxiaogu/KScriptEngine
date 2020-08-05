@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.object.KOctet;
 
 public final class TypeInfo {
 	private final String name;
@@ -15,7 +16,7 @@ public final class TypeInfo {
 		new TypeInfo("Real", Double.class);
 		new TypeInfo("String", String.class);
 		new TypeInfo("Object", KObject.class);
-		new TypeInfo("Octet", byte[].class);
+		new TypeInfo("Octet", KOctet.class);
 		new TypeInfo("void", Void.class);
 	}
 

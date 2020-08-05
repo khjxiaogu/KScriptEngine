@@ -31,7 +31,7 @@ public class GetMember extends DoubleOperator implements MemberOperator, Assigna
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.left.eval(env).asType(KObject.class).getMemberByVariant(super.right.eval(env),
+		return super.left.eval(env).toType(KObject.class).getMemberByVariant(super.right.eval(env),
 				KEnvironment.DEFAULT);
 	}
 

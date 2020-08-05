@@ -14,7 +14,8 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 // TODO: Auto-generated Javadoc
 /**
  * Interface KEnvironment.
- *
+ * 环境接口
+ * 
  * @author: khjxiaogu
  *          file: KEnvironment.java
  *          time: 2020年3月20日

@@ -1,12 +1,15 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidCharacterException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
@@ -72,25 +75,25 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p14.SelfIncrementLeft;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.SetProperty;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.TypeOf;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.EvalString;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p15.FuncCall;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.GetMember;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.InContextOf;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.Member;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p15.Parentness;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfDecrementRight;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p15.SelfIncrementRight;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p15.TypeConvertion;
-import com.khjxiaogu.scriptengine.core.syntax.operator.p15.WithMember;
+import com.khjxiaogu.scriptengine.core.syntax.operator.p15.TypeConversion;
 import com.khjxiaogu.scriptengine.core.syntax.statement.ArgumentNode;
 import com.khjxiaogu.scriptengine.core.syntax.statement.DoWhileStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.ForStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.FuncCall;
 import com.khjxiaogu.scriptengine.core.syntax.statement.FunctionStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.IfStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.Parentness;
 import com.khjxiaogu.scriptengine.core.syntax.statement.SuperStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.SwitchStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.ThisStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.VarStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WhileStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.WithMember;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WithStatement;
 
 /**
@@ -104,7 +107,6 @@ public class TokenDecider implements ASTParser {
 	 */
 	private CodeNode last = null;
 	private static Map<String, LiteralFactory> identifiers = new HashMap<>();
-
 	public TokenDecider() {
 		// TODO Auto-generated constructor stub
 	}
@@ -138,7 +140,7 @@ public class TokenDecider implements ASTParser {
 		else
 			return last = parseLiteral(reader);
 	}
-
+	
 	public CodeNode parseOperator(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
 		Associative infer = Associative.RIGHT;
@@ -237,6 +239,18 @@ public class TokenDecider implements ASTParser {
 			else
 				return new WithMember();
 		case '/':
+			if(next=='/') {
+				reader.eatLine();
+				return null;
+			}
+			if(next=='*') {
+				reader.eat();
+				SkipComment(reader);
+				return null;
+			}
+			if(last==null) {
+				return parseRegEx(reader);
+			}
 			if (next == '=') {
 				reader.eat();
 				return new DivideEqual();
@@ -368,7 +382,7 @@ public class TokenDecider implements ASTParser {
 			return new IsValid();
 		});
 		TokenDecider.identifiers.put("int", (reader, last) -> {
-			return new TypeConvertion("Integer");
+			return new TypeConversion("Integer");
 		});
 		TokenDecider.identifiers.put("function", (reader, last) -> {
 			return new FunctionStatement().parse(reader);
@@ -400,10 +414,10 @@ public class TokenDecider implements ASTParser {
 			return new Return();
 		});
 		TokenDecider.identifiers.put("real", (reader, last) -> {
-			return new TypeConvertion("real");
+			return new TypeConversion("real");
 		});
 		TokenDecider.identifiers.put("string", (reader, last) -> {
-			return new TypeConvertion("String");
+			return new TypeConversion("String");
 		});
 		TokenDecider.identifiers.put("typeof", (reader, last) -> {
 			return new TypeOf();
@@ -471,16 +485,44 @@ public class TokenDecider implements ASTParser {
 		char first = reader.read();
 		return null;
 	}
-
+	public void SkipComment(ParseReader reader) throws KSException {
+		char lst=0;
+		while(true) {
+			char cur=reader.eat();
+			if(lst=='*'&&cur=='/')
+				break;
+			lst=cur;
+		}
+		reader.eat();
+		return;
+	}
+	/**
+	 * parse octet defination as <% HH HH HH%>
+	 * @param reader
+	 * @return
+	 * @throws KSException
+	 */
 	public CodeNode parseOctet(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
-		char first = reader.read();
-		return null;
+		char[] chs=new char[2];
+		ArrayList<Byte> bytes=new ArrayList<>(20);
+		while((chs[0] =reader.eat())!='%') {
+			while(Character.isSpace(chs[0])) 
+				chs[0]=reader.eat();
+			chs[1]=reader.eat();
+			bytes.add(Byte.parseByte(new String(chs),16));
+		}
+		byte[] bytearr=new byte[bytes.size()];
+		for(int i=0;i<bytearr.length;++i) {
+			bytearr[i]=bytes.get(i);
+		}
+		return new ConstantNode(new KVariant(new KOctet(bytearr)));
 	}
 
 	public CodeNode parseRegEx(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
 		char first = reader.read();
+	//	StringBuilder RegEx
 		return null;
 	}
 }

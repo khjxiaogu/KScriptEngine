@@ -89,7 +89,14 @@ public interface ParseReader {
 	 *                     引擎执行发生的异常。
 	 */
 	public char eatAllSpace() throws KSException;
-
+	
+	/**
+	 * skip whole line.<br />
+	 * 跳到下一行。
+	 * @throws KSException Any Engine Exception occurred<br />
+	 *                     引擎执行发生的异常。
+	 */
+	public void eatLine() throws KSException;
 	/**
 	 * Move position a char forward,putting ch back if needed.<br />
 	 * 指针向前移动一个字符，如果需要的话把ch重新放入。
