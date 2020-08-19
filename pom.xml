@@ -40,7 +40,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>${project.build.finalName}.lib/</classpathPrefix>
-							<mainClass>${project.groupId}.${project.artifactId}.ParserRunner</mainClass>
+							<mainClass>${project.groupId}.${project.artifactId}.core.test.ParserRunner</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
