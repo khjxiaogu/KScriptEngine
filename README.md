@@ -9,3 +9,6 @@ License:![AGPLv3](https://www.ghostscript.com/images/agplv3-88x31.png)
 ![0](https://github.com/KhjTechResearch/KScriptEngine/blob/master/ASTtest0.png?raw=true)  
 函数闭包  
 ![1](https://github.com/KhjTechResearch/KScriptEngine/blob/master/ASTtest1.png?raw=true)
+# 特性
+1、支持变量编译优化，提升运行效率。  
+2、支持大多数基础脚本操作。  
