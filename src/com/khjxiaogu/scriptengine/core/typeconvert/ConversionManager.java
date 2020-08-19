@@ -5,6 +5,8 @@
  */
 package com.khjxiaogu.scriptengine.core.typeconvert;
 
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,6 +39,9 @@ public class ConversionManager {
 	}
 
 	static {// 注册转换器
+		NumberFormat nf=NumberFormat.getNumberInstance();
+		nf.setMaximumFractionDigits(16);
+		nf.setRoundingMode(RoundingMode.HALF_EVEN);
 		new TypeConverter<>(Integer.class, Double.class, (obj) -> {
 			return (double) obj;
 		});
@@ -47,7 +52,7 @@ public class ConversionManager {
 			return (int) (double) obj;
 		});
 		new TypeConverter<>(Double.class, String.class, (obj) -> {
-			return Double.toString(obj);
+			return nf.format(obj);
 		});
 		new TypeConverter<>(Void.class, Integer.class, (obj) -> {
 			return 0;
