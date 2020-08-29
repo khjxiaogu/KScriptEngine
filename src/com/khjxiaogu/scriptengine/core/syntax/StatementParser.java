@@ -58,7 +58,7 @@ public class StatementParser {
 						op.setChildren(ret, null);
 						ret = op;
 						last = null;
-					} else if(last==null&&pending instanceof DoubleOperator) {
+					} else if(last==null) {
 							CodeNode cnr=((DoubleOperator)pending).getRight();
 							op.setChildren(cnr,null);
 							pending.setChildren(null,op);
