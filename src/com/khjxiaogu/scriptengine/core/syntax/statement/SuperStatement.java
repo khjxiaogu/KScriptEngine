@@ -6,9 +6,9 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 
-public class SuperStatement implements MemberOperator, CodeNode {
+public class SuperStatement implements ObjectOperator, CodeNode {
 
 	public SuperStatement() {
 	}

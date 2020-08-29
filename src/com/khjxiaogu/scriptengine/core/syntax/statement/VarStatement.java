@@ -13,16 +13,16 @@ import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 /**
  * @author khjxiaogu
  * @time 2020年3月2日
  *       project:khjScriptEngine
  */
-public class VarStatement implements Visitable, ASTParser, MemberOperator, CodeNode {
+public class VarStatement implements Visitable, ASTParser, ObjectOperator, CodeNode {
 
 	/**
 	 *

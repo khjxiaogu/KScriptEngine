@@ -11,16 +11,16 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.statement.FuncCall;
 
 /**
  * @author khjxiaogu
  * @time 2020年2月16日
  */
-public class Member extends DoubleOperator implements MemberOperator, Assignable {
+public class Member extends DoubleOperator implements ObjectOperator, Assignable {
 
 	/**
 	 *
@@ -58,20 +58,20 @@ public class Member extends DoubleOperator implements MemberOperator, Assignable
 	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return ((MemberOperator) super.left).getObject(env);
+		return ((ObjectOperator) super.left).getObject(env);
 	}
 
 	@Override
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
-		if (!((super.left instanceof MemberOperator||super.left==null)&&(super.right instanceof LiteralNode||super.right==null)))
+		if (!((super.left instanceof ObjectOperator||super.left==null)&&(super.right instanceof LiteralNode||super.right==null)))
 			throw new SyntaxError("错误的表达式");
 	}
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return ((MemberOperator) super.left).getObject(env).doOperationByName(op,
+		return ((ObjectOperator) super.left).getObject(env).doOperationByName(op,
 				((LiteralNode) super.right).getToken(), val);
 	}
 
@@ -92,8 +92,8 @@ public class Member extends DoubleOperator implements MemberOperator, Assignable
 
 	@Override
 	public void VisitAsChild(List<String> parentMap) throws KSException {
-		if (super.left instanceof MemberOperator) {
-			((MemberOperator) super.right).VisitAsChild(parentMap);
+		if (super.left instanceof ObjectOperator) {
+			((ObjectOperator) super.right).VisitAsChild(parentMap);
 		} else {
 			Visitable.Visit(super.right, parentMap);
 		}

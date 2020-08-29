@@ -4,8 +4,8 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
@@ -24,9 +24,9 @@ public class DeleteMember extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if (super.Child instanceof MemberOperator) {
-			KVariant point = ((MemberOperator) super.Child).getPointing(env);
-			KEnvironment obj = ((MemberOperator) super.Child).getObject(env);
+		if (super.Child instanceof ObjectOperator) {
+			KVariant point = ((ObjectOperator) super.Child).getPointing(env);
+			KEnvironment obj = ((ObjectOperator) super.Child).getObject(env);
 			if (point.getType().getType() == Long.class) {
 				return new KVariant(obj.deleteMemberByNum(point.getInt()));
 				

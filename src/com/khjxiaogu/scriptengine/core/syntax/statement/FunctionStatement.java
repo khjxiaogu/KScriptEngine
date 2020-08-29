@@ -14,14 +14,14 @@ import com.khjxiaogu.scriptengine.core.object.ScriptFunctionClosure;
 import com.khjxiaogu.scriptengine.core.syntax.BlockClosure;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.Equal;
 
-public class FunctionStatement implements BlockClosure, MemberOperator {
+public class FunctionStatement implements BlockClosure, ObjectOperator {
 	String name;
 	int itoken = -1;
 	String[] argnames;

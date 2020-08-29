@@ -6,14 +6,14 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 
 /**
  * @author khjxiaogu
  * @time 2020年3月21日
  *       project:khjScriptEngine
  */
-public class ThisStatement implements CodeNode, MemberOperator {
+public class ThisStatement implements CodeNode, ObjectOperator {
 
 	/**
 	 *

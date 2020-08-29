@@ -12,15 +12,15 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 /**
  * @author khjxiaogu
  * @time 2020年2月19日
  */
-public class Parentness implements CodeNode, ASTParser, MemberOperator, Assignable {
+public class Parentness implements CodeNode, ASTParser, ObjectOperator, Assignable {
 	CodeNode inner;
 
 	/**
@@ -61,8 +61,8 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator, Assignab
 	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		if (inner instanceof MemberOperator)
-			return ((MemberOperator) inner).getObject(env);
+		if (inner instanceof ObjectOperator)
+			return ((ObjectOperator) inner).getObject(env);
 		throw new AssignException(inner.toString());
 	}
 
@@ -75,12 +75,12 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator, Assignab
 
 	@Override
 	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return ((MemberOperator) inner).getSuperEnvironment(env);
+		return ((ObjectOperator) inner).getSuperEnvironment(env);
 	}
 
 	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
-		return ((MemberOperator) inner).getPointing(env);
+		return ((ObjectOperator) inner).getPointing(env);
 	}
 
 	@Override
@@ -91,8 +91,8 @@ public class Parentness implements CodeNode, ASTParser, MemberOperator, Assignab
 	@Override
 	public void VisitAsChild(List<String> parentMap) throws KSException {
 		if (!(inner instanceof LiteralNode)) {
-			if (inner instanceof MemberOperator) {
-				((MemberOperator) inner).VisitAsChild(parentMap);
+			if (inner instanceof ObjectOperator) {
+				((ObjectOperator) inner).VisitAsChild(parentMap);
 			} else {
 				Visitable.Visit(inner, parentMap);
 			}

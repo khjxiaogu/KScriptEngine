@@ -6,13 +6,22 @@ import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 
 //no operation
 public class Nop implements CodeNode {
+	private static Nop instance=new Nop();
+	public static Nop createNop() {
+		return instance;
+	}
 
-	public Nop() {
+	private Nop() {
 	}
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		return new KVariant();
+	}
+
+	@Override
+	public String toString() {
+		return "";
 	}
 
 }

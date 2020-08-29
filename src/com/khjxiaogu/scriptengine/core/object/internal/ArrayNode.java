@@ -11,12 +11,12 @@ import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
-public class ArrayNode implements CodeNode,ASTParser,MemberOperator {
+public class ArrayNode implements CodeNode,ASTParser,ObjectOperator {
 	@Override
 	public String toString() {
 		StringBuilder sb=new StringBuilder("[");

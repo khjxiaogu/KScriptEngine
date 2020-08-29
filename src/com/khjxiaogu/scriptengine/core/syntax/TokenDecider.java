@@ -16,7 +16,6 @@ import com.khjxiaogu.scriptengine.core.object.internal.ObjectArray;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Break;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p00.Case;
@@ -194,7 +193,7 @@ public class TokenDecider implements ASTParser {
 			} else
 				return new ByteAnd();
 		case '(':
-			if (last instanceof MemberOperator)
+			if (last instanceof ObjectOperator)
 				return new FuncCall().parse(reader);
 			return new Parentness().parse(reader);
 		case '*':
@@ -239,7 +238,7 @@ public class TokenDecider implements ASTParser {
 			if ('0' <= next && next <= '9') {
 				reader.rewind('.');
 				return new NumberNode().parse(reader);
-			} else if (last instanceof MemberOperator)
+			} else if (last instanceof ObjectOperator)
 				return new Member();
 			else
 				return new WithMember();

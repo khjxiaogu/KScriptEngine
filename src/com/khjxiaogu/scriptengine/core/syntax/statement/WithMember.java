@@ -11,12 +11,11 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
-import com.khjxiaogu.scriptengine.core.syntax.WithEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
-public class WithMember extends SingleOperator implements MemberOperator, Assignable {
+public class WithMember extends SingleOperator implements ObjectOperator, Assignable {
 
 	public WithMember() {
 	}

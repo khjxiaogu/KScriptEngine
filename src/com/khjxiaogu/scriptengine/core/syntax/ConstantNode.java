@@ -6,9 +6,8 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
-public class ConstantNode implements CodeNode,MemberOperator{
+public class ConstantNode implements CodeNode,ObjectOperator{
 	protected final KVariant value = new KVariant();
 	public ConstantNode(KVariant ref) {
 		value.setValue(ref);

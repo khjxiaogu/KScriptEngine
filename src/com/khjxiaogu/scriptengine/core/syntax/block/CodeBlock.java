@@ -10,10 +10,10 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 public class CodeBlock implements Block, Visitable {
 	protected List<CodeNode> nodes = new ArrayList<>();
@@ -178,8 +178,8 @@ public class CodeBlock implements Block, Visitable {
 		List<String> curmap = new ArrayList<>(parentMap);
 		for (int i = 0; i < nodes.size(); i++) {
 			CodeNode node = nodes.get(i);
-			if (node instanceof MemberOperator) {
-				((MemberOperator) node).VisitAsChild(parentMap);
+			if (node instanceof ObjectOperator) {
+				((ObjectOperator) node).VisitAsChild(parentMap);
 			} else {
 				Visitable.Visit(node, curmap);
 			}

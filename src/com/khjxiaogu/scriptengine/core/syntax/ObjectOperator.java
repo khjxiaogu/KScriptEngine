@@ -1,13 +1,12 @@
-package com.khjxiaogu.scriptengine.core.syntax.operator;
+package com.khjxiaogu.scriptengine.core.syntax;
 
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
-public interface MemberOperator extends Visitable {
+public interface ObjectOperator extends Visitable {
 	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException;
 
 	public KVariant getPointing(KEnvironment env) throws KSException;

@@ -9,9 +9,9 @@ import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 import com.khjxiaogu.scriptengine.core.syntax.statement.FuncCall;
 
@@ -40,7 +40,7 @@ public class New extends FuncCall {
 		StatementParser parser=new StatementParser();
 		CodeNode cn=parser.parseUntil(reader,'(');
 		reader.eat();
-		if(!(cn instanceof MemberOperator)) {
+		if(!(cn instanceof ObjectOperator)) {
 			throw new SyntaxError("错误的new语句",reader);
 		}
 		//reader.eatAllSpace();

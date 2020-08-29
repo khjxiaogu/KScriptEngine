@@ -8,13 +8,12 @@ import com.khjxiaogu.scriptengine.core.exceptions.AssemblyException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 /**
  * @author khjxiaogu
  * @time 2020年2月16日 file:LiteralNode.java
  */
-public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOperator, Visitable {
+public class LiteralNode implements CodeNode, ASTParser, Assignable, ObjectOperator, Visitable {
 
 	/**
 	 *

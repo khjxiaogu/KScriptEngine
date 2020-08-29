@@ -11,10 +11,10 @@ import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 
 /**
@@ -23,7 +23,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
  *       file:Conditon.java
  *       x?x:x
  */
-public class Condition implements Operator, ASTParser, MemberOperator, Assignable {
+public class Condition implements Operator, ASTParser, ObjectOperator, Assignable {
 	CodeNode cond;
 	CodeNode first;
 	CodeNode other;
@@ -109,8 +109,8 @@ public class Condition implements Operator, ASTParser, MemberOperator, Assignabl
 		} else {
 			cn = other;
 		}
-		if (cn instanceof MemberOperator)
-			return ((MemberOperator) cn).getObject(env);
+		if (cn instanceof ObjectOperator)
+			return ((ObjectOperator) cn).getObject(env);
 		throw new ScriptException("错误的赋值表达式");
 	}
 

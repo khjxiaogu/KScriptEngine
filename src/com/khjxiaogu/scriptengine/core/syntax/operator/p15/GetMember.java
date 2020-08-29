@@ -11,15 +11,15 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
+import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
-import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
 /**
  * @author khjxiaogu
  * @time 2020年2月16日 file:OperatorGetMember.java x[x]
  */
-public class GetMember extends DoubleOperator implements MemberOperator, Assignable {
+public class GetMember extends DoubleOperator implements ObjectOperator, Assignable {
 
 	/**
 	 *
@@ -67,7 +67,7 @@ public class GetMember extends DoubleOperator implements MemberOperator, Assigna
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return (KObject) ((MemberOperator) super.left).getObject(env)
+		return (KObject) ((ObjectOperator) super.left).getObject(env)
 				.getMemberByVariant(super.right.eval(env), KEnvironment.DEFAULT).toType("Object");
 	}
 
@@ -81,12 +81,12 @@ public class GetMember extends DoubleOperator implements MemberOperator, Assigna
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return ((MemberOperator) super.left).getObject(env).doOperationByVariant(op, super.right.eval(env), val);
+		return ((ObjectOperator) super.left).getObject(env).doOperationByVariant(op, super.right.eval(env), val);
 	}
 
 	@Override
 	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return ((MemberOperator) super.left).getObject(env);
+		return ((ObjectOperator) super.left).getObject(env);
 	}
 
 	@Override
@@ -105,8 +105,8 @@ public class GetMember extends DoubleOperator implements MemberOperator, Assigna
 	@Override
 	public void VisitAsChild(List<String> parentMap) throws KSException {
 		if (!(super.right instanceof LiteralNode)) {
-			if (super.right instanceof MemberOperator) {
-				((MemberOperator) super.right).VisitAsChild(parentMap);
+			if (super.right instanceof ObjectOperator) {
+				((ObjectOperator) super.right).VisitAsChild(parentMap);
 			} else {
 				Visitable.Visit(super.right, parentMap);
 			}

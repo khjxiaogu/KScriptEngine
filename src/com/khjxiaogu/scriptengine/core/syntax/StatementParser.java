@@ -107,7 +107,7 @@ public class StatementParser {
 		}
 		CodeNode ret = parseTree(reader);
 		if (ret == null) {
-			ret = new Nop();
+			ret = Nop.createNop();
 		}
 		if (reader.read() == until) {
 			reader.eat();
@@ -133,7 +133,7 @@ public class StatementParser {
 		}
 		CodeNode ret = parseTree(reader);
 		if (ret == null) {
-			ret = new Nop();
+			ret = Nop.createNop();
 		}
 		td.reset();
 		clear();
@@ -160,7 +160,7 @@ public class StatementParser {
 		}
 		CodeNode ret = parseTree(reader);
 		if (ret == null) {
-			ret = new Nop();
+			ret = Nop.createNop();
 		}
 		if (reader.has() && reader.read() == until) {
 			reader.eat();
