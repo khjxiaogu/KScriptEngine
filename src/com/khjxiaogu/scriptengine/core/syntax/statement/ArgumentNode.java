@@ -11,6 +11,7 @@ import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
+import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.Equal;
@@ -34,8 +35,9 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 			if (!reader.has()) {
 				break;
 			}
-			subnodes.add(parser.parseUntil(reader, ',', ';', ')'));
-
+			CodeNode cn=parser.parseUntil(reader, ',',';',')');
+			if(!(cn instanceof Nop))
+				subnodes.add(cn);
 			if (reader.read() == ',') {
 				reader.eat();
 				continue;

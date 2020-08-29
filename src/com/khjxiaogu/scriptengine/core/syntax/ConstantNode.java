@@ -1,10 +1,14 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
+import java.util.List;
+
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 
-public class ConstantNode implements CodeNode {
+public class ConstantNode implements CodeNode,MemberOperator{
 	protected final KVariant value = new KVariant();
 	public ConstantNode(KVariant ref) {
 		value.setValue(ref);
@@ -21,5 +25,23 @@ public class ConstantNode implements CodeNode {
 	@Override
 	public String toString() {
 		return value.toString();
+	}
+	@Override
+	public void Visit(List<String> parentMap) throws KSException {
+	}
+	@Override
+	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
+		return env;
+	}
+	@Override
+	public KVariant getPointing(KEnvironment env) throws KSException {
+		return null;
+	}
+	@Override
+	public void VisitAsChild(List<String> parentMap) throws KSException {
+	}
+	@Override
+	public KEnvironment getObject(KEnvironment env) throws KSException {
+		return value.toType(KObject.class);
 	}
 }

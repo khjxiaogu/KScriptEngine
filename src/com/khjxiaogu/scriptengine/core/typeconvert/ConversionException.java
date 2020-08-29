@@ -61,6 +61,10 @@ public class ConversionException extends ScriptException {
 		// TODO Auto-generated constructor stub
 	}
 
+	public ConversionException(String ToType) {
+		super(String.format(ConversionException.format2, ToType));
+	}
+
 	/**
 	 * Set type.<br />
 	 *

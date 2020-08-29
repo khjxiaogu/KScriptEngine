@@ -135,7 +135,7 @@ public class PropertyClosure extends Closure implements KProperty {
 	@Override
 	public void setProp(KVariant x, KEnvironment env) throws KSException {
 		if (env == null) {
-			backed.setProp(x, Closure);
+			backed.setProp(x, closure);
 		} else {
 			backed.setProp(x, env);
 		}
@@ -144,8 +144,18 @@ public class PropertyClosure extends Closure implements KProperty {
 	@Override
 	public KVariant getProp(KEnvironment env) throws KSException {
 		if (env == null)
-			return backed.getProp(Closure);
+			return backed.getProp(closure);
 		return backed.getProp(env);
+	}
+
+	@Override
+	public String getInstanceName() {
+		return "Property";
+	}
+
+	@Override
+	public String toString() {
+		return "(Property)"+super.getInstancePointer();
 	}
 
 }

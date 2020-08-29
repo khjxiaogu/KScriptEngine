@@ -37,13 +37,13 @@ public class TypeConverter<From, To> {
 	 * from type.<br />
 	 * 输入类型.
 	 */
-	protected TypeInfo from;
+	protected Class<?> from;
 
 	/**
 	 * to type.<br />
 	 * 输出类型.
 	 */
-	protected TypeInfo to;
+	protected Class<?> to;
 
 	/**
 	 * Instantiates a new type converter with a input type,output type and a
@@ -59,8 +59,8 @@ public class TypeConverter<From, To> {
 	 */
 	public TypeConverter(Class<From> from, Class<To> to, TypeConversionFunction<From, To> func) {
 		this.func = func;
-		this.from = TypeInfo.forType(from);
-		this.to = TypeInfo.forType(to);
+		this.from = from;
+		this.to = to;
 		ConversionManager.registConversion(this);// auto register
 	}
 
@@ -86,7 +86,7 @@ public class TypeConverter<From, To> {
 	 * @return from type<br />
 	 *         输入类型
 	 */
-	public TypeInfo getFrom() {
+	public Class<?> getFrom() {
 		return from;
 	}
 
@@ -97,7 +97,7 @@ public class TypeConverter<From, To> {
 	 * @return to type<br />
 	 *         输出类型
 	 */
-	public TypeInfo getTo() {
+	public Class<?> getTo() {
 		return to;
 	}
 }

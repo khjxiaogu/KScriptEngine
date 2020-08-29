@@ -30,8 +30,8 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 	}
 
 	@Override
-	public boolean isInstanceOf(String str) {
-		return str.equals("Function");
+	public String toString() {
+		return "(Function)"+super.getInstancePointer();
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 	public boolean invalidate() {
 		if (functionBody != null) {
 			functionBody = null;
-			Closure = null;
+			closure = null;
 			return true;
 		}
 		return false;
@@ -62,7 +62,7 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 		}
 		for (int i = 0; i < args.length; i++) {
 			if ((args[i] == null || args[i].getType().getType() == Void.class) && defargs[i] != null) {
-				args[i] = defargs[i].eval(Closure);
+				args[i] = defargs[i].eval(closure);
 			} else if (args[i] == null) {
 				args[i] = new KVariant();
 			}
@@ -70,8 +70,13 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 		if (env != null) {
 			tenv = new ArrayEnvironment(env, off, args);
 		} else {
-			tenv = new ArrayEnvironment(super.Closure, off, args);
+			tenv = new ArrayEnvironment(super.closure, off, args);
 		}
 		return functionBody.eval(tenv);
+	}
+
+	@Override
+	public String getInstanceName() {
+		return "Function";
 	}
 }

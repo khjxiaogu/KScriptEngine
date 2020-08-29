@@ -26,13 +26,13 @@ public class Converter {
 	 * The converters.<br />
 	 * 转换器.
 	 */
-	protected final Map<TypeInfo, TypeConverter<?, ?>> converters = new ConcurrentHashMap<>();
+	protected final Map<Class<?>, TypeConverter<?, ?>> converters = new ConcurrentHashMap<>();
 
 	/**
 	 * The output type.<br />
 	 * 输出类型.
 	 */
-	protected TypeInfo type;
+	protected Class<?> type;
 
 	/**
 	 * Instantiates a new converter with a type.<br />
@@ -41,7 +41,7 @@ public class Converter {
 	 * @param type the output type<br />
 	 *             输出类型
 	 */
-	public Converter(TypeInfo type) {
+	public Converter(Class<?> type) {
 		this.type = type;
 	}
 
@@ -60,9 +60,9 @@ public class Converter {
 		if (t.equals(type))
 			return new KVariant(in);
 		TypeConverter<?, ?> converter;
-		if ((converter = converters.get(t)) != null)
-			return new KVariant(converter.from(in.getValue()), type);
-		throw new ConversionException(t, type);
+		if ((converter = converters.get(t.getType())) != null)
+			return new KVariant(converter.from(in.getValue()),TypeInfo.forType(type));
+		throw new ConversionException(t.getName(),type.getSimpleName());
 	}
 
 	/**
@@ -80,9 +80,9 @@ public class Converter {
 		if (t.equals(type))
 			return in.getValue();
 		TypeConverter<?, ?> converter;
-		if ((converter = converters.get(t)) != null)
+		if ((converter = converters.get(t.getType())) != null)
 			return converter.from(in.getValue());
-		throw new ConversionException(t, type);
+		throw new ConversionException(t.getName(),type.getSimpleName());
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class Converter {
 	 * @return converter of specific type<br />
 	 *         对应类型的转换器
 	 */
-	public TypeConverter<?, ?> getConversion(TypeInfo fromType) {
+	public TypeConverter<?, ?> getConversion(Class<?> fromType) {
 		return converters.get(fromType);
 	}
 
@@ -109,10 +109,10 @@ public class Converter {
 	 * @throws ConversionException if no such conversion.<br />
 	 *                             如果没有这种转换
 	 */
-	public TypeConverter<?, ?> getConversionEnsure(TypeInfo fromType) throws ConversionException {
+	public TypeConverter<?, ?> getConversionEnsure(Class<?> fromType) throws ConversionException {
 		TypeConverter<?, ?> conv = converters.get(fromType);
 		if (conv == null)
-			throw new ConversionException(fromType, type);
+			throw new ConversionException(fromType.getSimpleName(), type.getSimpleName());
 		return conv;
 	}
 
@@ -126,6 +126,18 @@ public class Converter {
 	 *         如果存在，返回true。
 	 */
 	public boolean hasConversion(TypeInfo fromType) {
+		return converters.containsKey(fromType.getType());
+	}
+	/**
+	 * Check if a conversion exist.<br />
+	 * 检查某种类型转换器是否存在
+	 *
+	 * @param fromType the from type<br />
+	 *                 输入类型
+	 * @return true, if exists<br />
+	 *         如果存在，返回true。
+	 */
+	public boolean hasConversion(Class<?> fromType) {
 		return converters.containsKey(fromType);
 	}
 
@@ -137,7 +149,7 @@ public class Converter {
 	 *         输出类型
 	 */
 	public Class<?> getOutType() {
-		return type.getType();
+		return type;
 	}
 
 	/**
@@ -148,7 +160,7 @@ public class Converter {
 	 *         输出类型信息
 	 */
 	public TypeInfo getOutTypeInfo() {
-		return type;
+		return TypeInfo.forType(type);
 	}
 
 	/**
@@ -175,7 +187,7 @@ public class Converter {
 	 * @param converter the converter<br />
 	 *                  转换器
 	 */
-	public void registConvert(TypeInfo fromType, TypeConverter<?, ?> converter) {
+	public void registConvert(Class<?> fromType, TypeConverter<?, ?> converter) {
 		converters.put(fromType, converter);
 	}
 }

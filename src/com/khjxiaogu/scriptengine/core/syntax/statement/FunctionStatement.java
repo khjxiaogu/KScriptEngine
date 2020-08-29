@@ -45,7 +45,6 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 		} else
 			return new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
 	}
-
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser p = new StatementParser();
@@ -93,7 +92,8 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 	public void Visit(List<String> parentMap) throws KSException {
 		List<String> allnodes = new ArrayList<String>(parentMap);
 		off = parentMap.size();
-		allnodes.addAll(Arrays.asList(argnames));
+		if(argnames!=null)
+			allnodes.addAll(Arrays.asList(argnames));
 		Visitable.Visit(body, allnodes);
 		if (name != null) {
 			parentMap.add(name);
@@ -104,6 +104,7 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 	@Override
 	public String toString() {
 		String pardesc = "";
+		if(argnames!=null)
 		for (int i = 0; i < argnames.length; i++) {
 			pardesc += argnames[i] + "[%" + (i + off) + "]";
 			if (defargs[i] != null) {
@@ -142,7 +143,8 @@ public class FunctionStatement implements BlockClosure, MemberOperator {
 	public void VisitAsChild(List<String> parentMap) throws KSException {
 		List<String> allnodes = new ArrayList<String>(parentMap);
 		off = parentMap.size();
-		allnodes.addAll(Arrays.asList(argnames));
+		if(argnames!=null)
+			allnodes.addAll(Arrays.asList(argnames));
 		Visitable.Visit(body, allnodes);
 	}
 

@@ -47,7 +47,8 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant getMemberByName(String name, int flag) throws KSException {
-		throw new MemberNotFoundException(name);
+		return parent.getMemberByName(name,KEnvironment.MUSTEXIST);
+		//throw new MemberNotFoundException(name);
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class ArrayEnvironment implements KEnvironment {
 		KVariant v;
 		if ((v = list[num - offset]) == null)
 			throw new MemberNotFoundException("%" + num);
-		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+		if ((flag & KEnvironment.IGNOREPROP) ==0) {
 			if (v.getType().getType() == KObject.class && v.getValue() instanceof KProperty)
 				return ((KProperty) v.getValue()).getProp(null);
 		}
@@ -68,12 +69,12 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
-		throw new MemberNotFoundException(var.toString());
+		return parent.getMemberByVariant(var,KEnvironment.MUSTEXIST);
 	}
 
 	@Override
 	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
-		throw new MemberNotFoundException(name);
+		return parent.setMemberByName(name,val,KEnvironment.MUSTEXIST);
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class ArrayEnvironment implements KEnvironment {
 		if (num < offset)
 			return parent.setMemberByNum(num, val, flag);
 		KVariant va = list[num - offset];
-		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+		if ((flag & KEnvironment.IGNOREPROP) ==0) {
 			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
 				((KProperty) va.getValue()).setProp(val, null);
 			}
@@ -91,12 +92,12 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
-		throw new MemberNotFoundException(var.toString());
+		return parent.setMemberByVariant(var, val,KEnvironment.MUSTEXIST);
 	}
 
 	@Override
 	public boolean hasMemberByName(String name, int flag) throws KSException {
-		throw new MemberNotFoundException(name);
+		return parent.hasMemberByName(name,KEnvironment.MUSTEXIST);
 	}
 
 	@Override
@@ -110,12 +111,12 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
-		throw new MemberNotFoundException(var.toString());
+		return parent.hasMemberByVariant(var);
 	}
 
 	@Override
 	public boolean deleteMemberByName(String name) throws KSException {
-		throw new MemberNotFoundException(name);
+		return parent.deleteMemberByName(name);
 	}
 
 	@Override
@@ -132,7 +133,7 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		throw new MemberNotFoundException(name);
+		return parent.doOperationByName(op, name, opr);
 	}
 
 	@Override
@@ -144,64 +145,17 @@ public class ArrayEnvironment implements KEnvironment {
 		KVariant v = list[num - offset];
 		if (v == null)
 			throw new MemberNotFoundException("%" + num);
-		switch (op) {
-		case ADD:
-			v.addby(opr);
-			break;
-		case ARSH:
-			v.ARSHby(opr.getInt());
-			break;
-		case BAND:
-			v.BANDby(opr);
-			break;
-		case BOR:
-			v.BOR(opr);
-			break;
-		case BXOR:
-			v.BXORby(opr);
-			break;
-		case DIV:
-			v.divideby(opr);
-			break;
-		case EQ:
-			v.setValue(opr);
-			break;
-		case FDIV:
-			v.floorDivideby(opr);
-			break;
-		case LAND:
-			v.set(v.asBoolean() && opr.asBoolean());
-			break;
-		case LOR:
-			v.set(v.asBoolean() || opr.asBoolean());
-			break;
-		case LSH:
-			v.LSHby(opr.getInt());
-			break;
-		case MIN:
-			v.minusby(opr);
-			break;
-		case MOD:
-			v.modby(opr);
-			break;
-		case MUL:
-			v.multiplyby(opr);
-			break;
-		case RSH:
-			v.RSHby(opr.getInt());
-			break;
-		}
-		return v;
+		return v.doOperation(op, opr);
 	}
 
 	@Override
 	public KVariant doOperationByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
-		throw new MemberNotFoundException(var.toString());
+		return parent.doOperationByVariant(op, var, opr);
 	}
 
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
-		throw new MemberNotFoundException(var.toString());
+		return parent.deleteMemberByVariant(var);
 	}
 
 	@Override
@@ -222,14 +176,14 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
-		throw new MemberNotFoundException(name);
+		return parent.funcCallByName(name, args, objthis, KEnvironment.MUSTEXIST);
 	}
 
 	@Override
 	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
 		for (int i = 0; i < list.length; i++) {
 			KVariant va = list[i];
-			if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			if ((flag & KEnvironment.IGNOREPROP) ==0) {
 				if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
 					va = ((KProperty) va.getValue()).getProp(null);
 				}

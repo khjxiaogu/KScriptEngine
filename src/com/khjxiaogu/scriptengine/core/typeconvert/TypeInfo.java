@@ -12,7 +12,7 @@ public final class TypeInfo {
 	private static Map<String, TypeInfo> types = new ConcurrentHashMap<>();
 	private static Map<Class<?>, TypeInfo> typeclasses = new ConcurrentHashMap<>();
 	static {
-		new TypeInfo("Integer", Integer.class);
+		new TypeInfo("Integer", Long.class);
 		new TypeInfo("Real", Double.class);
 		new TypeInfo("String", String.class);
 		new TypeInfo("Object", KObject.class);

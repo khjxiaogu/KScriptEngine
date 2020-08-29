@@ -10,65 +10,75 @@ public class GlobalEnvironment extends Closure {
 	public static GlobalEnvironment getGlobal() {
 		return GlobalEnvironment.global;
 	}
-
+	public static KEnvironment createGlobal() throws KSException {
+		MapEnvironment me=new MapEnvironment();
+		GlobalEnvironment.getGlobal().EnumMembers((k,v)->{me.setMemberByName(k.toString(), v, IGNOREPROP);return true;}, IGNOREPROP);
+		return me;
+	}
 	public GlobalEnvironment() {
 		super(new MapEnvironment());
+		try {
+			closure.setMemberByName("global",new KVariant(this), KEnvironment.DEFAULT);
+		} catch (KSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public KVariant getMemberByName(String name, int flag) throws KSException {
-		return Closure.getMemberByName(name, flag);
+		return closure.getMemberByName(name, 0);
 	}
 
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
-		return Closure.getMemberByVariant(var, flag);
+		return closure.getMemberByVariant(var,0);
 	}
 
 	@Override
 	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
-		return Closure.setMemberByName(name, val, flag);
+		return closure.setMemberByName(name, val, 0);
 	}
 
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
-		return Closure.setMemberByVariant(var, val, flag);
+		return closure.setMemberByVariant(var, val, 0);
 	}
 
 	@Override
 	public boolean hasMemberByName(String name, int flag) throws KSException {
-		return Closure.hasMemberByName(name, flag);
+		return closure.hasMemberByName(name, 0);
 	}
 
 	@Override
 	public boolean deleteMemberByName(String name) throws KSException {
-		return Closure.deleteMemberByName(name);
+		return closure.deleteMemberByName(name);
 	}
 
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
-		return Closure.deleteMemberByVariant(var);
+		return closure.deleteMemberByVariant(var);
 	}
 
 	@Override
 	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		return Closure.doOperationByName(op, name, opr);
+		return closure.doOperationByName(op, name, opr);
 	}
 
 	@Override
 	public KVariant doOperationByVariant(AssignOperation op, KVariant var, KVariant opr) throws KSException {
-		return Closure.doOperationByVariant(op, var, opr);
+		return closure.doOperationByVariant(op, var, opr);
 	}
 
 	@Override
 	public boolean isValid() throws KSException {
-		return Closure != null;
+		return closure != null;
 	}
 
 	@Override
 	public boolean invalidate() throws KSException {
 		if (isValid()) {
-			Closure = null;
+			closure = null;
 			return true;
 		}
 		return false;
@@ -76,6 +86,11 @@ public class GlobalEnvironment extends Closure {
 
 	@Override
 	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
-		Closure.EnumMembers(cosumer, flag);
+		closure.EnumMembers(cosumer,flag);
+	}
+
+	@Override
+	public String getInstanceName() {
+		return "Global";
 	}
 }

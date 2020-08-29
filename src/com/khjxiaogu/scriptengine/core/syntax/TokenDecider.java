@@ -9,7 +9,10 @@ import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidCharacterException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
+import com.khjxiaogu.scriptengine.core.object.GlobalEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
+import com.khjxiaogu.scriptengine.core.object.internal.ArrayNode;
+import com.khjxiaogu.scriptengine.core.object.internal.ObjectArray;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
@@ -68,6 +71,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.p14.InstanceOf;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.Invalidate;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.IsValid;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.Negative;
+import com.khjxiaogu.scriptengine.core.syntax.operator.p14.New;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.Not;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.Positive;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p14.SelfDecrementLeft;
@@ -91,6 +95,7 @@ import com.khjxiaogu.scriptengine.core.syntax.statement.Parentness;
 import com.khjxiaogu.scriptengine.core.syntax.statement.SuperStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.SwitchStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.ThisStatement;
+import com.khjxiaogu.scriptengine.core.syntax.statement.TryStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.VarStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WhileStatement;
 import com.khjxiaogu.scriptengine.core.syntax.statement.WithMember;
@@ -234,7 +239,7 @@ public class TokenDecider implements ASTParser {
 			if ('0' <= next && next <= '9') {
 				reader.rewind('.');
 				return new NumberNode().parse(reader);
-			} else if (last instanceof Assignable)
+			} else if (last instanceof MemberOperator)
 				return new Member();
 			else
 				return new WithMember();
@@ -314,8 +319,8 @@ public class TokenDecider implements ASTParser {
 		case '[':
 			if (infer == Associative.LEFT)
 				return parseArray(reader);
-			else
-				return new GetMember();
+			return new GetMember();
+		case ']':return null;
 		case '\\':
 			if (next == '=') {
 				reader.eat();
@@ -348,7 +353,7 @@ public class TokenDecider implements ASTParser {
 		default:
 			// reader.rewind(first);
 			// return null;
-			throw new SyntaxError("unexpected" + first);
+			throw new SyntaxError("unexpected" + first,reader);
 		}
 		// return null;
 	}
@@ -413,6 +418,9 @@ public class TokenDecider implements ASTParser {
 		TokenDecider.identifiers.put("return", (reader, last) -> {
 			return new Return();
 		});
+		TokenDecider.identifiers.put("global", (reader, last) -> {
+			return new ConstantNode(new KVariant(GlobalEnvironment.getGlobal()));
+		});
 		TokenDecider.identifiers.put("real", (reader, last) -> {
 			return new TypeConversion("Real");
 		});
@@ -446,7 +454,12 @@ public class TokenDecider implements ASTParser {
 		TokenDecider.identifiers.put("super", (reader, last) -> {
 			return new SuperStatement();
 		});
-
+		TokenDecider.identifiers.put("new", (reader, last) -> {
+			return new New().parse(reader);
+		});
+		TokenDecider.identifiers.put("try", (reader, last) -> {
+			return new TryStatement().parse(reader);
+		});
 	}
 
 	public CodeNode parseLiteral(ParseReader reader) throws KSException {
@@ -476,8 +489,7 @@ public class TokenDecider implements ASTParser {
 
 	public CodeNode parseArray(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
-		char first = reader.read();
-		return null;
+		return new ArrayNode().parse(reader);
 	}
 
 	public CodeNode parseDictionary(ParseReader reader) throws KSException {

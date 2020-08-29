@@ -2,9 +2,11 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p14;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.object.BasicProperty;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
+import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
@@ -23,9 +25,16 @@ public class GetPropertyInstance extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		BasicProperty prop = new BasicProperty();
-		prop.setProp(super.Child.eval(env));
-		return new KVariant(prop);
+		if (super.Child instanceof MemberOperator) {
+			KVariant point = ((MemberOperator) super.Child).getPointing(env);
+			KEnvironment obj = ((MemberOperator) super.Child).getObject(env);
+			if (point.getType().getType() == Long.class) {
+				return new KVariant(obj.getMemberByNum(point.getInt(),KEnvironment.IGNOREPROP));
+			} else {
+				return new KVariant(obj.getMemberByName(point.toString(),KEnvironment.IGNOREPROP));
+			}
+		}
+		throw new MemberNotFoundException(super.Child.toString());
 	}
 
 	@Override

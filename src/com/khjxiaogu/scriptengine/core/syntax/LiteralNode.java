@@ -70,7 +70,12 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, MemberOpera
 			return env.setMemberByNum(itoken, val, KEnvironment.MUSTEXIST);
 		return env.setMemberByName(token, val, KEnvironment.MUSTEXIST);
 	}
-
+	public KVariant assignAsVar(KEnvironment env, KVariant val) throws KSException {
+		// TODO Auto-generated method stub
+		if (isLocal())
+			return env.setMemberByNum(itoken, val, KEnvironment.DEFAULT);
+		return env.setMemberByName(token, val, KEnvironment.DEFAULT);
+	}
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub

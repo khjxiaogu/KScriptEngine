@@ -33,7 +33,7 @@ public class Parser {
 		try {
 			cb.Visit(Arrays.asList(symbols));
 		} catch (UnsupportedOperationException e) {
-			throw new SyntaxError("var");
+			throw new SyntaxError("var",reader);
 		}
 		return cb;
 	}

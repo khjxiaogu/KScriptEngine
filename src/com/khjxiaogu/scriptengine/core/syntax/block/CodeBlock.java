@@ -10,6 +10,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
@@ -94,6 +95,7 @@ public class CodeBlock implements Block, Visitable {
 	}
 
 	public void put(CodeNode node) {
+		if(node instanceof Nop)return;
 		nodes.add(node);
 	}
 
@@ -137,8 +139,8 @@ public class CodeBlock implements Block, Visitable {
 			}
 		} catch (SyntaxError e) {
 			e.filename = name;
-			e.colume = 0;
-			e.line = nodes.size() + 1;
+			e.colume = reader.getCol();
+			e.line = reader.getLine();
 			throw e;
 		}
 		return this;
@@ -152,8 +154,8 @@ public class CodeBlock implements Block, Visitable {
 			parser.clear();
 		} catch (SyntaxError e) {
 			e.filename = name;
-			e.colume = 0;
-			e.line = nodes.size() + 1;
+			e.colume = reader.getCol();
+			e.line = reader.getLine();
 			throw e;
 		}
 		return this;

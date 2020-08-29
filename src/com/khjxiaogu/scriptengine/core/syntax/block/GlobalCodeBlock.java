@@ -39,15 +39,8 @@ public class GlobalCodeBlock extends CodeBlock {
 	public CodeNode parse(ParseReader reader) throws KSException {
 		name = reader.getName();
 		// TODO Auto-generated method stub
-		try {
-			while (reader.has()) {
-				put(parser.parseUntilOrEnd(reader, ';'));
-			}
-		} catch (SyntaxError e) {
-			e.filename = name;
-			e.colume = 0;
-			e.line = nodes.size() + 1;
-			throw e;
+		while (reader.has()) {
+			put(parser.parseUntilOrEnd(reader, ';'));
 		}
 		super.VisitAsChild(new ArrayList<String>());
 		return this;

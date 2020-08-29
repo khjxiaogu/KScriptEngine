@@ -50,7 +50,7 @@ public class Member extends DoubleOperator implements MemberOperator, Assignable
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		return ((MemberOperator) super.left).getObject(env).setMemberByName(((LiteralNode) super.right).getToken(), val,
+		return  super.left.eval(env).toType(KObject.class).setMemberByName(((LiteralNode) super.right).getToken(), val,
 				KEnvironment.MUSTEXIST);
 	}
 
@@ -64,7 +64,7 @@ public class Member extends DoubleOperator implements MemberOperator, Assignable
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
-		if (!(super.left instanceof Assignable && super.right instanceof LiteralNode))
+		if (!((super.left instanceof MemberOperator||super.left==null)&&(super.right instanceof LiteralNode||super.right==null)))
 			throw new SyntaxError("错误的表达式");
 	}
 

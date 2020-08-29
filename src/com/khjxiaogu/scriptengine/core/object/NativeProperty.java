@@ -37,7 +37,10 @@ public class NativeProperty<Type> implements KProperty {
 		if(getter==null)
 			throw new AccessDeniedException();
 		if (superType != null)
-			return getter.get(env.getNativeInstance(superType));
+			if(env!=null)
+				return getter.get(env.getNativeInstance(superType));
+			else
+				return getter.get(null);
 		return getter.get(null);
 	}
 

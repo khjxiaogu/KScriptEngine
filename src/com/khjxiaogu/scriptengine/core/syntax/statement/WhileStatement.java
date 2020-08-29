@@ -41,7 +41,6 @@ public class WhileStatement implements Block {
 			Body = new CodeBlock(CodeBlockAttribute.BREAKABLE).parse(reader);
 		} else {
 			Body = parser.parseUntilOrBlock(reader, ';');
-			reader.eat();
 		}
 		if (Condition == null || Body == null)
 			throw new SyntaxError("错误的while表达式");

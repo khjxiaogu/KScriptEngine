@@ -13,7 +13,8 @@ public class StringParseReader implements ParseReader {
 	String backed;
 	int pos = 0;
 	String name;
-
+	int line=1;
+	int col=1;
 	/**
 	 *
 	 */
@@ -34,7 +35,7 @@ public class StringParseReader implements ParseReader {
 		// TODO Auto-generated method stub
 		if (has())
 			return backed.charAt(pos);
-		throw new SyntaxError("unexpected end");
+		throw new SyntaxError("错误的文档结尾",this);
 	}
 
 	@Override
@@ -48,10 +49,16 @@ public class StringParseReader implements ParseReader {
 		// TODO Auto-generated method stub
 		// System.out.print(backed.charAt(pos));
 		++pos;
-		if (has())
-			return read();
-		else if (pos > backed.length())
-			throw new SyntaxError("错误的文档结尾");
+		++col;
+		if (has()) {
+			char c=read();
+			if(c=='\n'){
+				line++;
+				col=1;
+			}
+			return c;
+		}else if (pos > backed.length())
+			throw new SyntaxError("错误的文档结尾",this);
 		else
 			return 0;
 	}
@@ -102,7 +109,7 @@ public class StringParseReader implements ParseReader {
 		while (Character.isWhitespace(backed.charAt(pos))) {
 			pos++;
 			if (pos >= backed.length())
-				throw new SyntaxError("错误的文档结尾");
+				throw new SyntaxError("错误的文档结尾",this);
 		}
 		return read();
 	}

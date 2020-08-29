@@ -13,10 +13,11 @@ import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
+import com.khjxiaogu.scriptengine.core.syntax.operator.MemberOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
-public class FuncCall extends SingleOperator implements ASTParser {
-	CodeNode[] args;
+public class FuncCall extends SingleOperator implements ASTParser,MemberOperator {
+	protected CodeNode[] args;
 
 	public FuncCall() {
 	}
@@ -24,10 +25,14 @@ public class FuncCall extends SingleOperator implements ASTParser {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		KVariant func = super.Child.eval(env);
-		KVariant[] arg = new KVariant[args.length];
-		for (int i = 0; i < args.length; i++) {
-			arg[i] = args[i].eval(env);
-		}
+		KVariant[] arg;
+		if(args!=null) {
+			arg= new KVariant[args.length];
+			for (int i = 0; i < args.length; i++) {
+				arg[i] = args[i].eval(env);
+			}
+		}else
+			arg=new KVariant[0];
 		KObject obj = func.toType(KObject.class);
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(arg, env);
@@ -36,7 +41,7 @@ public class FuncCall extends SingleOperator implements ASTParser {
 
 	@Override
 	public int getPriority() {
-		return 15;
+		return 14;
 	}
 
 	@Override
@@ -59,21 +64,42 @@ public class FuncCall extends SingleOperator implements ASTParser {
 	@Override
 	public String toString() {
 		String pardesc = "";
-		for (int i = 0; i < args.length; i++) {
-			pardesc += args[i];
-			if (i != args.length - 1) {
-				pardesc += ",";
+		if(args!=null)
+			for (int i = 0; i < args.length; i++) {
+				pardesc += args[i];
+				if (i != args.length - 1) {
+					pardesc += ",";
+				}
 			}
-		}
 		return super.Child + "(" + pardesc + ")";
 	}
 
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
-		for (CodeNode cn : args) {
-			Visitable.Visit(cn, parentMap);
-		}
+		if(args!=null)
+			for (CodeNode cn : args) {
+				Visitable.Visit(cn, parentMap);
+			}
 		super.Visit(parentMap);
+	}
+
+	@Override
+	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
+		return null;
+	}
+
+	@Override
+	public KVariant getPointing(KEnvironment env) throws KSException {
+		return null;
+	}
+
+	@Override
+	public void VisitAsChild(List<String> parentMap) throws KSException {
+	}
+
+	@Override
+	public KEnvironment getObject(KEnvironment env) throws KSException {
+		return super.Child.eval(env).toType(KObject.class);
 	}
 
 }

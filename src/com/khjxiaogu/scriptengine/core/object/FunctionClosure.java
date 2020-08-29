@@ -3,6 +3,7 @@ package com.khjxiaogu.scriptengine.core.object;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
 
 public class FunctionClosure extends Closure implements CallableFunction {
@@ -26,10 +27,6 @@ public class FunctionClosure extends Closure implements CallableFunction {
 		return functhis.FuncCall(args, objthis);
 	}
 
-	@Override
-	public boolean isInstanceOf(String str) throws KSException {
-		return functhis.isInstanceOf(str);
-	}
 
 	@Override
 	public boolean isValid() throws KSException {
@@ -43,7 +40,7 @@ public class FunctionClosure extends Closure implements CallableFunction {
 
 	@Override
 	public KObject newInstance() throws KSException {
-		return functhis.newInstance();
+		throw new ScriptException("无法对函数对象使用new");
 	}
 
 	@Override
@@ -51,6 +48,11 @@ public class FunctionClosure extends Closure implements CallableFunction {
 		if (name != null)
 			throw new MemberNotFoundException(name);
 		return FuncCall(args, objthis);
+	}
+
+	@Override
+	public String getInstanceName() {
+		return "Function";
 	}
 
 }

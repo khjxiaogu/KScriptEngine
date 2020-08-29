@@ -19,10 +19,10 @@ public abstract class Closure implements KObject {
 	/**
 	 *
 	 */
-	protected KEnvironment Closure;
+	protected KEnvironment closure;
 
 	public Closure(KEnvironment env) {
-		Closure = env;
+		closure = env;
 	}
 
 	@Override
@@ -105,9 +105,9 @@ public abstract class Closure implements KObject {
 
 	@Override
 	public boolean isInstanceOf(String str) throws KSException {
-		return false;
+		return str.equals(getInstanceName());
 	}
-
+	public abstract String getInstanceName();
 	@Override
 	public boolean isValid() throws KSException {
 		return true;
@@ -122,7 +122,10 @@ public abstract class Closure implements KObject {
 	public KObject newInstance() throws KSException {
 		throw new ContextException();
 	}
-
+	@Override
+	public void callConstructor(KVariant[] args, KEnvironment env) throws KSException {
+		throw new ContextException();
+	}
 	@Override
 	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		return null;
@@ -136,12 +139,22 @@ public abstract class Closure implements KObject {
 	}
 
 	@Override
+	public String toString() {
+		return "(Unknown)"+getInstancePointer();
+	}
+	public String getInstancePointer() {
+		if(closure!=null)
+			return "(0x"+Integer.toHexString(super.hashCode())+")@(0x"+Integer.toHexString(closure.hashCode())+")";
+		else
+			return "(0x"+Integer.toHexString(super.hashCode())+")@static";
+	}
+	@Override
 	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
 	}
 
 	@Override
 	public <T> T getNativeInstance(Class<T> cls) throws KSException {
-		throw new ContextException();
+		return null;
 	}
 
 	@Override

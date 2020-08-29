@@ -27,10 +27,11 @@ public class DeleteMember extends SingleOperator {
 		if (super.Child instanceof MemberOperator) {
 			KVariant point = ((MemberOperator) super.Child).getPointing(env);
 			KEnvironment obj = ((MemberOperator) super.Child).getObject(env);
-			if (point.getType().getType() == Integer.class) {
-				obj.deleteMemberByNum(point.getInt());
+			if (point.getType().getType() == Long.class) {
+				return new KVariant(obj.deleteMemberByNum(point.getInt()));
+				
 			} else {
-				obj.deleteMemberByName(point.toString());
+				return new KVariant(obj.deleteMemberByName(point.toString()));
 			}
 		}
 		throw new MemberNotFoundException(super.Child.toString());

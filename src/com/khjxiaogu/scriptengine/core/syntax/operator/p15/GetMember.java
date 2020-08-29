@@ -55,8 +55,13 @@ public class GetMember extends DoubleOperator implements MemberOperator, Assigna
 	@Override
 	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
-		return ((MemberOperator) super.left).getObject(env).setMemberByVariant(super.right.eval(env), val,
-				KEnvironment.DEFAULT);
+		return super.left
+				.eval(env)
+				.toType(KObject.class)
+				.setMemberByVariant(
+						super.right.eval(env)
+						, val
+						,KEnvironment.DEFAULT);
 	}
 
 	@Override

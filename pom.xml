@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.khjxiaogu</groupId>
   <artifactId>scriptengine</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.4-SNAPSHOT</version>
   <name>khjScriptEngine</name>
   <description>a scriptEngine in java</description>
 	<build>

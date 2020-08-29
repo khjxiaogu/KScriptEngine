@@ -38,7 +38,7 @@ public class StatementParser {
 		td.reset();
 	}
 
-	public CodeNode parseTree() throws KSException {// 1+2*3+4*5
+	public CodeNode parseTree(ParseReader reader) throws KSException {// 1+2*3+4*5
 		Operator ret = null;// top level operator
 		Operator pending = null;// deciding operator
 		CodeNode last = null;// last node
@@ -73,7 +73,7 @@ public class StatementParser {
 			} else if (last == null) {
 				last = current;
 			} else
-				throw new SyntaxError("错误出现的 '" + current.toString() + "在" + last.toString() + "'之后,缺失运算符.");
+				throw new SyntaxError("错误出现的 '" + current.toString() + "在" + last.toString() + "'之后,缺失运算符.",reader);
 		}
 		if (last != null) {
 			if (pending != null) {
@@ -98,7 +98,7 @@ public class StatementParser {
 				break;
 			}
 		}
-		CodeNode ret = parseTree();
+		CodeNode ret = parseTree(reader);
 		if (ret == null) {
 			ret = new Nop();
 		}
@@ -124,7 +124,7 @@ public class StatementParser {
 				break;
 			}
 		}
-		CodeNode ret = parseTree();
+		CodeNode ret = parseTree(reader);
 		if (ret == null) {
 			ret = new Nop();
 		}
@@ -151,7 +151,7 @@ public class StatementParser {
 				break;
 			}
 		}
-		CodeNode ret = parseTree();
+		CodeNode ret = parseTree(reader);
 		if (ret == null) {
 			ret = new Nop();
 		}

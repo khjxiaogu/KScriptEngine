@@ -19,13 +19,15 @@ public class MapEnvironment implements KEnvironment {
 	@Override
 	public KVariant getMemberByName(String name, int flag) throws KSException {
 		// TODO Auto-generated method stub
+		if(name==null||name.length()==0)
+			return new KVariant(this);
 		KVariant res = map.get(name);
 		if (res == null) {
-			if ((flag & KEnvironment.MUSTEXIST) == 1)
+			if ((flag & KEnvironment.MUSTEXIST) != 0)
 				throw new MemberNotFoundException(name);
 			return new KVariant();
 		}
-		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
 				return ((KProperty) res.getValue()).getProp(null);
 		}
@@ -43,11 +45,13 @@ public class MapEnvironment implements KEnvironment {
 		// TODO Auto-generated method stub
 		KVariant res = null;
 		String name = var.toString();
+		if(name.length()==0)
+			return new KVariant(this);
 		res = map.get(name);
 		if (res == null) {
 			res = new KVariant();
 		}
-		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
 				return ((KProperty) res.getValue()).getProp(null);
 		}
@@ -57,10 +61,12 @@ public class MapEnvironment implements KEnvironment {
 	@Override
 	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
 		// TODO Auto-generated method stub
-		if ((flag & KEnvironment.MUSTEXIST) == 1)
+		if(name==null||name.length()==0)
+			throw new MemberNotFoundException("");
+		if ((flag & KEnvironment.MUSTEXIST) != 0)
 			if (!map.containsKey(name))
 				throw new MemberNotFoundException(name);
-		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			KVariant va = map.get(name);
 			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
 				((KProperty) va.getValue()).setProp(val, null);
@@ -75,7 +81,7 @@ public class MapEnvironment implements KEnvironment {
 	public KVariant setMemberByNum(int num, KVariant val, int flag) throws KSException {
 		// TODO Auto-generated method stub
 		String name = Integer.toString(num);
-		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			KVariant va = map.get(name);
 			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
 				((KProperty) va.getValue()).setProp(val, null);
@@ -91,7 +97,9 @@ public class MapEnvironment implements KEnvironment {
 		// TODO Auto-generated method stub
 		String name = null;
 		name = var.toString();
-		if ((flag & KEnvironment.IGNOREPROP) != 1) {
+		if(name==null||name.length()==0)
+			throw new MemberNotFoundException("");
+		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			KVariant va = map.get(name);
 			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
 				((KProperty) va.getValue()).setProp(val, null);
@@ -121,55 +129,8 @@ public class MapEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		KVariant v = map.get(name);
-		switch (op) {
-		case ADD:
-			v.addby(opr);
-			break;
-		case ARSH:
-			v.ARSHby(opr.getInt());
-			break;
-		case BAND:
-			v.BANDby(opr);
-			break;
-		case BOR:
-			v.BOR(opr);
-			break;
-		case BXOR:
-			v.BXORby(opr);
-			break;
-		case DIV:
-			v.divideby(opr);
-			break;
-		case EQ:
-			v.setValue(opr);
-			break;
-		case FDIV:
-			v.floorDivideby(opr);
-			break;
-		case LAND:
-			v.set(v.asBoolean() && opr.asBoolean());
-			break;
-		case LOR:
-			v.set(v.asBoolean() || opr.asBoolean());
-			break;
-		case LSH:
-			v.LSHby(opr.getInt());
-			break;
-		case MIN:
-			v.minusby(opr);
-			break;
-		case MOD:
-			v.modby(opr);
-			break;
-		case MUL:
-			v.multiplyby(opr);
-			break;
-		case RSH:
-			v.RSHby(opr.getInt());
-			break;
-		}
-		return v;
+		KVariant v=this.getMemberByName(name,KEnvironment.DEFAULT);
+		return v.doOperation(op, opr);
 	}
 
 	@Override
@@ -204,10 +165,10 @@ public class MapEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
-		KVariant res = map.get(name);
+		KVariant res = this.getMemberByName(name, flag);
 		if (res == null)
 			throw new MemberNotFoundException(name);
-		KObject obj = (KObject) res.toType("Object");
+		KObject obj = res.toType(KObject.class);
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
 		else
@@ -218,7 +179,7 @@ public class MapEnvironment implements KEnvironment {
 	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
 		for (Map.Entry<String, KVariant> me : map.entrySet()) {
 			KVariant va = me.getValue();
-			if ((flag & KEnvironment.IGNOREPROP) != 1) {
+			if ((flag & KEnvironment.IGNOREPROP) == 0) {
 				if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
 					va = ((KProperty) va.getValue()).getProp(null);
 				}
@@ -242,7 +203,10 @@ public class MapEnvironment implements KEnvironment {
 	public KEnvironment getThis() throws ScriptException {
 		throw new ScriptException("无法定位this的类。");
 	}
-
+	@Override
+	public String toString() {
+		return "(Object)(0x"+super.hashCode()+")";
+	}
 	@Override
 	public KEnvironment getSuper() throws InvalidSuperClassException {
 		throw new InvalidSuperClassException();
