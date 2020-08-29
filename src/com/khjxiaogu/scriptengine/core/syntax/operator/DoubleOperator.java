@@ -16,6 +16,14 @@ public abstract class DoubleOperator implements Operator {
 		// TODO Auto-generated constructor stub
 	}
 
+	public CodeNode getLeft() {
+		return left;
+	}
+
+	public CodeNode getRight() {
+		return right;
+	}
+
 	@Override
 	public abstract KVariant eval(KEnvironment env) throws KSException;
 
@@ -37,7 +45,10 @@ public abstract class DoubleOperator implements Operator {
 
 	@Override
 	public String toString() {
-		return "(" + left.toString() + getToken() + right.toString() + ")";
+		return "("
+		+left.toString()
+		+ getToken()
+		+ right.toString() + ")";
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class FuncCall extends SingleOperator implements ASTParser,MemberOperator
 
 	@Override
 	public int getPriority() {
-		return 14;
+		return 15;
 	}
 
 	@Override

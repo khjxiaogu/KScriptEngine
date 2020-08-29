@@ -8,6 +8,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.block.Block;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
+import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 
 /**
@@ -45,7 +46,8 @@ public class StatementParser {
 		if (nodes.size() == 1)
 			return nodes.get(0);
 		for (CodeNode current : nodes) {
-			// System.out.println(current.getClass().getSimpleName());
+			//System.out.println(current.getClass().getSimpleName());
+			
 			if (StatementParser.isOperator(current)) {
 				Operator op = (Operator) current;
 				if (pending != null) {
@@ -56,11 +58,16 @@ public class StatementParser {
 						op.setChildren(ret, null);
 						ret = op;
 						last = null;
-					} else {
-						pending.setChildren(null, op);
-						op.setChildren(last, null);
-						last = null;
-					}
+					} else if(last==null&&pending instanceof DoubleOperator) {
+							CodeNode cnr=((DoubleOperator)pending).getRight();
+							op.setChildren(cnr,null);
+							pending.setChildren(null,op);
+						}else {
+							pending.setChildren(null, op);
+							op.setChildren(last, null);
+							last = null;
+						}
+
 				} else {
 					op.setChildren(last, null);
 					last = null;
