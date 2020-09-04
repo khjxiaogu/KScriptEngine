@@ -74,11 +74,6 @@ public class Parentness implements CodeNode, ASTParser, ObjectOperator, Assignab
 	}
 
 	@Override
-	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return ((ObjectOperator) inner).getSuperEnvironment(env);
-	}
-
-	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((ObjectOperator) inner).getPointing(env);
 	}

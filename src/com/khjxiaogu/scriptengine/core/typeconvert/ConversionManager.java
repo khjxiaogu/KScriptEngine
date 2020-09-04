@@ -10,8 +10,11 @@ import java.text.NumberFormat;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KProperty;
+import com.khjxiaogu.scriptengine.core.object.internal.ObjectString;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
 
 // TODO: Auto-generated Javadoc
@@ -37,7 +40,7 @@ public class ConversionManager {
 	private ConversionManager() {
 		// TODO Auto-generated constructor stub
 	}
-
+	private static ObjectString sobj=new ObjectString();
 	static {// 注册转换器
 		NumberFormat nf=NumberFormat.getNumberInstance();
 		nf.setMaximumFractionDigits(16);
@@ -66,11 +69,18 @@ public class ConversionManager {
 			}
 		});
 		new TypeConverter<>(String.class, KOctet.class, obj -> new KOctet(obj.getBytes()));
+		new TypeConverter<>(String.class,KObject.class, obj ->{
+			ExtendableClosure sar=(ExtendableClosure) sobj.newInstance();
+			sar.putNativeInstance(String.class,obj);
+			return sar;
+		});
+
 		new TypeConverter<>(KObject.class, String.class, obj -> {
 			if (obj instanceof KProperty)
 				return ((KProperty) obj).getProp(null).toType(String.class);
 			return obj.toString();
 		});
+		
 		new TypeConverter<>(KObject.class, Long.class, obj -> {
 			if (obj instanceof KProperty)
 				return ((KProperty) obj).getProp(null).toType(Long.class);

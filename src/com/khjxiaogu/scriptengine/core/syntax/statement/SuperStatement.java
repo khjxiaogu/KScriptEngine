@@ -23,11 +23,6 @@ public class SuperStatement implements ObjectOperator, CodeNode {
 	}
 
 	@Override
-	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return env.getSuper();
-	}
-
-	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return null;
 	}

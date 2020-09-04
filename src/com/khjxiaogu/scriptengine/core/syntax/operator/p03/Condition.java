@@ -128,11 +128,6 @@ public class Condition implements Operator, ASTParser, ObjectOperator, Assignabl
 	}
 
 	@Override
-	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		throw new ScriptException("条件运算符不能使用在delete以后");
-	}
-
-	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		throw new ScriptException("条件运算符不能使用在delete以后");
 	}

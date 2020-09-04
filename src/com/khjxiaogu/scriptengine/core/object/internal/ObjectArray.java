@@ -1,7 +1,18 @@
 package com.khjxiaogu.scriptengine.core.object.internal;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
@@ -18,9 +29,16 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	private static ArrayList<KVariant> arr=new ArrayList<>();
 	@Override
 	public ExtendableClosure getNewInstance() throws KSException {
-		return new ObjectArray();
+		return new ObjectArray(null);
 	}
 	private static ObjectArray arrcls;
+	/**
+	 * @param nul signal param
+	 */
+	@SuppressWarnings("unchecked")
+	public ObjectArray(Object nul) {
+		super((Class<ArrayList<KVariant>>) arr.getClass(),"Array");
+	}
 	@SuppressWarnings("unchecked")
 	public ObjectArray() {
 		super((Class<ArrayList<KVariant>>) arr.getClass(),"Array");
@@ -40,7 +58,32 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 			return new KVariant(sb.toString());
 			});
 		super.registerProperty("length",obj->new KVariant(obj.size()),null);
-		
+		super.registerProperty("count",obj->new KVariant(obj.size()),null);
+		super.registerFunction("load",(obj,args)->{
+			List<String> rf;
+			try {
+				rf = Files.readAllLines(Path.of(args[0].toString()),StandardCharsets.UTF_16LE);
+				obj.clear();
+				for(String s:rf) {
+					obj.add(new KVariant(s));
+				}
+			} catch (IOException e) {
+				obj.clear();
+			}
+			return new KVariant(this);
+		});
+		super.registerFunction("save",(obj,args)->{
+			try(OutputStream os=new FileOutputStream(new File(args[0].toString()));
+				PrintStream ps=new PrintStream(os,true,StandardCharsets.UTF_16LE);
+					){
+				for(KVariant a:obj) {
+					ps.println(a.toString());;
+				}
+			} catch (IOException e) {
+				obj.clear();
+			}
+			return new KVariant(this);
+		});
 	}
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +28,6 @@ import com.khjxiaogu.scriptengine.core.typeconvert.TypeInfo;
 public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 	private final static HashMap<Class<?>,Class<?>> typemap=new HashMap<Class<?>,Class<?>>();
 	private final static HashMap<Class<?>,Class<?>> resultmap=new HashMap<Class<?>,Class<?>>();
-	private final static int HIERARCHY_MAX=10;
 	static {
 		typemap.put(char.class,Character.class);
 		typemap.put(byte.class,Byte.class);
@@ -57,7 +55,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		jvmType=typemap.getOrDefault(jvmType, jvmType);
 		
 		jvmType=resultmap.getOrDefault(jvmType,jvmType);
-		if(jvmType.equals(varType))
+		if(jvmType.isAssignableFrom(varType))
 			return true;
 		KObject ko;
 		if(varType==KObject.class&&(ko=var.toType(KObject.class)) instanceof Closure&&ko.getNativeInstance(jvmType)!=null)
@@ -67,6 +65,8 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 	private static Object convert(Class<?> jvmType,KVariant var) throws KSException {
 		jvmType=typemap.getOrDefault(jvmType,jvmType);
 		Class<?> varType=var.getType().getType();
+		if(jvmType.isAssignableFrom(varType))
+			return var.getValue();
 		if(ConversionManager.canConvert(jvmType,varType))
 			return var.toType(jvmType);
 		return ((Closure)var.toType(KObject.class)).getNativeInstance(jvmType);
@@ -105,8 +105,8 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		JavaClassWrapper<?> jcw=cache.get(cls);
 		if(jcw==null) {
 			jcw=new JavaClassWrapper<>(cls,true);
-			
 		}
+		
 		return jcw;
 	}
 	@SuppressWarnings("unchecked")
@@ -153,7 +153,6 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		HashSet<Method> mets=new HashSet<>();
 		mets.addAll(Arrays.asList(cls.getDeclaredMethods()));
 		mets.addAll(Arrays.asList(cls.getMethods()));
-		Class<?> spcls;
 		HashSet<Field> fs=new HashSet<>();
 		fs.addAll(Arrays.asList(cls.getDeclaredFields()));
 		fs.addAll(Arrays.asList(cls.getFields()));
@@ -164,7 +163,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 			if(ch++>=HIERARCHY_MAX)
 				break;
 		}*/
-		if(isSecure)
+		if(!isSecure)
 			mets.removeIf(m->Object.class.isAssignableFrom(m.getReturnType()));
 		Map<String,ArrayList<Method>> mms=new HashMap<>();
 		for(Method m:mets) {

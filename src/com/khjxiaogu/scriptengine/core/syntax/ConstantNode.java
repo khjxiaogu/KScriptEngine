@@ -29,10 +29,6 @@ public class ConstantNode implements CodeNode,ObjectOperator{
 	public void Visit(List<String> parentMap) throws KSException {
 	}
 	@Override
-	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return env;
-	}
-	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return null;
 	}

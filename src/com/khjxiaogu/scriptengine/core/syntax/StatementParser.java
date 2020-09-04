@@ -47,26 +47,29 @@ public class StatementParser {
 			return nodes.get(0);
 		for (CodeNode current : nodes) {
 			//System.out.println(current.getClass().getSimpleName());
-			
+			//System.out.println(last);
 			if (StatementParser.isOperator(current)) {
 				Operator op = (Operator) current;
+				//System.out.println(pending.getClass().getSimpleName());
+				//System.out.println(op.getClass().getSimpleName());
 				if (pending != null) {
 					if (pending.getPriority() >= op.getPriority()
 							+ (op.getAssociative() == Associative.RIGHT ? 0 : 1)) {
-						// ret.setChildren(null,op);
 						pending.setChildren(null, last);
-						op.setChildren(ret, null);
-						ret = op;
-						last = null;
-					} else if(last==null) {
-							CodeNode cnr=((DoubleOperator)pending).getRight();
-							op.setChildren(cnr,null);
-							pending.setChildren(null,op);
+						if(op.getPriority()<=ret.getPriority()) {
+							op.setChildren(ret, null);
+							ret = op;
 						}else {
-							pending.setChildren(null, op);
-							op.setChildren(last, null);
-							last = null;
+							CodeNode cnr=((DoubleOperator)ret).getRight();
+							op.setChildren(cnr,null);
+							ret.setChildren(null,op);
 						}
+						last = null;
+					}else {
+						pending.setChildren(null, op);
+						op.setChildren(last, null);
+						last = null;
+					}
 
 				} else {
 					op.setChildren(last, null);

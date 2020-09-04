@@ -43,11 +43,6 @@ public class WithMember extends SingleOperator implements ObjectOperator, Assign
 	}
 
 	@Override
-	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((LiteralNode) super.Child).getPointing(env);
 	}

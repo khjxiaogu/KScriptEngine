@@ -30,4 +30,8 @@ public class MemberNotFoundException extends ScriptException {
 		// TODO Auto-generated constructor stub
 	}
 
+	public MemberNotFoundException(int num) {
+		super(String.valueOf(num));
+	}
+
 }

@@ -92,11 +92,6 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, ObjectOpera
 	}
 
 	@Override
-	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return env;
-	}
-
-	@Override
 	public KVariant getPointing(KEnvironment env) {
 		if (itoken != -1)
 			return new KVariant(getToken());

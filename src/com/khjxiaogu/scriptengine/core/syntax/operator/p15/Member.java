@@ -76,11 +76,6 @@ public class Member extends DoubleOperator implements ObjectOperator, Assignable
 	}
 
 	@Override
-	public KEnvironment getSuperEnvironment(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
 	public KVariant getPointing(KEnvironment env) throws KSException {
 		return ((LiteralNode) super.right).getPointing(env);
 	}
