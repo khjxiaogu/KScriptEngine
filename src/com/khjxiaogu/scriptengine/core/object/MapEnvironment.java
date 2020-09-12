@@ -212,4 +212,9 @@ public class MapEnvironment implements KEnvironment {
 		throw new InvalidSuperClassException();
 	}
 
+	@Override
+	public boolean hasNativeInstance(Class<?> cls) throws KSException {
+		return false;
+	}
+
 }

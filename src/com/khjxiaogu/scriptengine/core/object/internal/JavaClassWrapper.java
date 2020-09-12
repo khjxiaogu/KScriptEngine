@@ -53,12 +53,10 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 	private static boolean isAssignable(Class<?> jvmType,KVariant var) throws KSException {
 		Class<?> varType=var.getType().getType();
 		jvmType=typemap.getOrDefault(jvmType, jvmType);
-		
 		jvmType=resultmap.getOrDefault(jvmType,jvmType);
 		if(jvmType.isAssignableFrom(varType))
 			return true;
-		KObject ko;
-		if(varType==KObject.class&&(ko=var.toType(KObject.class)) instanceof Closure&&ko.getNativeInstance(jvmType)!=null)
+		if(varType.equals(KObject.class)&&var.toType(KObject.class).getNativeInstance(jvmType)!=null)
 			return true;
 		return false;
 	}
@@ -147,7 +145,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 						}
 					}
 				}
-				throw new ContextException();
+				throw new ContextException(cls);
 			});
 		}
 		HashSet<Method> mets=new HashSet<>();
@@ -163,8 +161,9 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 			if(ch++>=HIERARCHY_MAX)
 				break;
 		}*/
+		Class<?> oc=Object.class.getClass();
 		if(!isSecure)
-			mets.removeIf(m->Object.class.isAssignableFrom(m.getReturnType()));
+			mets.removeIf(m->oc.isAssignableFrom(m.getReturnType()));
 		Map<String,ArrayList<Method>> mms=new HashMap<>();
 		for(Method m:mets) {
 			m.setAccessible(true);
@@ -204,7 +203,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 						}
 					}
 					
-					throw new ContextException();
+					throw new ContextException(cls);
 				});
 		}
 

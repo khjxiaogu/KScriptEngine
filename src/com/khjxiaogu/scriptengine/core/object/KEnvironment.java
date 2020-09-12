@@ -302,6 +302,14 @@ public interface KEnvironment {
 	 *                     引擎执行发生的异常。
 	 */
 	public void putNativeInstance(Object nis) throws KSException;
+	/**
+	 * Put native instance.<br />
+	 *
+	 * @param nis the nis<br />
+	 * @throws KSException Any Engine Exception occured<br />
+	 *                     引擎执行发生的异常。
+	 */
+	public boolean hasNativeInstance(Class<?> cls) throws KSException;
 
 	/**
 	 * Set member by name.<br />

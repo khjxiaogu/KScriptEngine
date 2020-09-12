@@ -1,5 +1,8 @@
 package com.khjxiaogu.scriptengine.core.exceptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.khjxiaogu.scriptengine.core.ParseReader;
 
 public class ScriptException extends KSException {
@@ -7,11 +10,8 @@ public class ScriptException extends KSException {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	public int line;
-	public int colume;
-	public String filename;
 	public String detail = "未知异常";
-
+	public List<String> trace=new ArrayList<>();
 	public ScriptException(String describe) {
 		detail = describe;
 		// TODO Auto-generated constructor stub
@@ -19,34 +19,34 @@ public class ScriptException extends KSException {
 
 	public ScriptException(String describe, String file, int lin, int col) {
 		detail = describe;
-		filename = file;
-		line = lin;
-		colume = col;
+		fillTrace(file,lin,col);
 		// TODO Auto-generated constructor stub
 	}
 
 	public ScriptException(String describe, ParseReader r) {
 		detail = describe;
-		filename = r.getName();
-		line = r.getLine();
-		colume = r.getCol();
+		fillTrace(r.getName(),r.getLine(),r.getCol());
 		// TODO Auto-generated constructor stub
 	}
-
+	public void fillTrace(String file,int line,int col) {
+		trace.add("at ("+file+") "+line+"行"+col+"列");
+	}
+	public void fillTrace(String file,int line,int col,String info) {
+		if(info.length()>=20) {
+			info=info.substring(0,20)+"...";
+		}
+		trace.add("at ("+file+") "+line+"行"+col+"列："+info);
+	}
 	@Override
 	public String getMessage() {
 		StringBuilder sb = new StringBuilder();
-		if (filename != null) {
-			sb.append("位于 ");
-			sb.append(filename);
-			sb.append(" 的第");
-			sb.append(line);
-			sb.append("行第 ");
-			sb.append(colume);
-			sb.append("列");
-		}
 		sb.append("发生脚本异常：");
 		sb.append(detail);
+		sb.append("\nTrace：");
+		for(String s:trace) {
+			sb.append(s);
+			sb.append("\n");
+		}
 		return sb.toString();
 	}
 }

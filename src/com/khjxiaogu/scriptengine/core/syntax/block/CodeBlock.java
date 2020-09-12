@@ -54,9 +54,7 @@ public class CodeBlock implements Block, Visitable {
 				return KVariant.TRUE;
 			}
 		} catch (ScriptException e) {
-			e.filename = name;
-			e.colume = 0;
-			e.line = i + 1;
+			e.fillTrace(name,i+1,0,nodes.get(i).toString());
 			throw e;
 		}
 		return null;
@@ -87,9 +85,7 @@ public class CodeBlock implements Block, Visitable {
 				}
 			}
 		} catch (ScriptException e) {
-			e.filename = name;
-			e.colume = 0;
-			e.line = i + 1;
+			e.fillTrace(name,i+1,0,nodes.get(i).toString());
 			throw e;
 		}
 	}
@@ -138,9 +134,7 @@ public class CodeBlock implements Block, Visitable {
 				}
 			}
 		} catch (SyntaxError e) {
-			e.filename = name;
-			e.colume = reader.getCol();
-			e.line = reader.getLine();
+			e.fillTrace(name,reader.getLine(),reader.getCol());
 			throw e;
 		}
 		return this;
@@ -153,9 +147,7 @@ public class CodeBlock implements Block, Visitable {
 			put(parser.parseUntilOrBlock(reader, ';'));
 			parser.clear();
 		} catch (SyntaxError e) {
-			e.filename = name;
-			e.colume = reader.getCol();
-			e.line = reader.getLine();
+			e.fillTrace(name,reader.getLine(),reader.getCol());
 			throw e;
 		}
 		return this;

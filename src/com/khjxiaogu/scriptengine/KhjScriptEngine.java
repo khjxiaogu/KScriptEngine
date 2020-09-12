@@ -11,6 +11,7 @@ import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.NativeFunction;
 import com.khjxiaogu.scriptengine.core.object.internal.JavaClassWrapper;
 import com.khjxiaogu.scriptengine.core.object.internal.ObjectArray;
+import com.khjxiaogu.scriptengine.core.object.internal.ObjectDictionary;
 import com.khjxiaogu.scriptengine.core.object.internal.ObjectException;
 import com.khjxiaogu.scriptengine.core.object.internal.ObjectScripts;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
@@ -36,6 +37,7 @@ public class KhjScriptEngine {
 			GlobalEnvironment.getGlobal().setMemberByName("Date",new KVariant(JavaClassWrapper.getWrapper(Date.class)),KEnvironment.DEFAULT);
 			GlobalEnvironment.getGlobal().setMemberByName("Scripts",new KVariant(new ObjectScripts(this)),KEnvironment.DEFAULT);
 			GlobalEnvironment.getGlobal().setMemberByName("Array",new KVariant(new ObjectArray()),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Dictionary",new KVariant(new ObjectDictionary()),KEnvironment.DEFAULT);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

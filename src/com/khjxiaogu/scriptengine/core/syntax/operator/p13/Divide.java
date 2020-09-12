@@ -14,7 +14,7 @@ public class Divide extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return null;
+		return new KVariant(super.left.eval(env)).divide(super.left.eval(env));
 	}
 
 	@Override

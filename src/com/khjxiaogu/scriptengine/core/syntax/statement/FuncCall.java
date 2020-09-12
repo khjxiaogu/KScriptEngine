@@ -76,11 +76,11 @@ public class FuncCall extends SingleOperator implements ASTParser,ObjectOperator
 
 	@Override
 	public void Visit(List<String> parentMap) throws KSException {
+		super.Visit(parentMap);
 		if(args!=null)
 			for (CodeNode cn : args) {
 				Visitable.Visit(cn, parentMap);
 			}
-		super.Visit(parentMap);
 	}
 
 	@Override
@@ -90,6 +90,11 @@ public class FuncCall extends SingleOperator implements ASTParser,ObjectOperator
 
 	@Override
 	public void VisitAsChild(List<String> parentMap) throws KSException {
+		super.Visit(parentMap);
+		if(args!=null)
+			for (CodeNode cn : args) {
+				Visitable.Visit(cn, parentMap);
+			}
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ByteXor extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.left.eval(env).BXOR(super.right.eval(env));
+		return new KVariant(super.left.eval(env)).BXOR(super.right.eval(env));
 	}
 
 	@Override

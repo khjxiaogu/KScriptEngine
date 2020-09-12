@@ -57,7 +57,7 @@ public class ArrayNode implements CodeNode,ASTParser,ObjectOperator {
 				switch(c) {
 				case ',':elms.add(ln);break;
 				case ']':if(!(ln instanceof Nop))elms.add(ln);break outer;
-				default:throw new SyntaxError("错误的var语句，错误出现的"+c,reader);
+				default:throw new SyntaxError("错误的数组语句，错误出现的"+c,reader);
 				}
 			}
 		return this;

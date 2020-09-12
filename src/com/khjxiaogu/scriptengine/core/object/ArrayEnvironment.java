@@ -213,4 +213,9 @@ public class ArrayEnvironment implements KEnvironment {
 	public KEnvironment getSuper() throws KSException {
 		throw new InvalidSuperClassException();
 	}
+
+	@Override
+	public boolean hasNativeInstance(Class<?> cls) throws KSException {
+		return false;
+	}
 }

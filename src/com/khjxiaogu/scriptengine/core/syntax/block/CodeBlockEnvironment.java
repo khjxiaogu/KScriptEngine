@@ -49,7 +49,8 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 			Collection<? extends String> symbols) {
 		super(parent, offset, size);
 		symbol = new String[size];
-		symbol = symbols.toArray(getSymbol());
+		if(symbols!=null)
+			symbol = symbols.toArray(getSymbol());
 		this.block = block;
 		this.attr = attr;
 		// TODO Auto-generated constructor stub
@@ -58,7 +59,8 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	public CodeBlockEnvironment(KEnvironment parent, int offset, int size, CodeBlock block, CodeBlockAttribute attr,
 			String[] symbols) {
 		super(parent, offset, size);
-		symbol = Arrays.copyOf(symbols, symbols.length);
+		if(symbols!=null)
+			symbol = Arrays.copyOf(symbols, symbols.length);
 		this.block = block;
 		this.attr = attr;
 		// TODO Auto-generated constructor stub

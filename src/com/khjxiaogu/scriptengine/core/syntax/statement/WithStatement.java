@@ -35,9 +35,7 @@ public class WithStatement extends CodeBlock {
 				}
 			}
 		} catch (ScriptException e) {
-			e.filename = name;
-			e.colume = 0;
-			e.line = i + 1;
+			e.fillTrace(name,i+1,0);
 			throw e;
 		}
 		return null;

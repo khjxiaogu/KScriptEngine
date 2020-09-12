@@ -156,6 +156,9 @@ public abstract class Closure implements KObject {
 	public <T> T getNativeInstance(Class<T> cls) throws KSException {
 		return null;
 	}
+	public boolean hasNativeInstance(Class<?> cls) {
+		return false;
+	}
 
 	@Override
 	public void putNativeInstance(Object nis) throws KSException {

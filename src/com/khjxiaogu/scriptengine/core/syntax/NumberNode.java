@@ -1,11 +1,8 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
-import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
-import com.khjxiaogu.scriptengine.core.object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
 
 /**
  * @author khjxiaogu

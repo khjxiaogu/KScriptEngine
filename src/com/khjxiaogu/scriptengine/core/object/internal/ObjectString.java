@@ -49,6 +49,8 @@ public class ObjectString  extends NativeClassClosure<String>{
 		super.registerFunction("trim",(str,arr)->new KVariant(str.trim()));
 		super.registerFunction("reverse",(str,arr)->new KVariant(new StringBuilder(str).reverse().toString()));
 		super.registerFunction("repeat",(str,arr)->new KVariant(str.repeat(arr[0].getInt())));
+		super.registerFunction("startsWith",(str,arr)->new KVariant(str.startsWith(arr[0].toString())));
+		super.registerFunction("endsWith",(str,arr)->new KVariant(str.endsWith(arr[0].toString())));
 	}
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {

@@ -12,6 +12,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.GlobalEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.object.internal.ArrayNode;
+import com.khjxiaogu.scriptengine.core.object.internal.DictionaryNode;
 import com.khjxiaogu.scriptengine.core.object.internal.ObjectArray;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
@@ -150,7 +151,7 @@ public class TokenDecider implements ASTParser {
 		Associative infer = Associative.RIGHT;
 		char first = reader.read();
 		char next = reader.eat();
-		if (last == null || last instanceof Operator) {
+		if (last == null ||(last instanceof Operator&&(((Operator)last).getOperandCount()==2||((Operator)last).getAssociative()==Associative.LEFT))) {
 			infer = Associative.LEFT;
 		}
 
@@ -318,7 +319,7 @@ public class TokenDecider implements ASTParser {
 		case '[':
 			if (infer == Associative.LEFT)
 				return parseArray(reader);
-			return new GetMember();
+			return new GetMember().parse(reader);
 		case ']':return null;
 		case '\\':
 			if (next == '=') {
@@ -493,8 +494,7 @@ public class TokenDecider implements ASTParser {
 
 	public CodeNode parseDictionary(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
-		char first = reader.read();
-		return null;
+		return new DictionaryNode().parse(reader);
 	}
 	public void SkipComment(ParseReader reader) throws KSException {
 		char lst=0;

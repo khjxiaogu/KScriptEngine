@@ -19,7 +19,7 @@ public class ConstantNode implements CodeNode,ObjectOperator{
 	}
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		return value;
+		return new KVariant(value);
 	}
 	@Override
 	public String toString() {

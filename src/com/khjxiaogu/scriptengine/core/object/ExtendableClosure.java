@@ -52,7 +52,6 @@ public class ExtendableClosure extends Closure {
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
 		if (SuperClass != null && !closure.hasMemberByVariant(var) && SuperClass.hasMemberByVariant(var))
 			return SuperClass.getMemberByVariant(var, flag);
-
 		return closure.getMemberByVariant(var, flag);
 	}
 
@@ -211,10 +210,23 @@ public class ExtendableClosure extends Closure {
 	public <T> void putNativeInstance(Class<T> cls,T nis) throws KSException {
 		natives.put(cls,nis);
 	}
+	@Override
+	public boolean hasNativeInstance(Class<?> cls) {
+		for(Object obj:natives.values())
+			if(cls.isInstance(obj))
+				return true;
+		return false;
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getNativeInstance(Class<T> cls) throws KSException {
-		return (T)natives.get(cls);
+		Object o=natives.get(cls);
+		if(o==null) {
+			for(Object obj:natives.values())
+				if(cls.isInstance(obj))
+					return (T)obj;
+		}
+		return (T)o;
 	}
 
 	@Override
