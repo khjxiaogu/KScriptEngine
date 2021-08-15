@@ -165,8 +165,8 @@ public class TokenDecider implements ASTParser {
 				if (reader.eat() == '=') {
 					reader.eat();
 					return new NotExactEquals();
-				} else
-					return new NotEquals();
+				}
+				return new NotEquals();
 			} else
 				return new EvalString();
 		case '#':

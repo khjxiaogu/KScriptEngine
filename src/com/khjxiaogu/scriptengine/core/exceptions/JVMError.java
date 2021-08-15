@@ -1,6 +1,6 @@
 package com.khjxiaogu.scriptengine.core.exceptions;
 
-public class JVMError extends KSException {
+public class JVMError extends ScriptException {
 
 	/**
 	 * 

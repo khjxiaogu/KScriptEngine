@@ -61,7 +61,7 @@ public class StringNode implements CodeNode, ASTParser,ObjectOperator {
 				case 'x':
 					StringBuilder x = new StringBuilder(8);
 					char c1 = reader.eat();
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 4; i++) {
 						if (c1 >= '0' && c1 <= '9' || c1 >= 'a' && c1 <= 'f' || c1 >= 'A' && c1 <= 'F') {
 							x.append(c1);
 							c1 = reader.eat();
@@ -73,7 +73,7 @@ public class StringNode implements CodeNode, ASTParser,ObjectOperator {
 					sb.append((char) Integer.parseInt(x.toString(), 16));
 					break;
 				}
-				c = reader.eat();
+				c = reader.read();
 				continue;
 			}
 			sb.append(c);

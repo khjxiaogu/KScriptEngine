@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
+import com.khjxiaogu.scriptengine.core.exceptions.JVMError;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
@@ -56,6 +57,8 @@ public class CodeBlock implements Block, Visitable {
 		} catch (ScriptException e) {
 			e.fillTrace(name,i+1,0,nodes.get(i).toString());
 			throw e;
+		}catch(Exception e) {
+			throw new JVMError(e);
 		}
 		return null;
 	}
@@ -87,6 +90,8 @@ public class CodeBlock implements Block, Visitable {
 		} catch (ScriptException e) {
 			e.fillTrace(name,i+1,0,nodes.get(i).toString());
 			throw e;
+		}catch(Exception e) {
+			throw new JVMError(e);
 		}
 	}
 

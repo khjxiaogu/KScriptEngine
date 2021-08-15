@@ -47,7 +47,7 @@ public class Equal extends DoubleOperator {
 	}
 
 	public CodeNode getAssignExpression() {
-		return super.right;
+		return super.left;
 	}
 
 	@Override

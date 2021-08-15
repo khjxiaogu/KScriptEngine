@@ -1,5 +1,6 @@
 package com.khjxiaogu.scriptengine.core.object.internal;
 
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
@@ -48,7 +49,7 @@ public class ObjectString  extends NativeClassClosure<String>{
 		super.registerFunction("escape",(str,arr)->new KVariant(str.replace("\\", "\\\\").replace("\'", "\\'").replace("\"", "\\\"")));
 		super.registerFunction("trim",(str,arr)->new KVariant(str.trim()));
 		super.registerFunction("reverse",(str,arr)->new KVariant(new StringBuilder(str).reverse().toString()));
-		super.registerFunction("repeat",(str,arr)->new KVariant(str.repeat(arr[0].getInt())));
+		super.registerFunction("repeat",(str,arr)->new KVariant(String.join("", Collections.nCopies(arr[0].getInt(), str))));
 		super.registerFunction("startsWith",(str,arr)->new KVariant(str.startsWith(arr[0].toString())));
 		super.registerFunction("endsWith",(str,arr)->new KVariant(str.endsWith(arr[0].toString())));
 	}

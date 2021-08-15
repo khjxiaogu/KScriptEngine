@@ -28,6 +28,28 @@ public class ScriptException extends KSException {
 		fillTrace(r.getName(),r.getLine(),r.getCol());
 		// TODO Auto-generated constructor stub
 	}
+
+	public ScriptException() {
+		super();
+		detail ="unknown error";
+		
+	}
+
+	public ScriptException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+		detail =message;
+	}
+
+	public ScriptException(String message, Throwable cause) {
+		super(message, cause);
+		detail =message;
+	}
+
+	public ScriptException(Throwable cause) {
+		super(cause);
+		detail =cause.getClass().getSimpleName();
+	}
+
 	public void fillTrace(String file,int line,int col) {
 		trace.add("at ("+file+") "+line+"行"+col+"列");
 	}

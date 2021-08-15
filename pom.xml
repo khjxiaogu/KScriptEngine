@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.khjxiaogu</groupId>
   <artifactId>scriptengine</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>0.0.5-SNAPSHOT</version>
   <name>khjScriptEngine</name>
   <description>a scriptEngine in java</description>
 	<build>
@@ -64,5 +64,6 @@
 			<id>globalmvn</id>
 			<url>https://mvnrepository.com/artifact/</url>
 		</repository>
+		
 	</repositories>
 </project>

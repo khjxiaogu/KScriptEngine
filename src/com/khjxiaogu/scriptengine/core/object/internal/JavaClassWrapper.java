@@ -70,6 +70,8 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		return ((Closure)var.toType(KObject.class)).getNativeInstance(jvmType);
 	}
 	private static KVariant revert(Object ret) throws KSException {
+		if(ret==null)
+			return new KVariant();
 		Class<?> jvmType=ret.getClass();
 		jvmType=typemap.getOrDefault(jvmType,jvmType);
 		Class<?> varType=resultmap.getOrDefault(jvmType,jvmType);

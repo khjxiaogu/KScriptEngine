@@ -96,7 +96,7 @@ public final class TypeInfo {
 		if (another instanceof TypeInfo) {
 			if (another == this)
 				return true;
-			if (((TypeInfo) another).name == name)
+			if (((TypeInfo) another).name.equals(name))
 				return true;
 		}
 		return false;

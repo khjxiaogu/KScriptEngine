@@ -2,6 +2,8 @@ package com.khjxiaogu.scriptengine.core.object.internal;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.JVMError;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.NativeClassClosure;
 
 
@@ -12,6 +14,18 @@ public class ObjectReflection extends NativeClassClosure<Object> {
 		super.registerFunction("getClass",(o,args)->{
 			try {
 				return new KVariant(JavaClassWrapper.getWrapper(Class.forName(args[0].toString())));
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				throw new JVMError(e);
+			}
+		});
+		super.registerFunction("import",(o,args)->{
+			try {
+				String clsname=args[1].toString();
+				JavaClassWrapper<?> jcw=JavaClassWrapper.getWrapper(Class.forName(clsname));
+				KVariant kv=new KVariant(jcw);
+				args[0].asType(KObject.class).setMemberByName(clsname.substring(clsname.lastIndexOf(".")+1),kv,KEnvironment.DEFAULT);
+				return kv;
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				throw new JVMError(e);

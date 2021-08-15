@@ -1,6 +1,8 @@
 package com.khjxiaogu.scriptengine.core.object.internal;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -60,11 +62,11 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		super.registerProperty("length",obj->new KVariant(obj.size()),null);
 		super.registerProperty("count",obj->new KVariant(obj.size()),null);
 		super.registerFunction("load",(obj,args)->{
-			List<String> rf;
-			try {
-				rf = Files.readAllLines(Path.of(args[0].toString()),StandardCharsets.UTF_16LE);
+			try(FileReader fis=new FileReader(args[0].asString());BufferedReader rd=new BufferedReader(fis)){
+				;
 				obj.clear();
-				for(String s:rf) {
+				String s;
+				while((s=rd.readLine())!=null) {
 					obj.add(new KVariant(s));
 				}
 			} catch (IOException e) {
@@ -84,6 +86,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 			}
 			return new KVariant(this);
 		});
+		char ch=0x1FFFF;
 	}
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
