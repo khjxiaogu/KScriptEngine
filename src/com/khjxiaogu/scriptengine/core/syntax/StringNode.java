@@ -71,9 +71,10 @@ public class StringNode implements CodeNode, ASTParser,ObjectOperator {
 						}
 					}
 					sb.append((char) Integer.parseInt(x.toString(), 16));
-					break;
+					c=reader.read();
+					continue;
 				}
-				c = reader.read();
+				c = reader.eat();
 				continue;
 			}
 			sb.append(c);

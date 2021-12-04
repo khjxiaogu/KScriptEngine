@@ -54,9 +54,7 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 			CodeNode cn = p.parseUntil(reader, '(');
 			if (!(cn instanceof LiteralNode))
 				throw new SyntaxError("函数表达式有误");
-			else {
-				name = ((LiteralNode) cn).getToken();
-			}
+			name = ((LiteralNode) cn).getToken();
 		}
 		reader.eat();
 		ArgumentNode an = new ArgumentNode('(');

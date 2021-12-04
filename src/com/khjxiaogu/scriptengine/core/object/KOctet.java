@@ -15,37 +15,33 @@ public final class KOctet {
 	public KOctet(int size) {
 		this(new byte[size]);
 	}
-	class OctetObject extends ExtendableClosure {
+	static class OctetObject extends ExtendableClosure {
 		public OctetObject(byte[] intern){
 			super("Octet");
 			try {
-				super.putNativeInstance(intern);
-				this.setMemberByName("length",
-					new KVariant(
-						new PropertyClosure(
-							new NativeProperty<byte[]>(
-									byte[].class,
-								(e)->{
-									return new KVariant(e.length);
-								},null
-							)
-						)
-					),KEnvironment.DEFAULT
-				);
+				super.putNativeInstance(byte[].class,intern);
 			} catch (KSException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
-
+		
+		@Override
+		public KVariant getMemberByName(String var, int flag) throws KSException {
+			if(var.equals("length"))
+				return new KVariant(this.getNativeInstance(byte[].class).length);
+			return super.getMemberByName(var, flag);
+		}
 		@Override
 		public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
-			if(var.getType().getType().equals(Integer.class))
+			if(var.getType().getType().equals(Long.class))
 				return new KVariant(this.getNativeInstance(byte[].class)[var.getInt()]);
+			if(var.toString().equals("length"))
+				return new KVariant(this.getNativeInstance(byte[].class).length);
 			return super.getMemberByVariant(var, flag);
 		}
 
-		@Override
+		/*@Override
 		public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 			if(var.getType().getType().equals(Integer.class)) {
 				this.getNativeInstance(byte[].class)[var.getInt()]=(byte)(int)val.getInt();
@@ -57,7 +53,7 @@ public final class KOctet {
 		@Override
 		public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
 			throw new AccessDeniedException();
-		}
+		}*/
 
 	}
 

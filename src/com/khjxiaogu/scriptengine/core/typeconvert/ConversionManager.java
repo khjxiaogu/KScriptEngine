@@ -108,6 +108,10 @@ public class ConversionManager {
 			sb.append("%>");
 			return sb.toString();
 		});
+		new TypeConverter<>(KOctet.class,KObject.class, obj -> {
+			
+			return obj.getObject();
+		});
 		//backw
 		new TypeConverter<>(Byte.class, Long.class,obj->obj.longValue());
 		new TypeConverter<>(Short.class, Long.class,obj->obj.longValue());

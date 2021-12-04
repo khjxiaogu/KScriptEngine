@@ -24,6 +24,7 @@ import com.khjxiaogu.scriptengine.core.object.CallableFunction;
 import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.object.NativeClassClosure;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
@@ -86,7 +87,14 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 			}
 			return new KVariant(this);
 		});
-		char ch=0x1FFFF;
+		super.registerFunction("asOctet",(obj,args)->{
+			byte[] octs=new byte[obj.size()];
+			for(int i=0;i<obj.size();i++) {
+				octs[i]=(byte) obj.get(i).getInt();
+				System.out.println(octs[i]);
+			}
+			return new KVariant(new KOctet(octs));
+		});
 	}
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {

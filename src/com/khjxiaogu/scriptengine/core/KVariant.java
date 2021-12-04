@@ -699,7 +699,7 @@ public class KVariant implements Cloneable {
 	 */
 	public KVariant BAND(KVariant by) throws KSException {
 		Long value = getLong();
-		return new KVariant(value & by.getInt());
+		return new KVariant(value & by.getLong());
 	}
 
 	/**

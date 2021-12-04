@@ -10,6 +10,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.object.NativeClassClosure;
 import com.khjxiaogu.scriptengine.core.object.NativeMethod;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
@@ -46,6 +47,21 @@ public class ObjectString  extends NativeClassClosure<String>{
 			}
 			return new KVariant(arr);
 		});
+		super.registerFunction("encode",(str,arr)->{
+			try {
+				return new KVariant(new KOctet(str.getBytes(arr[0].asString())));
+			}catch(Exception e) {
+				throw new ScriptException(e);
+			}
+		});
+		super.registerFunction("decode",(str,arr)->{
+			try {
+				return new KVariant(new String(arr[0].asType(KOctet.class).getBytes(),arr[1].asString()));
+			}catch(Exception e) {
+				throw new ScriptException(e);
+			}
+		});
+		super.registerFunction("replace",(str,arr)->new KVariant(str.replace(arr[0].asString(),arr[1].asString())));
 		super.registerFunction("escape",(str,arr)->new KVariant(str.replace("\\", "\\\\").replace("\'", "\\'").replace("\"", "\\\"")));
 		super.registerFunction("trim",(str,arr)->new KVariant(str.trim()));
 		super.registerFunction("reverse",(str,arr)->new KVariant(new StringBuilder(str).reverse().toString()));

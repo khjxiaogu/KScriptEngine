@@ -44,10 +44,13 @@ public class NumberNode extends ConstantNode implements ASTParser, CodeNode {
 			if (c2 == 'x' || c2 == 'X') {
 				hex = true;
 				degit = 16;
+				reader.eat();
 			} else {
 				oct = true;
 				degit = 8;
 			}
+			c=reader.eat();
+			
 		}
 		while (true) {
 			if (c >= '0' && c <= '9') {
@@ -65,12 +68,12 @@ public class NumberNode extends ConstantNode implements ASTParser, CodeNode {
 				char lowerc = Character.toLowerCase(c);
 				if (lowerc >= 'a' && lowerc <= 'f') {
 					value *= degit;
-					value += c - 'a' + 9;
+					value += c - 'a' + 10;
 					if (dotted) {
 						dot *= degit;
 					}
 
-				}
+				}else break;
 			} else {
 				break;
 			}
