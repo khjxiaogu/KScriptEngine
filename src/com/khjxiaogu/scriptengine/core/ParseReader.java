@@ -67,6 +67,18 @@ public interface ParseReader {
 	 *                     引擎执行发生的异常。
 	 */
 	public char eat() throws KSException;
+	/**
+	 * If next char matches the provided char Move the position a char after, return true.<br />
+	 * 如果下一个字符与输入字符相同，指针向后移动一个字符，返回真
+	 *
+	 * @return true if next char matches provided<br />
+	 *         如果当前字符与输入字符相同，返回真
+	 * @param ch input char<br />
+	 *           输入字符
+	 * @throws KSException Any Engine Exception occurred<br />
+	 *                     引擎执行发生的异常。
+	 */
+	public boolean eat(char ch) throws KSException;
 
 	/**
 	 * Move the position a number of chars later.<br />

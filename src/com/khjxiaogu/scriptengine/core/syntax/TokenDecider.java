@@ -162,7 +162,7 @@ public class TokenDecider implements ASTParser {
 			if (infer == Associative.LEFT)
 				return new Not();
 			else if (next == '=') {
-				if (reader.eat() == '=') {
+				if (reader.eat('=')) {
 					reader.eat();
 					return new NotExactEquals();
 				}
@@ -184,7 +184,7 @@ public class TokenDecider implements ASTParser {
 				return new Mod();
 		case '&':
 			if (next == '&') {
-				if (reader.eat() == '=')
+				if (reader.eat('='))
 					return new LogicalAndEqual();
 				else
 					return new LogicalAnd();
@@ -259,17 +259,16 @@ public class TokenDecider implements ASTParser {
 			if (next == '=') {
 				reader.eat();
 				return new DivideEqual();
-			} else
-				return new Divide();
+			}
+			return new Divide();
 		case ':':
 			return new Equal();
 		case '<':
 			if (next == '<') {
-				char ch = reader.eat();
-				if (ch == '=') {
+				if (reader.eat('=')) {
 					reader.eat();
 					return new LSHEqual();
-				} else if (ch == '%')
+				} else if (reader.eat('%'))
 					return parseOctet(reader);
 				else
 					return new LeftShift();
@@ -464,8 +463,6 @@ public class TokenDecider implements ASTParser {
 
 	public CodeNode parseLiteral(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
-		StringBuilder sb = new StringBuilder();
-		char ch = reader.read();
 		/*
 		 * TODO:
 		 * const catch class
@@ -477,6 +474,8 @@ public class TokenDecider implements ASTParser {
 		 * private public synchronized
 		 * static setter throw
 		 */
+		StringBuilder sb = new StringBuilder();
+		char ch = reader.read();
 		do {
 			sb.append(ch);
 		} while (Character.isJavaIdentifierPart(ch = reader.eat()) && ch != '$' && ch != 0);

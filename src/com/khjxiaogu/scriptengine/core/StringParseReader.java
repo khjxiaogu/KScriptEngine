@@ -41,7 +41,9 @@ public class StringParseReader implements ParseReader {
 	@Override
 	public char read(int off) throws KSException {
 		// TODO Auto-generated method stub
-		return backed.charAt(pos + off);
+		if(has(off))
+			return backed.charAt(pos + off);
+		throw new SyntaxError("错误的文档结尾",this);
 	}
 
 	@Override
@@ -80,7 +82,10 @@ public class StringParseReader implements ParseReader {
 		// TODO Auto-generated method stub
 		return pos <= backed.length() - 1;
 	}
-
+	public boolean has(int len) {
+		// TODO Auto-generated method stub
+		return pos+len <= backed.length() - 1;
+	}
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -119,5 +124,14 @@ public class StringParseReader implements ParseReader {
 			while(eat()!='\n');
 		}
 		eat();
+	}
+
+	@Override
+	public boolean eat(char ch) throws KSException {
+		if(read(1)==ch) {
+			eat();
+			return true;
+		}
+		return false;
 	}
 }
