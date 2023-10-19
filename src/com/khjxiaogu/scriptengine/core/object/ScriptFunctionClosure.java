@@ -64,7 +64,7 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 			if ((args[i] == null || args[i].getType().getType() == Void.class) && defargs[i] != null) {
 				args[i] = defargs[i].eval(closure);
 			} else if (args[i] == null) {
-				args[i] = new KVariant();
+				args[i] = KVariant.valueOf();
 			}
 		}
 		if (env != null) {

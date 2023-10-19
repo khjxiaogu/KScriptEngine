@@ -14,7 +14,7 @@ public class ObjectException extends NativeClassClosure<KSException> {
 		super.registerProperty("message",new NativeProperty<KSException>(
 			KSException.class,
 			(e)->{
-				return new KVariant(e.getMessage());
+				return KVariant.valueOf(e.getMessage());
 			},null
 		));
 		super.registerConstructor((env,args)->{

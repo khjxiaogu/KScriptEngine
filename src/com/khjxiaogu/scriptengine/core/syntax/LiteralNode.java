@@ -94,9 +94,9 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, ObjectOpera
 	@Override
 	public KVariant getPointing(KEnvironment env) {
 		if (itoken != -1)
-			return new KVariant(getToken());
+			return KVariant.valueOf(getToken());
 		else
-			return new KVariant(itoken);
+			return KVariant.valueOf(itoken);
 	}
 
 	public boolean isLocal() {

@@ -21,7 +21,7 @@ public class LeftShift extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(super.left.eval(env)).LSH(super.right.eval(env).getInt());
+		return super.left.eval(env).LSH(super.right.eval(env).asInt());
 	}
 
 	@Override

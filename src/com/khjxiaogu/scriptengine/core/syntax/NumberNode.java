@@ -1,5 +1,6 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
+import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
@@ -21,12 +22,12 @@ public class NumberNode extends ConstantNode implements ASTParser, CodeNode {
 
 	public NumberNode(int i) throws KSException {
 		// TODO Auto-generated constructor stub
-		value.setNumber((double) i);
+		super(KVariant.valueOf(i));
 	}
 
 	public NumberNode(double i) throws KSException {
 		// TODO Auto-generated constructor stub
-		value.setNumber(i);
+		super(KVariant.valueOf(i));
 	}
 
 	@Override
@@ -80,7 +81,7 @@ public class NumberNode extends ConstantNode implements ASTParser, CodeNode {
 			c = reader.eat();
 		}
 		value /= dot;
-		this.value.setNumber(value);
+		this.value=KVariant.valueOf(value);
 		// TODO Auto-generated method stub
 		return this;
 	}

@@ -121,7 +121,7 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 							KEnvironment.THISONLY);
 				}
 			} else if (cur instanceof LiteralNode) {
-				result = env.setMemberByName(((LiteralNode) cur).getToken(), new KVariant(), KEnvironment.THISONLY);
+				result = env.setMemberByName(((LiteralNode) cur).getToken(), KVariant.valueOf(), KEnvironment.THISONLY);
 			}
 
 		}

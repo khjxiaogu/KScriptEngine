@@ -20,12 +20,12 @@ public class MapEnvironment implements KEnvironment {
 	public KVariant getMemberByName(String name, int flag) throws KSException {
 		// TODO Auto-generated method stub
 		if(name==null||name.length()==0)
-			return new KVariant(this);
+			return KVariant.valueOf(this);
 		KVariant res = map.get(name);
 		if (res == null) {
 			if ((flag & KEnvironment.MUSTEXIST) != 0)
 				throw new MemberNotFoundException(name);
-			return new KVariant();
+			return KVariant.valueOf();
 		}
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
@@ -46,10 +46,10 @@ public class MapEnvironment implements KEnvironment {
 		KVariant res = null;
 		String name = var.toString();
 		if(name.length()==0)
-			return new KVariant(this);
+			return KVariant.valueOf(this);
 		res = map.get(name);
 		if (res == null) {
-			res = new KVariant();
+			res = KVariant.valueOf();
 		}
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
@@ -184,7 +184,7 @@ public class MapEnvironment implements KEnvironment {
 					va = ((KProperty) va.getValue()).getProp(null);
 				}
 			}
-			if (!cosumer.execute(new KVariant(me.getKey()), va)) {
+			if (!cosumer.execute(KVariant.valueOf(me.getKey()), va)) {
 				break;
 			}
 		}

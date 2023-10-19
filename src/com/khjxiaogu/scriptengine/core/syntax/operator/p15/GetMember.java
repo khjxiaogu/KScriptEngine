@@ -37,7 +37,7 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.Child.eval(env).toType(KObject.class).getMemberByVariant(under.eval(env),
+		return super.Child.eval(env).asType(KObject.class).getMemberByVariant(under.eval(env),
 				KEnvironment.DEFAULT);
 	}
 

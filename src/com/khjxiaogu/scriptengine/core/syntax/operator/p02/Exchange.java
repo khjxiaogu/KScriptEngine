@@ -3,6 +3,7 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p02;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 
 /**
@@ -21,12 +22,10 @@ public class Exchange extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		KVariant left = super.left.eval(env);
-		KVariant right = super.right.eval(env);
-		KVariant temp = new KVariant(left);
-		left.setValue(right);
-		right.setValue(temp);
-		return new KVariant();
+		KVariant leftv = super.left.eval(env);
+		((Assignable)left).assign(env, super.right.eval(env));
+		((Assignable)right).assign(env, leftv);
+		return KVariant.valueOf();
 	}
 
 	@Override

@@ -75,7 +75,7 @@ public class DictionaryNode implements ASTParser, CodeNode, ObjectOperator {
 		for(Node co:elms) {
 			ko.setMemberByName(co.assignment,co.exp.eval(env),KEnvironment.DEFAULT);
 		}
-		return new KVariant(ko);
+		return KVariant.valueOf(ko);
 	}
 
 	@Override

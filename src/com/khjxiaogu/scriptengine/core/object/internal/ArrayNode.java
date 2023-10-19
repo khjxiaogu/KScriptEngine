@@ -43,7 +43,7 @@ public class ArrayNode implements CodeNode,ASTParser,ObjectOperator {
 		for(CodeNode co:elms) {
 			ko.setMemberByNum(i++,co.eval(env),KEnvironment.DEFAULT);
 		}
-		return new KVariant(ko);
+		return KVariant.valueOf(ko);
 	}
 
 	@Override

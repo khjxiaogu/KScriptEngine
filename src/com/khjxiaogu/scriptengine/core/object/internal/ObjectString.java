@@ -23,15 +23,15 @@ public class ObjectString  extends NativeClassClosure<String>{
 	}
 	public ObjectString() {
 		super(String.class,"String");
-		super.registerProperty("length",str->new KVariant(str.length()),null);
+		super.registerProperty("length",str->KVariant.valueOf(str.length()),null);
 		super.registerFunction("charAt",(str,args)->getMemberByNum(args[0].getInt(),KEnvironment.MUSTEXIST));
-		super.registerFunction("indexOf",(str,args)->new KVariant(str.indexOf(args[0].toString())));
-		super.registerFunction("toLowerCase",(str,args)->new KVariant(str.toLowerCase()));
-		super.registerFunction("toUpperCase",(str,args)->new KVariant(str.toUpperCase()));
-		NativeMethod<String> substr=(str,args)->args.length>1?new KVariant(str.substring(args[0].getInt(),args[1].getInt())):new KVariant(str.substring(args[0].getInt()));
+		super.registerFunction("indexOf",(str,args)->KVariant.valueOf(str.indexOf(args[0].toString())));
+		super.registerFunction("toLowerCase",(str,args)->KVariant.valueOf(str.toLowerCase()));
+		super.registerFunction("toUpperCase",(str,args)->KVariant.valueOf(str.toUpperCase()));
+		NativeMethod<String> substr=(str,args)->args.length>1?KVariant.valueOf(str.substring(args[0].getInt(),args[1].getInt())):KVariant.valueOf(str.substring(args[0].getInt()));
 		super.registerFunction("substring",substr);
 		super.registerFunction("substr",substr);
-		super.registerFunction("sprintf",(str,args)->new KVariant(String.format(str,(Object[])args)));
+		super.registerFunction("sprintf",(str,args)->KVariant.valueOf(String.format(str,(Object[])args)));
 		super.registerFunction("split",(str,args)->{
 			boolean b=true;
 			if(args.length>2) {
@@ -42,55 +42,55 @@ public class ObjectString  extends NativeClassClosure<String>{
 			int i=0;
 			for(String s:ss) {
 				if(b||s!="") {
-					arr.setMemberByNum(i++,new KVariant(s),KEnvironment.DEFAULT);
+					arr.setMemberByNum(i++,KVariant.valueOf(s),KEnvironment.DEFAULT);
 				}
 			}
-			return new KVariant(arr);
+			return KVariant.valueOf(arr);
 		});
 		super.registerFunction("encode",(str,arr)->{
 			try {
-				return new KVariant(new KOctet(str.getBytes(arr[0].asString())));
+				return KVariant.valueOf(new KOctet(str.getBytes(arr[0].asString())));
 			}catch(Exception e) {
 				throw new ScriptException(e);
 			}
 		});
 		super.registerFunction("decode",(str,arr)->{
 			try {
-				return new KVariant(new String(arr[0].asType(KOctet.class).getBytes(),arr[1].asString()));
+				return KVariant.valueOf(new String(arr[0].asType(KOctet.class).getBytes(),arr[1].asString()));
 			}catch(Exception e) {
 				throw new ScriptException(e);
 			}
 		});
-		super.registerFunction("replace",(str,arr)->new KVariant(str.replace(arr[0].asString(),arr[1].asString())));
-		super.registerFunction("escape",(str,arr)->new KVariant(str.replace("\\", "\\\\").replace("\'", "\\'").replace("\"", "\\\"")));
-		super.registerFunction("trim",(str,arr)->new KVariant(str.trim()));
-		super.registerFunction("reverse",(str,arr)->new KVariant(new StringBuilder(str).reverse().toString()));
-		super.registerFunction("repeat",(str,arr)->new KVariant(String.join("", Collections.nCopies(arr[0].getInt(), str))));
-		super.registerFunction("startsWith",(str,arr)->new KVariant(str.startsWith(arr[0].toString())));
-		super.registerFunction("endsWith",(str,arr)->new KVariant(str.endsWith(arr[0].toString())));
+		super.registerFunction("replace",(str,arr)->KVariant.valueOf(str.replace(arr[0].asString(),arr[1].asString())));
+		super.registerFunction("escape",(str,arr)->KVariant.valueOf(str.replace("\\", "\\\\").replace("\'", "\\'").replace("\"", "\\\"")));
+		super.registerFunction("trim",(str,arr)->KVariant.valueOf(str.trim()));
+		super.registerFunction("reverse",(str,arr)->KVariant.valueOf(new StringBuilder(str).reverse().toString()));
+		super.registerFunction("repeat",(str,arr)->KVariant.valueOf(String.join("", Collections.nCopies(arr[0].getInt(), str))));
+		super.registerFunction("startsWith",(str,arr)->KVariant.valueOf(str.startsWith(arr[0].toString())));
+		super.registerFunction("endsWith",(str,arr)->KVariant.valueOf(str.endsWith(arr[0].toString())));
 	}
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.getMemberByNum(var.getInt(), flag);
+			return this.getMemberByNum(var.asInt(), flag);
 		return super.getMemberByVariant(var, flag);
 	}
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.setMemberByNum(var.getInt(),val, flag);
+			return this.setMemberByNum(var.asInt(),val, flag);
 		return super.setMemberByVariant(var, val, flag);
 	}
 	@Override
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.hasMemberByNum(var.getInt());
+			return this.hasMemberByNum(var.asInt());
 		return super.hasMemberByVariant(var);
 	}
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.deleteMemberByNum(var.getInt());
+			return this.deleteMemberByNum(var.asInt());
 		return super.deleteMemberByVariant(var);
 	}
 	@Override
@@ -103,9 +103,9 @@ public class ObjectString  extends NativeClassClosure<String>{
 		if(num>=ni.length()) {
 			if((flag|KEnvironment.MUSTEXIST)!=0)
 				throw new MemberNotFoundException(num);
-			return new KVariant("");
+			return KVariant.valueOf("");
 		}
-		return new KVariant(String.valueOf(super.getNativeInstance().charAt(num)));
+		return KVariant.valueOf(String.valueOf(super.getNativeInstance().charAt(num)));
 	}
 	@Override
 	public KVariant setMemberByNum(int num, KVariant val, int flag) throws KSException {
@@ -114,7 +114,7 @@ public class ObjectString  extends NativeClassClosure<String>{
 			throw new MemberNotFoundException(num);
 		StringBuilder sb=new StringBuilder();
 		sb.setCharAt(num, val.asString().charAt(0));
-		return new KVariant(sb.toString());
+		return KVariant.valueOf(sb.toString());
 	}
 	@Override
 	public boolean hasMemberByNum(int num) throws KSException {

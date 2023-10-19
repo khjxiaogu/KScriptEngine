@@ -88,7 +88,7 @@ public class StringNode implements CodeNode, ASTParser,ObjectOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(variant);
+		return KVariant.valueOf(variant);
 	}
 
 	@Override
@@ -111,6 +111,6 @@ public class StringNode implements CodeNode, ASTParser,ObjectOperator {
 
 	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {
-		return new KVariant(variant).toType(KObject.class);
+		return KVariant.valueOf(variant).asType(KObject.class);
 	}
 }

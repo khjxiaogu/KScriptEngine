@@ -77,23 +77,23 @@ public class ConversionManager {
 
 		new TypeConverter<>(KObject.class, String.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(String.class);
+				return ((KProperty) obj).getProp(null).asType(String.class);
 			return obj.toString();
 		});
 		
 		new TypeConverter<>(KObject.class, Long.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(Long.class);
+				return ((KProperty) obj).getProp(null).asType(Long.class);
 			throw new ConversionException("Object", "Integer");
 		});
 		new TypeConverter<>(KObject.class, Double.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(Double.class);
+				return ((KProperty) obj).getProp(null).asType(Double.class);
 			throw new ConversionException("Object", "Real");
 		});
 		new TypeConverter<>(KObject.class, KOctet.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(KOctet.class);
+				return ((KProperty) obj).getProp(null).asType(KOctet.class);
 			throw new ConversionException("Object", "Octet");
 		});
 		new TypeConverter<>(KOctet.class, String.class, obj -> {

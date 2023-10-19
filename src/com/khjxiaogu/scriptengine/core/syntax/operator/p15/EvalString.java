@@ -26,9 +26,9 @@ public class EvalString extends SingleOperator {
 		// TODO Auto-generated method stub
 		if (env instanceof CodeBlockEnvironment)
 			return Parser.getParser()
-					.parse(super.Child.eval(env).toType(String.class), ((CodeBlockEnvironment) env).getSymbol())
+					.parse(super.Child.eval(env).asType(String.class), ((CodeBlockEnvironment) env).getSymbol())
 					.eval(env);
-		return Parser.getParser().parse(super.Child.eval(env).toType(String.class)).eval(env);
+		return Parser.getParser().parse(super.Child.eval(env).asType(String.class)).eval(env);
 	}
 
 	@Override

@@ -26,18 +26,18 @@ public class KhjScriptEngine {
 	public KhjScriptEngine() {
 		try {
 			GlobalEnvironment.getGlobal().setMemberByName("print",
-					new KVariant(new NativeFunction<Object>((objthis, params) -> {
+					KVariant.valueOf(new NativeFunction<Object>((objthis, params) -> {
 						if (params.length > 0) {
 							System.out.println(params[0].toString());
 						}
 						return null;
 					})), KEnvironment.DEFAULT);
-			GlobalEnvironment.getGlobal().setMemberByName("Exception",new KVariant(new ObjectException()),KEnvironment.DEFAULT);
-			GlobalEnvironment.getGlobal().setMemberByName("Math",new KVariant(JavaClassWrapper.getWrapper(Math.class)),KEnvironment.DEFAULT);
-			GlobalEnvironment.getGlobal().setMemberByName("Date",new KVariant(JavaClassWrapper.getWrapper(Date.class)),KEnvironment.DEFAULT);
-			GlobalEnvironment.getGlobal().setMemberByName("Scripts",new KVariant(new ObjectScripts(this)),KEnvironment.DEFAULT);
-			GlobalEnvironment.getGlobal().setMemberByName("Array",new KVariant(new ObjectArray()),KEnvironment.DEFAULT);
-			GlobalEnvironment.getGlobal().setMemberByName("Dictionary",new KVariant(new ObjectDictionary()),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Exception",KVariant.valueOf(new ObjectException()),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Math",KVariant.valueOf(JavaClassWrapper.getWrapper(Math.class)),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Date",KVariant.valueOf(JavaClassWrapper.getWrapper(Date.class)),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Scripts",KVariant.valueOf(new ObjectScripts(this)),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Array",KVariant.valueOf(new ObjectArray()),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Dictionary",KVariant.valueOf(new ObjectDictionary()),KEnvironment.DEFAULT);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

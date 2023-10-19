@@ -27,31 +27,40 @@ public class KVariant implements Cloneable {
 	 * The type.<br />
 	 * 变量类型.
 	 */
-	private TypeInfo type;
+	private final TypeInfo type;
 
 	/**
 	 * The value.<br />
 	 * 变量值.
 	 */
-	private Object value;
+	private final Object value;
 
-	/**
-	 * Constant FALSE.<br />
-	 * 常量 FALSE.
-	 */
-	public final static KVariant FALSE = new KVariant(false);
 
+
+	private final static KVariant EMPTY_STR = new KVariant("");
+	
+	private final static KVariant VOID = new KVariant();
+	private final static KVariant[] INT=new KVariant[509];
+	{
+		for(int i=-254;i<255;i++) {
+			INT[i+254]=new KVariant(i);
+		}
+	}
 	/**
 	 * Constant TRUE.<br />
 	 * 常量 TRUE.
 	 */
-	public final static KVariant TRUE = new KVariant(true);
-
+	public final static KVariant TRUE = KVariant.valueOf(true);
+	/**
+	 * Constant FALSE.<br />
+	 * 常量 FALSE.
+	 */
+	public final static KVariant FALSE = KVariant.valueOf(false);
 	/**
 	 * Instantiates a new KVariant.<br />
 	 * 新建一个KVariant类<br />
 	 */
-	public KVariant() {
+	private KVariant() {
 		type = TypeInfo.forTypeConstant(Void.class);
 		value = null;
 	}
@@ -62,7 +71,7 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param ref the class to copy<br />
 	 */
-	public KVariant(KVariant ref) {
+	private KVariant(KVariant ref) {
 		type = ref.type;
 		value = ref.value;
 	}
@@ -73,7 +82,7 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val the value<br />
 	 */
-	public KVariant(KObject val) {
+	private KVariant(KObject val) {
 		type = TypeInfo.forTypeConstant(KObject.class);
 		value = val;
 	}
@@ -84,13 +93,10 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val the value<br />
 	 */
-	public KVariant(Double val) {
-		try {
-			setNumber(val);
-		} catch (KSException e) {
-			type = TypeInfo.forTypeConstant(Long.class);
-			value = 0;
-		}
+	private KVariant(Double val) {
+		value=val;
+		type = TypeInfo.forTypeConstant(Double.class);
+		
 	}
 
 	/**
@@ -99,13 +105,9 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val the value<br />
 	 */
-	public KVariant(double val) {
-		try {
-			setNumber(val);
-		} catch (KSException e) {
-			type = TypeInfo.forTypeConstant(Long.class);
-			value = 0;
-		}
+	private KVariant(double val) {
+		value=val;
+		type = TypeInfo.forTypeConstant(Double.class);
 	}
 
 	/**
@@ -114,7 +116,7 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val the value <br />
 	 */
-	public KVariant(Long val) {
+	private KVariant(Long val) {
 		type = TypeInfo.forTypeConstant(Long.class);
 		value = val;
 	}
@@ -125,7 +127,7 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val the value<br />
 	 */
-	public KVariant(long val) {
+	private KVariant(long val) {
 		type = TypeInfo.forTypeConstant(Long.class);
 		value = Long.valueOf(val);
 	}
@@ -136,7 +138,7 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val the value<br />
 	 */
-	public KVariant(String val) {
+	private KVariant(String val) {
 		type = TypeInfo.forTypeConstant(String.class);
 		value = val;
 	}
@@ -147,7 +149,7 @@ public class KVariant implements Cloneable {
 	 *
 	 * @param val the value<br />
 	 */
-	public KVariant(boolean val) {
+	private KVariant(boolean val) {
 		type = TypeInfo.forTypeConstant(Long.class);
 		value = val ? 1L : 0L;
 	}
@@ -160,7 +162,7 @@ public class KVariant implements Cloneable {
 	 * @param val the val<br />
 	 *
 	 */
-	public KVariant(Object val) {
+	private KVariant(Object val) {
 		type = TypeInfo.forType(val.getClass());
 		value = val;
 	}
@@ -173,7 +175,7 @@ public class KVariant implements Cloneable {
 	 * @param val  the value<br />
 	 * @param type the type<br />
 	 */
-	public KVariant(Object val, TypeInfo type) {
+	private KVariant(Object val, TypeInfo type) {
 		this.type = type;
 		value = val;
 	}
@@ -186,11 +188,50 @@ public class KVariant implements Cloneable {
 	 * @param val  the value<br />
 	 * @param type the type<br />
 	 */
-	public KVariant(Object val, String type) {
+	private KVariant(Object val, String type) {
 		this.type = TypeInfo.forName(type);
 		value = val;
 	}
+	public static KVariant valueOf() {
+		return VOID;
+	}
+	public static KVariant valueOf(Double d) {
+		if(d==null)return valueOf();
+		return valueOf(d.doubleValue());
+	}
+	public static KVariant valueOf(double d) {
+		if(d==(long)d)
+			return valueOf((long)d);
+		return new KVariant(d);
+	}
 
+	public static KVariant valueOf(Long d) {
+		if(d==null)
+			return valueOf();
+		return valueOf(d.doubleValue());
+	}
+	public static KVariant valueOf(long d) {
+		if(d>-255&&d<255) {
+			return INT[(int) (d+254)];
+		}
+		return new KVariant(d);
+	}
+	public static KVariant valueOf(String s) {
+		if(s.isEmpty())return EMPTY_STR;
+		return new KVariant(s);
+	}
+	public static KVariant valueOf(boolean b) {
+		return valueOf(b?1L:0L);
+	}
+	public static KVariant valueOf(Object obj) {
+		return new KVariant(obj);
+	}
+	public static KVariant valueOf(Object obj,TypeInfo ti) {
+		return new KVariant(obj,ti);
+	}
+	public static KVariant valueOf(KVariant val) {
+		return val;
+	}
 	/**
 	 * Gets the type.<br />
 	 * 获取类型.
@@ -219,11 +260,11 @@ public class KVariant implements Cloneable {
 	 * @return return this variant <br />
 	 *         返回本对象
 	 */
-	public KVariant setValue(KVariant ref) {
+	/*public KVariant setValue(KVariant ref) {
 		type = ref.type;
 		value = ref.value;
 		return this;
-	}
+	}*/
 
 	/**
 	 * Set value to an object,which would automatic infer its type.<br />
@@ -233,11 +274,11 @@ public class KVariant implements Cloneable {
 	 * @return return this variant<br />
 	 *         返回本对象
 	 */
-	public KVariant set(Object ref) {
+	/*public KVariant set(Object ref) {
 		type = TypeInfo.forType(ref.getClass());
 		value = ref;
 		return this;
-	}
+	}*/
 
 	/**
 	 * Convert variant to number.<br />
@@ -247,7 +288,7 @@ public class KVariant implements Cloneable {
 	 *         返回类型
 	 * @throws KSException 
 	 */
-	public TypeInfo asNumber() throws KSException {
+	/*public TypeInfo asNumber() throws KSException {
 		if (value instanceof Long || value instanceof Double)
 			return type;
 		try {
@@ -262,7 +303,7 @@ public class KVariant implements Cloneable {
 			return type = TypeInfo.forTypeConstant(Long.class);
 		}
 		return type = TypeInfo.forTypeConstant(Double.class);
-	}
+	}*/
 
 	/**
 	 * Gets the number value,does NOT change this variant.<br />
@@ -271,7 +312,7 @@ public class KVariant implements Cloneable {
 	 * @return number<br />
 	 * @throws KSException 
 	 */
-	public Double getNumber() throws KSException {
+	public Double asNumber() throws KSException {
 		try {
 			if (!(value instanceof Double))
 				return (Double) ConversionManager.getConversion(Double.class).from(this);
@@ -289,7 +330,7 @@ public class KVariant implements Cloneable {
 	 * @return result<br />
 	 * @throws KSException 
 	 */
-	public int getInt() throws KSException {
+	public int asInt() throws KSException {
 		if (!(value instanceof Long))
 			return (int) ConversionManager.getConversion(Long.class).from(this);
 		return (int)(long) value;
@@ -301,7 +342,7 @@ public class KVariant implements Cloneable {
 	 * @return result<br />
 	 * @throws KSException 
 	 */
-	public long getLong() throws KSException {
+	public long asLong() throws KSException {
 		if (!(value instanceof Long))
 			return (Long) ConversionManager.getConversion(Long.class).from(this);
 		return (Long) value;
@@ -316,7 +357,7 @@ public class KVariant implements Cloneable {
 	 * @throws KSException if convert fails<br />
 	 *                             如果转换失败
 	 */
-	public void setNumber(Double val) throws KSException {
+	/*public void setNumber(Double val) throws KSException {
 		value = val;
 		double realV = (Double) value;
 		if (realV == (long) realV) {
@@ -329,7 +370,7 @@ public class KVariant implements Cloneable {
 	public void setNumber(Long val) throws KSException {
 		value = val;
 		type = TypeInfo.forTypeConstant(Long.class);
-	}
+	}*/
 	/**
 	 * set value to double.<br />
 	 * 设置小数值.
@@ -339,10 +380,10 @@ public class KVariant implements Cloneable {
 	 * @throws KSException if convert fails<br />
 	 *                             如果转换失败
 	 */
-	public void setDouble(Double val) throws KSException {
+	/*public void setDouble(Double val) throws KSException {
 		value = val;
 		type = TypeInfo.forTypeConstant(Double.class);
-	}
+	}*/
 
 	/**
 	 * set number to a longeger value.<br />
@@ -351,10 +392,10 @@ public class KVariant implements Cloneable {
 	 * @param val number to set<br />
 	 *            要设置的数值.
 	 */
-	public void setNumber(long val) {
+	/*public void setNumber(long val) {
 		value = val;
 		type = TypeInfo.forTypeConstant(Long.class);
-	}
+	}*/
 
 	/**
 	 * get the variant as a specific type,changes to the original variant.
@@ -369,14 +410,14 @@ public class KVariant implements Cloneable {
 	 * @throws KSException if convert fails<br />
 	 *                             如果转换失败
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public <T> T asType(Class<T> toType) throws KSException {
 		if (toType.isInstance(value))
 			return (T) value;
 		Converter conv = ConversionManager.getConversion(toType);
 		type = conv.getOutTypeInfo();
 		return (T) (value = conv.from(this));
-	}
+	}*/
 
 	/**
 	 * get the value as a specific type.
@@ -391,7 +432,7 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T toType(Class<T> toType) throws KSException {
+	public <T> T asType(Class<T> toType) throws KSException {
 		if (toType.isInstance(value))
 			return (T) value;
 		return (T) ConversionManager.getConversion(toType).from(this);
@@ -406,11 +447,11 @@ public class KVariant implements Cloneable {
 	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public Object toType(String name) throws KSException {
+	/*public Object toType(String name) throws KSException {
 		if (type.getName().equals(name))
 			return value;
 		return ConversionManager.getConversion(name).from(this);
-	}
+	}*/
 
 	/**
 	 * get the variant to specific type,changes the original variant.
@@ -425,8 +466,7 @@ public class KVariant implements Cloneable {
 		if (type.getName().equals(name))
 			return value;
 		Converter conv = ConversionManager.getConversion(name);
-		type = conv.getOutTypeInfo();
-		return value = conv.from(this);
+		return conv.from(this);
 	}
 
 	/**
@@ -438,23 +478,22 @@ public class KVariant implements Cloneable {
 	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant selfIncrement(Associative dir) throws KSException {
+	public KVariant selfIncrement(Associative dir,KVariantReference ref) throws KSException {
 		asNumber();
 		if (dir == Associative.LEFT) {
 			if (value instanceof Long) {
-				value = Long.valueOf((Long) value + 1);
+				ref.setValue(valueOf((Long) value + 1));
 			} else if (value instanceof Double) {
-				value = Double.valueOf((Double) value + 1);
+				ref.setValue(valueOf((Double) value + 1));
 			}
-			return new KVariant(this);
+			return this;
 		}
-		KVariant ret = new KVariant(this);
 		if (value instanceof Long) {
-			value = Long.valueOf((Long) value + 1);
+			ref.setValue(valueOf((Long) value + 1));
 		} else if (value instanceof Double) {
-			value = Double.valueOf((Double) value + 1);
+			ref.setValue(valueOf((Double) value + 1));
 		}
-		return ret;
+		return this;
 	}
 
 	/**
@@ -466,23 +505,22 @@ public class KVariant implements Cloneable {
 	 * @throws KSException if an convertion exception occured.<br />
 	 *                             如果convertion exception发生了
 	 */
-	public KVariant selfDecrement(Associative dir) throws KSException {
+	public KVariant selfDecrement(Associative dir,KVariantReference ref) throws KSException {
 		asNumber();
 		if (dir == Associative.LEFT) {
 			if (value instanceof Long) {
-				value = Long.valueOf((Long) value - 1);
+				ref.setValue(valueOf((Long) value - 1));
 			} else if (value instanceof Double) {
-				value = Double.valueOf((Double) value - 1);
+				ref.setValue(valueOf((Double) value - 1));
 			}
-			return new KVariant(this);
+			return this;
 		}
-		KVariant ret = new KVariant(this);
 		if (value instanceof Long) {
-			value = Long.valueOf((Long) value - 1);
+			ref.setValue(valueOf((Long) value - 1));
 		} else if (value instanceof Double) {
-			value = Double.valueOf((Double) value - 1);
+			ref.setValue(valueOf((Double) value - 1));
 		}
-		return ret;
+		return this;
 	}
 
 	/**
@@ -495,7 +533,7 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant multiply(KVariant By) throws KSException {
-		return new KVariant(getNumber() * By.getNumber());
+		return valueOf(asNumber() * By.asNumber());
 
 	}
 
@@ -509,7 +547,7 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant mod(KVariant By) throws KSException {
-		return new KVariant(Math.floorMod(getInt(), By.getInt()));
+		return valueOf(Math.floorMod(asLong(), By.asLong()));
 	}
 
 	/**
@@ -522,7 +560,7 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant floorDivide(KVariant By) throws KSException {
-		return new KVariant(Math.floorDiv(getInt(), By.getInt()));
+		return valueOf(Math.floorDiv(asLong(), By.asLong()));
 	}
 
 	/**
@@ -535,7 +573,7 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant divide(KVariant By) throws KSException {
-		return new KVariant(getNumber() / By.getNumber());
+		return valueOf(asNumber() / By.asNumber());
 	}
 
 	/**
@@ -549,9 +587,9 @@ public class KVariant implements Cloneable {
 	 */
 	public KVariant add(KVariant By) throws KSException {
 		if (type.getType() != String.class && By.getType().getType() != String.class)
-			return new KVariant(getNumber() + By.getNumber());
+			return valueOf(asNumber() + By.asNumber());
 		else
-			return new KVariant(toString() + By.toString());
+			return valueOf(toString() + By.toString());
 	}
 
 	/**
@@ -564,7 +602,7 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant minus(KVariant By) throws KSException {
-		return new KVariant(getNumber() - By.getNumber());
+		return valueOf(asNumber() - By.asNumber());
 	}
 
 	/**
@@ -577,8 +615,8 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant RSH(long by) throws KSException {
-		Long value = getLong();
-		return new KVariant(value >> by);
+		Long value = asLong();
+		return valueOf(value >> by);
 	}
 
 	/**
@@ -591,8 +629,8 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant LSH(long by) throws KSException {
-		Long value = getLong();
-		return new KVariant(value << by);
+		Long value = asLong();
+		return valueOf(value << by);
 	}
 
 	/**
@@ -605,8 +643,8 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant ARSH(long by) throws KSException {
-		Long value = getLong();
-		return new KVariant(value >>> by);
+		Long value = asLong();
+		return valueOf(value >>> by);
 	}
 
 	/**
@@ -620,9 +658,9 @@ public class KVariant implements Cloneable {
 	 */
 	public KVariant LT(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
-			return new KVariant(((String) value).compareTo(by.toType(String.class)) < 0);
-		Double value = getNumber();
-		return new KVariant(value < by.getNumber());
+			return valueOf(((String) value).compareTo(by.asType(String.class)) < 0);
+		Double value = asNumber();
+		return valueOf(value < by.asNumber());
 	}
 
 	/**
@@ -636,9 +674,9 @@ public class KVariant implements Cloneable {
 	 */
 	public KVariant GT(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
-			return new KVariant(((String) value).compareTo(by.toType(String.class)) > 0);
-		Double value = getNumber();
-		return new KVariant(value > by.getNumber());
+			return valueOf(((String) value).compareTo(by.asType(String.class)) > 0);
+		Double value = asNumber();
+		return valueOf(value > by.asNumber());
 	}
 
 	/**
@@ -652,9 +690,9 @@ public class KVariant implements Cloneable {
 	 */
 	public KVariant LOET(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
-			return new KVariant(((String) value).compareTo(by.toType(String.class)) <= 0);
-		Double value = getNumber();
-		return new KVariant(value <= by.getNumber());
+			return valueOf(((String) value).compareTo(by.asType(String.class)) <= 0);
+		Double value = asNumber();
+		return valueOf(value <= by.asNumber());
 	}
 
 	/**
@@ -668,9 +706,9 @@ public class KVariant implements Cloneable {
 	 */
 	public KVariant GOET(KVariant by) throws KSException {
 		if (type.getType() == String.class && by.type.getType() == String.class)
-			return new KVariant(((String) value).compareTo(by.toType(String.class)) >= 0);
-		Double value = getNumber();
-		return new KVariant(value >= by.getNumber());
+			return valueOf(((String) value).compareTo(by.asType(String.class)) >= 0);
+		Double value = asNumber();
+		return valueOf(value >= by.asNumber());
 	}
 
 	/**
@@ -698,8 +736,8 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant BAND(KVariant by) throws KSException {
-		Long value = getLong();
-		return new KVariant(value & by.getLong());
+		Long value = asLong();
+		return valueOf(value & by.asLong());
 	}
 
 	/**
@@ -712,8 +750,8 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant BOR(KVariant by) throws KSException {
-		Long value = getLong();
-		return new KVariant(value | by.getInt());
+		Long value = asLong();
+		return valueOf(value | by.asLong());
 	}
 
 	/**
@@ -726,8 +764,8 @@ public class KVariant implements Cloneable {
 	 *                             如果convertion exception发生了
 	 */
 	public KVariant BXOR(KVariant by) throws KSException {
-		Long value = getLong();
-		return new KVariant(value ^ by.getInt());
+		Long value = asLong();
+		return valueOf(value ^ by.asLong());
 	}
 
 	/**
@@ -744,179 +782,6 @@ public class KVariant implements Cloneable {
 		}
 		return false;
 	}
-
-	/**
-	 * Multiplyby.<br />
-	 *
-	 * @param By the by<br />
-	 * @return return multiplyby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant multiplyby(KVariant By) throws KSException {
-		setNumber(getNumber() * By.getNumber());
-		return this;
-	}
-
-	/**
-	 * Modby.<br />
-	 *
-	 * @param By the by<br />
-	 * @return return modby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant modby(KVariant By) throws KSException {
-		setNumber(Math.floorMod(getInt(), By.getInt()));
-		return this;
-	}
-
-	/**
-	 * Floor divideby.<br />
-	 *
-	 * @param By the by<br />
-	 * @return return floor divideby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant floorDivideby(KVariant By) throws KSException {
-		setNumber(Math.floorDiv(getInt(), By.getInt()));
-		return this;
-	}
-
-	/**
-	 * Divideby.<br />
-	 *
-	 * @param By the by<br />
-	 * @return return divideby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant divideby(KVariant By) throws KSException {
-		setNumber(getNumber() / By.getNumber());
-		return this;
-	}
-
-	/**
-	 * Addby.<br />
-	 *
-	 * @param By the by<br />
-	 * @return return addby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant addby(KVariant By) throws KSException {
-		if (type.getType() != String.class && By.getType().getType() != String.class) {
-			setNumber(getNumber() + By.getNumber());
-			return this;
-		}
-		value = asString() + By.toString();
-		return this;
-	}
-
-	/**
-	 * Minusby.<br />
-	 *
-	 * @param By the by<br />
-	 * @return return minusby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant minusby(KVariant By) throws KSException {
-		setNumber(getNumber() - By.getNumber());
-		return this;
-	}
-
-	/**
-	 * RS hby.<br />
-	 *
-	 * @param by the by<br />
-	 * @return return RS hby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant RSHby(long by) throws KSException {
-		setNumber(getInt() >> by);
-		return this;
-	}
-
-	/**
-	 * LS hby.<br />
-	 *
-	 * @param by the by<br />
-	 * @return return LS hby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant LSHby(long by) throws KSException {
-		setNumber(getInt() << by);
-		return this;
-	}
-
-	/**
-	 * ARS hby.<br />
-	 *
-	 * @param by the by<br />
-	 * @return return ARS hby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant ARSHby(long by) throws KSException {
-		setNumber(getInt() >>> by);
-		return this;
-	}
-
-	/**
-	 * BAN dby.<br />
-	 *
-	 * @param by the by<br />
-	 * @return return BAN dby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant BANDby(KVariant by) throws KSException {
-		setNumber(getInt() & by.getInt());
-		return this;
-	}
-
-	/**
-	 * BO rby.<br />
-	 *
-	 * @param by the by<br />
-	 * @return return BO rby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant BORby(KVariant by) throws KSException {
-		setNumber(getInt() | by.getInt());
-		return this;
-	}
-
-	/**
-	 * BXO rby.<br />
-	 *
-	 * @param by the by<br />
-	 * @return return BXO rby <br />
-	 *         返回 k variant
-	 * @throws KSException if an convertion exception occured.<br />
-	 *                             如果convertion exception发生了
-	 */
-	public KVariant BXORby(KVariant by) throws KSException {
-		setNumber(getInt() ^ by.getInt());
-		return this;
-	}
-
 	/**
 	 * Equals.<br />
 	 *
@@ -934,7 +799,7 @@ public class KVariant implements Cloneable {
 		if (type.getName() == by.type.getName())
 			return value.equals(by.value);
 		try {
-			return getNumber().equals(by.getNumber());
+			return asNumber().equals(by.asNumber());
 		} catch (KSException e) {
 			return false;
 		}
@@ -963,7 +828,7 @@ public class KVariant implements Cloneable {
 	@Override
 	public String toString() {
 		try {
-			return toType(String.class);
+			return asType(String.class);
 		} catch (KSException e) {
 			return "(" + type.getName() + ")" + hashCode();
 		}
@@ -993,54 +858,41 @@ public class KVariant implements Cloneable {
 			return true;
 		return false;
 	}
-	public KVariant doOperation(AssignOperation op,KVariant opr) throws KSException {
+	public KVariant doOperation(AssignOperation op,KVariant opr,KVariantReference ref) throws KSException {
+		KVariant result=this;
 		switch (op) {
 		case ADD:
-			this.addby(opr);
-			break;
+			result=this.add(opr);
 		case ARSH:
-			this.ARSHby(opr.getInt());
-			break;
+			result=this.ARSH(opr.asInt());
 		case BAND:
-			this.BANDby(opr);
-			break;
+			result=this.BAND(opr);
 		case BOR:
-			this.BOR(opr);
-			break;
+			result=this.BOR(opr);
 		case BXOR:
-			this.BXORby(opr);
-			break;
+			result=this.BXOR(opr);
 		case DIV:
-			this.divideby(opr);
-			break;
+			result=this.divide(opr);
 		case EQ:
-			this.setValue(opr);
-			break;
+			result=opr;
 		case FDIV:
-			this.floorDivideby(opr);
-			break;
+			result=this.floorDivide(opr);
 		case LAND:
-			this.set(this.asBoolean() && opr.asBoolean());
-			break;
+			result=valueOf(this.asBoolean() && opr.asBoolean());
 		case LOR:
-			this.set(this.asBoolean() || opr.asBoolean());
-			break;
+			result=valueOf(this.asBoolean() || opr.asBoolean());
 		case LSH:
-			this.LSHby(opr.getInt());
-			break;
+			result=this.LSH(opr.asInt());
 		case MIN:
-			this.minusby(opr);
-			break;
+			result=this.minus(opr);
 		case MOD:
-			this.modby(opr);
-			break;
+			result=this.mod(opr);
 		case MUL:
-			this.multiplyby(opr);
-			break;
+			result=this.multiply(opr);
 		case RSH:
-			this.RSHby(opr.getInt());
-			break;
+			result=this.RSH(opr.asInt());
 		}
-		return this;
+		ref.setValue(result);
+		return result;
 	}
 }

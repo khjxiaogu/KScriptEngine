@@ -23,7 +23,7 @@ public class ThisStatement implements CodeNode, ObjectOperator {
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		return new KVariant(env.getThis());
+		return KVariant.valueOf(env.getThis());
 	}
 
 	@Override

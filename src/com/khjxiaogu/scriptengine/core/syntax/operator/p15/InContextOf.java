@@ -20,8 +20,8 @@ public class InContextOf extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(new FunctionClosure(super.left.eval(env).toType(KObject.class),
-				super.right.eval(env).toType(KObject.class)));
+		return KVariant.valueOf(new FunctionClosure(super.left.eval(env).asType(KObject.class),
+				super.right.eval(env).asType(KObject.class)));
 	}
 
 	@Override

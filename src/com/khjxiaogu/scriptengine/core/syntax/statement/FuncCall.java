@@ -33,7 +33,7 @@ public class FuncCall extends SingleOperator implements ASTParser,ObjectOperator
 			}
 		}else
 			arg=new KVariant[0];
-		KObject obj = func.toType(KObject.class);
+		KObject obj = func.asType(KObject.class);
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(arg, env);
 		throw new ScriptException("对象不是函数");
@@ -99,7 +99,7 @@ public class FuncCall extends SingleOperator implements ASTParser,ObjectOperator
 
 	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {
-		return super.Child.eval(env).toType(KObject.class);
+		return super.Child.eval(env).asType(KObject.class);
 	}
 
 }

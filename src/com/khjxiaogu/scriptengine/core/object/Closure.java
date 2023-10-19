@@ -30,7 +30,7 @@ public abstract class Closure implements KObject {
 		if (name != null)
 			throw new MemberNotFoundException(name);
 		else
-			return new KVariant(this);
+			return KVariant.valueOf(this);
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public class VarStatement implements Visitable, ASTParser, ObjectOperator, CodeN
 			if(cn!=null) {
 				ln.assignAsVar(env,lr=cn.eval(env));
 			}else
-				ln.assignAsVar(env,lr=new KVariant());
+				ln.assignAsVar(env,lr=KVariant.valueOf());
 		}
 		return lr;
 		//return Child.eval(env);

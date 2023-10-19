@@ -47,9 +47,9 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		super((Class<ArrayList<KVariant>>) arr.getClass(),"Array");
 		arrcls=this;
 		super.registerConstructor((env,args)->new ArrayList<KVariant>());
-		super.registerFunction("add",(obj,args)->{obj.add(args[0]);return new KVariant(obj.size()-1);});
-		super.registerFunction("clear",(obj,args)->{obj.clear();return new KVariant();});
-		super.registerFunction("find",(obj,args)->new KVariant(obj.indexOf(args[0])));
+		super.registerFunction("add",(obj,args)->{obj.add(args[0]);return KVariant.valueOf(obj.size()-1);});
+		super.registerFunction("clear",(obj,args)->{obj.clear();return KVariant.valueOf();});
+		super.registerFunction("find",(obj,args)->KVariant.valueOf(obj.indexOf(args[0])));
 		super.registerFunction("join",(obj,args)->{
 			StringBuilder sb=new StringBuilder();
 			Iterator<KVariant> itv=obj.iterator();
@@ -58,22 +58,22 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 				if(itv.hasNext())
 					sb.append(args[0].toString());
 			}
-			return new KVariant(sb.toString());
+			return KVariant.valueOf(sb.toString());
 			});
-		super.registerProperty("length",obj->new KVariant(obj.size()),null);
-		super.registerProperty("count",obj->new KVariant(obj.size()),null);
+		super.registerProperty("length",obj->KVariant.valueOf(obj.size()),null);
+		super.registerProperty("count",obj->KVariant.valueOf(obj.size()),null);
 		super.registerFunction("load",(obj,args)->{
 			try(FileReader fis=new FileReader(args[0].asString());BufferedReader rd=new BufferedReader(fis)){
 				;
 				obj.clear();
 				String s;
 				while((s=rd.readLine())!=null) {
-					obj.add(new KVariant(s));
+					obj.add(KVariant.valueOf(s));
 				}
 			} catch (IOException e) {
 				obj.clear();
 			}
-			return new KVariant(this);
+			return KVariant.valueOf(this);
 		});
 		super.registerFunction("save",(obj,args)->{
 			try(OutputStream os=new FileOutputStream(new File(args[0].toString()));
@@ -85,7 +85,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 			} catch (IOException e) {
 				obj.clear();
 			}
-			return new KVariant(this);
+			return KVariant.valueOf(this);
 		});
 		super.registerFunction("asOctet",(obj,args)->{
 			byte[] octs=new byte[obj.size()];
@@ -93,7 +93,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 				octs[i]=(byte) obj.get(i).getInt();
 				System.out.println(octs[i]);
 			}
-			return new KVariant(new KOctet(octs));
+			return KVariant.valueOf(new KOctet(octs));
 		});
 	}
 	@Override
@@ -133,7 +133,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	public KVariant getMemberByNum(int num, int flag) throws KSException {
 		ArrayList<KVariant> al=super.getNativeInstance();
 		if((flag&KEnvironment.MUSTEXIST)==0)while(num>=al.size())
-				al.add(new KVariant());
+				al.add(KVariant.valueOf());
 		else if(num>=al.size())
 			throw new MemberNotFoundException(Integer.toString(num));
 		return al.get(num);
@@ -146,7 +146,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 				al.add(val);
 				return val;
 			}while(num>=al.size())
-				al.add(new KVariant());
+				al.add(KVariant.valueOf());
 		}else if(num>=al.size())
 			throw new MemberNotFoundException(Integer.toString(num));
 		al.set(num,val);
@@ -160,7 +160,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	public boolean deleteMemberByNum(int num) throws KSException {
 		ArrayList<KVariant> al=super.getNativeInstance();
 		if(al.size()<num) {
-			al.set(num,new KVariant());
+			al.set(num,KVariant.valueOf());
 			return true;
 		}return false;
 		
@@ -169,7 +169,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	public KVariant doOperationByNum(AssignOperation op, int num, KVariant opr) throws KSException {
 		ArrayList<KVariant> al=super.getNativeInstance();
 		while(num>=al.size())
-			al.add(new KVariant());
+			al.add(KVariant.valueOf());
 		return al.get(num).doOperation(op, opr);
 	}
 	@Override

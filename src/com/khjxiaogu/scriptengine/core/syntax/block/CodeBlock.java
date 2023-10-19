@@ -38,7 +38,7 @@ public class CodeBlock implements Block, Visitable {
 		if (nodes.size() == 0)
 			return null;
 		try {
-			KVariant result = new KVariant();
+			KVariant result = KVariant.valueOf();
 			for (; i < nodes.size(); i++) {
 				result = nodes.get(i).eval(cbenv);
 				if (cbenv.isSkipped()) {

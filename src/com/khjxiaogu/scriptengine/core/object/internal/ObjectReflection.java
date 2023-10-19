@@ -13,7 +13,7 @@ public class ObjectReflection extends NativeClassClosure<Object> {
 		super(Object.class,"Reflection");
 		super.registerFunction("getClass",(o,args)->{
 			try {
-				return new KVariant(JavaClassWrapper.getWrapper(Class.forName(args[0].toString())));
+				return KVariant.valueOf(JavaClassWrapper.getWrapper(Class.forName(args[0].toString())));
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				throw new JVMError(e);
@@ -23,7 +23,7 @@ public class ObjectReflection extends NativeClassClosure<Object> {
 			try {
 				String clsname=args[1].toString();
 				JavaClassWrapper<?> jcw=JavaClassWrapper.getWrapper(Class.forName(clsname));
-				KVariant kv=new KVariant(jcw);
+				KVariant kv=KVariant.valueOf(jcw);
 				args[0].asType(KObject.class).setMemberByName(clsname.substring(clsname.lastIndexOf(".")+1),kv,KEnvironment.DEFAULT);
 				return kv;
 			} catch (ClassNotFoundException e) {

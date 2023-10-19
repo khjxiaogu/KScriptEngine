@@ -179,11 +179,11 @@ public class ExtendableClosure extends Closure {
 		closure.EnumMembers((k, v) -> {
 			try {
 				if (v.getType().getType() == KObject.class) {
-					KObject obj = v.toType(KObject.class);
+					KObject obj = v.asType(KObject.class);
 					if (obj instanceof KProperty) {
-						v = new KVariant(new PropertyClosure((KProperty) obj, newInst));
+						v = KVariant.valueOf(new PropertyClosure((KProperty) obj, newInst));
 					} else if (obj instanceof CallableFunction) {
-						v = new KVariant(new FunctionClosure(obj, newInst));
+						v = KVariant.valueOf(new FunctionClosure(obj, newInst));
 					} else
 						return true;
 					newInst.setMemberByVariant(k, v, KEnvironment.THISONLY|KEnvironment.IGNOREPROP);

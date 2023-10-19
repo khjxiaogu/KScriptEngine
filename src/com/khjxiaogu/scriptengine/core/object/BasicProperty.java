@@ -30,6 +30,6 @@ public class BasicProperty implements KProperty {
 	@Override
 	public KVariant getProp(KEnvironment env) {
 		// TODO Auto-generated method stub
-		return new KVariant(value);
+		return KVariant.valueOf(value);
 	}
 }

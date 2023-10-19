@@ -31,7 +31,7 @@ public class PropertyClosure extends Closure implements KProperty {
 			setProp(val, null);
 			return val;
 		}
-		return getProp(null).toType(KObject.class).setMemberByName(name, val, flag);
+		return getProp(null).asType(KObject.class).setMemberByName(name, val, flag);
 	}
 
 	@Override

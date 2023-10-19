@@ -21,8 +21,7 @@ public class ByteAnd extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		System.out.println("band");
-		return new KVariant(super.left.eval(env)).BAND(super.right.eval(env));
+		return super.left.eval(env).BAND(super.right.eval(env));
 	}
 
 	@Override

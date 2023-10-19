@@ -34,7 +34,7 @@ public class TryStatement implements Block {
 		}catch(CustomScriptException cse) {
 			e=cse.getException();
 		}catch(Exception ex) {
-			e=new KVariant(ObjectException.getException(new ScriptException(ex.getMessage())));
+			e=KVariant.valueOf(ObjectException.getException(new ScriptException(ex.getMessage())));
 		}
 		if(e!=null)
 			if(catchPar!=null) {

@@ -23,7 +23,7 @@ public class WithStatement extends CodeBlock {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		WithEnvironment cbenv = new WithEnvironment(env, off, siz, this, attr, symbol);
-		cbenv.setWith((KObject) cond.eval(env).toType("Object"));
+		cbenv.setWith((KObject) cond.eval(env).asType("Object"));
 		int i = 0;
 		if (nodes.size() == 0)
 			return null;

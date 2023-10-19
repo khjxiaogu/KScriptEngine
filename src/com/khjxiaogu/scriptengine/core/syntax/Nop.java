@@ -16,7 +16,7 @@ public class Nop implements CodeNode {
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		return new KVariant();
+		return KVariant.valueOf();
 	}
 
 	@Override

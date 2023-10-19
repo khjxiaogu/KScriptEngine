@@ -6,9 +6,12 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class GlobalEnvironment extends Closure {
 	private static GlobalEnvironment global = new GlobalEnvironment();
-
+	private static KVariant globalv=KVariant.valueOf(global); 
 	public static GlobalEnvironment getGlobal() {
 		return GlobalEnvironment.global;
+	}
+	public static KVariant getGlobalVariant() {
+		return GlobalEnvironment.globalv;
 	}
 	public static KEnvironment createGlobal() throws KSException {
 		MapEnvironment me=new MapEnvironment();
@@ -18,7 +21,7 @@ public class GlobalEnvironment extends Closure {
 	public GlobalEnvironment() {
 		super(new MapEnvironment());
 		try {
-			closure.setMemberByName("global",new KVariant(this), KEnvironment.DEFAULT);
+			closure.setMemberByName("global",globalv, KEnvironment.DEFAULT);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

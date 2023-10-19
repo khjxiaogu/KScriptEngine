@@ -188,7 +188,7 @@ public class ArrayEnvironment implements KEnvironment {
 					va = ((KProperty) va.getValue()).getProp(null);
 				}
 			}
-			if (!cosumer.execute(new KVariant(i), va)) {
+			if (!cosumer.execute(KVariant.valueOf(i), va)) {
 				break;
 			}
 		}

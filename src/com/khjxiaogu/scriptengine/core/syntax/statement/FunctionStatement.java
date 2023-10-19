@@ -35,15 +35,15 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		if (itoken != -1) {
-			env.setMemberByNum(itoken, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
+			env.setMemberByNum(itoken, KVariant.valueOf(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
 					KEnvironment.DEFAULT);
 			return null;
 		} else if (name != null) {
-			env.setMemberByName(name, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
+			env.setMemberByName(name, KVariant.valueOf(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
 					KEnvironment.THISONLY);
 			return null;
 		} else
-			return new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
+			return KVariant.valueOf(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
 	}
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {

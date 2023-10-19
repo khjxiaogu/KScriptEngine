@@ -418,7 +418,7 @@ public class TokenDecider implements ASTParser {
 			return new Return();
 		});
 		TokenDecider.identifiers.put("global", (reader, last) -> {
-			return new ConstantNode(new KVariant(GlobalEnvironment.getGlobal()));
+			return new ConstantNode(GlobalEnvironment.getGlobalVariant());
 		});
 		TokenDecider.identifiers.put("real", (reader, last) -> {
 			return new TypeConversion("Real");

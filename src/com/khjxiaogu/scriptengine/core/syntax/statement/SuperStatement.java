@@ -19,7 +19,7 @@ public class SuperStatement implements ObjectOperator, CodeNode {
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		return new KVariant(env.getSuper());
+		return KVariant.valueOf(env.getSuper());
 	}
 
 	@Override
