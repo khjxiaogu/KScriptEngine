@@ -7,7 +7,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 
-public class ConstantNode implements CodeNode,ObjectOperator{
+public class ConstantNode implements CodeNode,Visitable{
 	protected KVariant value;
 	public ConstantNode(KVariant ref) {
 		value=ref;
@@ -27,17 +27,6 @@ public class ConstantNode implements CodeNode,ObjectOperator{
 		return value.toString();
 	}
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-	}
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-	}
-	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		return value.asType(KObject.class);
+	public void Visit(VisitContext parentMap) throws KSException {
 	}
 }

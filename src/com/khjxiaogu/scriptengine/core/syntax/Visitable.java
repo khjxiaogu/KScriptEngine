@@ -1,7 +1,5 @@
 package com.khjxiaogu.scriptengine.core.syntax;
 
-import java.util.List;
-
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 /**
@@ -10,11 +8,11 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
  *       project:khjScriptEngine
  */
 public interface Visitable {
-	public void Visit(List<String> parentMap) throws KSException;
+	public void Visit(VisitContext context) throws KSException;
 
-	public static void Visit(Object o, List<String> parent) throws KSException {
+	public static void Visit(Object o, VisitContext context) throws KSException {
 		if (o != null && o instanceof Visitable) {
-			((Visitable) o).Visit(parent);
+			((Visitable) o).Visit(context);
 		}
 
 	}

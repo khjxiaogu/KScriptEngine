@@ -24,11 +24,11 @@ public class ObjectString  extends NativeClassClosure<String>{
 	public ObjectString() {
 		super(String.class,"String");
 		super.registerProperty("length",str->KVariant.valueOf(str.length()),null);
-		super.registerFunction("charAt",(str,args)->getMemberByNum(args[0].getInt(),KEnvironment.MUSTEXIST));
+		super.registerFunction("charAt",(str,args)->getMemberByNum(args[0].asInt(),KEnvironment.MUSTEXIST));
 		super.registerFunction("indexOf",(str,args)->KVariant.valueOf(str.indexOf(args[0].toString())));
 		super.registerFunction("toLowerCase",(str,args)->KVariant.valueOf(str.toLowerCase()));
 		super.registerFunction("toUpperCase",(str,args)->KVariant.valueOf(str.toUpperCase()));
-		NativeMethod<String> substr=(str,args)->args.length>1?KVariant.valueOf(str.substring(args[0].getInt(),args[1].getInt())):KVariant.valueOf(str.substring(args[0].getInt()));
+		NativeMethod<String> substr=(str,args)->args.length>1?KVariant.valueOf(str.substring(args[0].asInt(),args[1].asInt())):KVariant.valueOf(str.substring(args[0].asInt()));
 		super.registerFunction("substring",substr);
 		super.registerFunction("substr",substr);
 		super.registerFunction("sprintf",(str,args)->KVariant.valueOf(String.format(str,(Object[])args)));
@@ -65,7 +65,7 @@ public class ObjectString  extends NativeClassClosure<String>{
 		super.registerFunction("escape",(str,arr)->KVariant.valueOf(str.replace("\\", "\\\\").replace("\'", "\\'").replace("\"", "\\\"")));
 		super.registerFunction("trim",(str,arr)->KVariant.valueOf(str.trim()));
 		super.registerFunction("reverse",(str,arr)->KVariant.valueOf(new StringBuilder(str).reverse().toString()));
-		super.registerFunction("repeat",(str,arr)->KVariant.valueOf(String.join("", Collections.nCopies(arr[0].getInt(), str))));
+		super.registerFunction("repeat",(str,arr)->KVariant.valueOf(String.join("", Collections.nCopies(arr[0].asInt(), str))));
 		super.registerFunction("startsWith",(str,arr)->KVariant.valueOf(str.startsWith(arr[0].toString())));
 		super.registerFunction("endsWith",(str,arr)->KVariant.valueOf(str.endsWith(arr[0].toString())));
 	}

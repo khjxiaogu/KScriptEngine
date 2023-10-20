@@ -3,15 +3,18 @@ package com.khjxiaogu.scriptengine.core.syntax.statement;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariantReference;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironmentReference;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
@@ -21,11 +24,10 @@ public class WithMember extends SingleOperator implements ObjectOperator, Assign
 	}
 
 	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
+	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
 		if (!(env instanceof WithEnvironment))
 			throw new SyntaxError("错误的.");
-		return ((WithEnvironment) env).getWith().setMemberByName(((LiteralNode) super.Child).getToken(), val,
-				KEnvironment.MUSTEXIST);
+		return new KEnvironmentReference(((WithEnvironment) env).getWith(),((LiteralNode) super.Child).getToken());
 	}
 
 	@Override
@@ -48,12 +50,7 @@ public class WithMember extends SingleOperator implements ObjectOperator, Assign
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		return;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext context) throws KSException {
 		return;
 	}
 

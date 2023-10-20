@@ -29,9 +29,9 @@ public class GetPropertyInstance extends SingleOperator {
 			KVariant point = ((ObjectOperator) super.Child).getPointing(env);
 			KEnvironment obj = ((ObjectOperator) super.Child).getObject(env);
 			if (point.getType().getType() == Long.class) {
-				return new KVariant(obj.getMemberByNum(point.getInt(),KEnvironment.IGNOREPROP));
+				return obj.getMemberByNum(point.asInt(),KEnvironment.IGNOREPROP);
 			} else {
-				return new KVariant(obj.getMemberByName(point.toString(),KEnvironment.IGNOREPROP));
+				return obj.getMemberByName(point.toString(),KEnvironment.IGNOREPROP);
 			}
 		}
 		throw new MemberNotFoundException(super.Child.toString());

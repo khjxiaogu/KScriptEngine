@@ -145,7 +145,7 @@ public class ArrayEnvironment implements KEnvironment {
 		KVariant v = list[num - offset];
 		if (v == null)
 			throw new MemberNotFoundException("%" + num);
-		return v.doOperation(op, opr);
+		return v.doOperation(op, opr,new KEnvironmentReference(this,num));
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class ArrayEnvironment implements KEnvironment {
 		}
 		if (res == null)
 			throw new MemberNotFoundException("%" + num);
-		KObject obj = (KObject) res.toType("Object");
+		KObject obj = (KObject) res.asType("Object");
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
 		else

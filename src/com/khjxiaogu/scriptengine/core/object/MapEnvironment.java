@@ -130,7 +130,7 @@ public class MapEnvironment implements KEnvironment {
 	@Override
 	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
 		KVariant v=this.getMemberByName(name,KEnvironment.DEFAULT);
-		return v.doOperation(op, opr);
+		return v.doOperation(op, opr,new KEnvironmentReference(this,name));
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class MapEnvironment implements KEnvironment {
 		KVariant res = this.getMemberByName(name, flag);
 		if (res == null)
 			throw new MemberNotFoundException(name);
-		KObject obj = res.toType(KObject.class);
+		KObject obj = res.asType(KObject.class);
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
 		else

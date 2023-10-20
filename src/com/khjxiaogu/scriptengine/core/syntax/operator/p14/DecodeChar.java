@@ -22,7 +22,7 @@ public class DecodeChar extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(((String) super.Child.eval(env).toType("String")).charAt(0));
+		return KVariant.valueOf(((String) super.Child.eval(env).asType("String")).charAt(0));
 	}
 
 	@Override

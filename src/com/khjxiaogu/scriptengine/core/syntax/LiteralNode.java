@@ -3,10 +3,12 @@ package com.khjxiaogu.scriptengine.core.syntax;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariantReference;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.AssemblyException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironmentReference;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 
 /**
@@ -61,14 +63,6 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, ObjectOpera
 		// TODO Auto-generated method stub
 		return this;
 	}
-
-	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		// TODO Auto-generated method stub
-		if (isLocal())
-			return env.setMemberByNum(itoken, val, KEnvironment.MUSTEXIST);
-		return env.setMemberByName(token, val, KEnvironment.MUSTEXIST);
-	}
 	public KVariant assignAsVar(KEnvironment env, KVariant val) throws KSException {
 		// TODO Auto-generated method stub
 		if (isLocal())
@@ -104,13 +98,15 @@ public class LiteralNode implements CodeNode, ASTParser, Assignable, ObjectOpera
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) {
-		itoken = parentMap.lastIndexOf(token);
+	public void Visit(VisitContext context) {
+		itoken = context.findLocal(token);
 	}
 
 	@Override
-	public void VisitAsChild(List<String> parentMap) {
-		Visit(parentMap);
+	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
+		// TODO Auto-generated method stub
+		return new KEnvironmentReference(env,token,itoken);
 	}
+
 
 }

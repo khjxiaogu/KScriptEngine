@@ -16,6 +16,7 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
@@ -87,15 +88,14 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		List<String> allnodes = new ArrayList<String>(parentMap);
-		off = parentMap.size();
+	public void Visit(VisitContext context) throws KSException {
+		VisitContext allnodes = context.child();
+		off = allnodes.getOffset();
 		if(argnames!=null)
-			allnodes.addAll(Arrays.asList(argnames));
+			allnodes.allocLocals(argnames);
 		Visitable.Visit(body, allnodes);
-		if (name != null) {
-			parentMap.add(name);
-			itoken = parentMap.size() - 1;
+		if (name != null&&!context.hasFlag(VisitContext.NOT_LOCAL_BLOCK)) {
+			itoken = context.allocLocal(name);
 		}
 	}
 
@@ -132,13 +132,5 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 		return null;
 	}
 
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		List<String> allnodes = new ArrayList<String>(parentMap);
-		off = parentMap.size();
-		if(argnames!=null)
-			allnodes.addAll(Arrays.asList(argnames));
-		Visitable.Visit(body, allnodes);
-	}
 
 }

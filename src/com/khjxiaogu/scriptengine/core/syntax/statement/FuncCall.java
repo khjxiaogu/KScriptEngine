@@ -12,6 +12,7 @@ import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
@@ -75,11 +76,11 @@ public class FuncCall extends SingleOperator implements ASTParser,ObjectOperator
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		super.Visit(parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		super.Visit(context);
 		if(args!=null)
 			for (CodeNode cn : args) {
-				Visitable.Visit(cn, parentMap);
+				Visitable.Visit(cn, context);
 			}
 	}
 
@@ -88,14 +89,6 @@ public class FuncCall extends SingleOperator implements ASTParser,ObjectOperator
 		return null;
 	}
 
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		super.Visit(parentMap);
-		if(args!=null)
-			for (CodeNode cn : args) {
-				Visitable.Visit(cn, parentMap);
-			}
-	}
 
 	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {

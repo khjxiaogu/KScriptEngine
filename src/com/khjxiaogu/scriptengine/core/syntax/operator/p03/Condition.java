@@ -3,6 +3,7 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p03;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariantReference;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
@@ -13,6 +14,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
@@ -88,20 +90,6 @@ public class Condition implements Operator, ASTParser, ObjectOperator, Assignabl
 	}
 
 	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		// TODO Auto-generated method stub
-		CodeNode cn;
-		if (cond.eval(env).asBoolean()) {
-			cn = first;
-		} else {
-			cn = other;
-		}
-		if (cn instanceof Assignable)
-			return ((Assignable) cn).assign(env, val);
-		throw new ScriptException("错误的赋值表达式");
-	}
-
-	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {
 		CodeNode cn;
 		if (cond.eval(env).asBoolean()) {
@@ -133,14 +121,25 @@ public class Condition implements Operator, ASTParser, ObjectOperator, Assignabl
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(cond, parentMap);
-		Visitable.Visit(first, parentMap);
-		Visitable.Visit(other, parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		Visitable.Visit(cond, context);
+		Visitable.Visit(first, context);
+		Visitable.Visit(other, context);
 	}
 
 	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		Visit(parentMap);
+	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
+
+		CodeNode cn;
+		if (cond.eval(env).asBoolean()) {
+			cn = first;
+		} else {
+			cn = other;
+		}
+		if (cn instanceof Assignable)
+			return ((Assignable) cn).evalAsRef(env);
+		throw new ScriptException("错误的赋值表达式");
+
 	}
+
 }

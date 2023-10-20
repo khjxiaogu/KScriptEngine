@@ -8,7 +8,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 
-public class StringNode implements CodeNode, ASTParser,ObjectOperator {
+public class StringNode implements CodeNode, ASTParser,Visitable {
 	String variant;
 
 	public StringNode() {
@@ -97,20 +97,6 @@ public class StringNode implements CodeNode, ASTParser,ObjectOperator {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-	}
-
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-	}
-
-	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		return KVariant.valueOf(variant).asType(KObject.class);
+	public void Visit(VisitContext parentMap) throws KSException {
 	}
 }

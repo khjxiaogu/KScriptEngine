@@ -15,6 +15,7 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 /**
@@ -22,7 +23,7 @@ import com.khjxiaogu.scriptengine.core.syntax.Visitable;
  * @time 2020年3月2日
  *       project:khjScriptEngine
  */
-public class VarStatement implements Visitable, ASTParser, ObjectOperator, CodeNode {
+public class VarStatement implements Visitable, ASTParser, CodeNode {
 
 	/**
 	 *
@@ -77,13 +78,13 @@ public class VarStatement implements Visitable, ASTParser, ObjectOperator, CodeN
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext context) throws KSException {
 		for(LiteralNode ln:nod) {
-			parentMap.add(ln.toString());
-			ln.Visit(parentMap);
+			context.allocLocal(ln.toString());
+			ln.Visit(context);
 		}
 		for(CodeNode cn:assignment) {
-			Visitable.Visit(cn, parentMap);
+			Visitable.Visit(cn, context);
 		}
 	}
 	private void putSub(ParseReader reader,CodeNode ln,CodeNode as) throws SyntaxError {
@@ -108,25 +109,4 @@ public class VarStatement implements Visitable, ASTParser, ObjectOperator, CodeN
 			}
 		return this;
 	}
-
-	@Override
-	public KObject getObject(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		for(LiteralNode ln:nod) {
-			ln.VisitAsChild(parentMap);
-		}
-		for(CodeNode cn:assignment) {
-			Visitable.Visit(cn, parentMap);
-		}
-	}
-
 }

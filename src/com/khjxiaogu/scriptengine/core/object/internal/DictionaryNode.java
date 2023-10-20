@@ -17,9 +17,10 @@ import com.khjxiaogu.scriptengine.core.syntax.NumberNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.StringNode;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
-public class DictionaryNode implements ASTParser, CodeNode, ObjectOperator {
+public class DictionaryNode implements ASTParser, CodeNode, Visitable {
 	private static class Node{
 		String assignment;
 		CodeNode exp;
@@ -43,29 +44,10 @@ public class DictionaryNode implements ASTParser, CodeNode, ObjectOperator {
 	}
 	private List<Node> elms=new ArrayList<>();
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext parentMap) throws KSException {
 		for(Node elm:elms) {
 			Visitable.Visit(elm.exp, parentMap);
 		}
-	}
-
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-	}
-
-	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		KObject ko=ObjectDictionary.createDictionary();
-		int i=0;
-		for(Node co:elms) {
-			ko.setMemberByName(co.assignment,co.exp.eval(env),KEnvironment.DEFAULT);
-		}
-		return ko;
 	}
 
 	@Override

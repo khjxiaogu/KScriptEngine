@@ -1,9 +1,5 @@
 package com.khjxiaogu.scriptengine.core.syntax.statement;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
@@ -11,6 +7,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.Block;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
@@ -84,13 +81,13 @@ public class ForStatement implements Block {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		List<String> allnodes = new ArrayList<String>(parentMap);
-		off=allnodes.size();
+	public void Visit(VisitContext context) throws KSException {
+		VisitContext allnodes = context.child();
+		off=allnodes.getOffset();
 		Visitable.Visit(Init, allnodes);
 		Visitable.Visit(Cond, allnodes);
 		Visitable.Visit(Incr, allnodes);
-		numvars=allnodes.size()-off;
+		numvars=allnodes.getCurrentSize();
 		Visitable.Visit(Body, allnodes);
 		
 	}

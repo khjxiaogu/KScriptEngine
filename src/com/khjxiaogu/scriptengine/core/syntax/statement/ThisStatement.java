@@ -7,13 +7,15 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 /**
  * @author khjxiaogu
  * @time 2020年3月21日
  *       project:khjScriptEngine
  */
-public class ThisStatement implements CodeNode, ObjectOperator {
+public class ThisStatement implements CodeNode, Visitable {
 
 	/**
 	 *
@@ -27,22 +29,9 @@ public class ThisStatement implements CodeNode, ObjectOperator {
 	}
 
 	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		return env.getThis();
-	}
-
-	@Override
-	public void Visit(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext parentMap) throws KSException {
 	}
 
 
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-	}
 
 }

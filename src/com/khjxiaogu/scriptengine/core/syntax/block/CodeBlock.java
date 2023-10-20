@@ -14,6 +14,7 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 public class CodeBlock implements Block, Visitable {
@@ -159,29 +160,14 @@ public class CodeBlock implements Block, Visitable {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		off = parentMap.size();
-		List<String> curmap = new ArrayList<>(parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		VisitContext cur=context.child();
+		off = cur.getOffset();
 		for (int i = 0; i < nodes.size(); i++) {
 			CodeNode node = nodes.get(i);
-			Visitable.Visit(node, curmap);
+			Visitable.Visit(node, cur);
 		}
-		siz = curmap.size() - off;
-		symbol = curmap.toArray(new String[curmap.size()]);
-	}
-
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		off = parentMap.size();
-		List<String> curmap = new ArrayList<>(parentMap);
-		for (int i = 0; i < nodes.size(); i++) {
-			CodeNode node = nodes.get(i);
-			if (node instanceof ObjectOperator) {
-				((ObjectOperator) node).VisitAsChild(parentMap);
-			} else {
-				Visitable.Visit(node, curmap);
-			}
-		}
-		siz = curmap.size() - off;
-		symbol = curmap.toArray(new String[curmap.size()]);
+		siz = cur.getCurrentSize();
+		symbol = cur.getSymbols();
 	}
 }

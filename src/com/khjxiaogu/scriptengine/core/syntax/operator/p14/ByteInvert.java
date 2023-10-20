@@ -22,7 +22,7 @@ public class ByteInvert extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(~((int) (double) super.Child.eval(env).getNumber()));
+		return KVariant.valueOf(~((int) (double) super.Child.eval(env).asNumber()));
 	}
 
 	@Override

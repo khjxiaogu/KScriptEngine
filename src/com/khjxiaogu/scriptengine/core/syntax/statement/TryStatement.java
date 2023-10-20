@@ -13,6 +13,7 @@ import com.khjxiaogu.scriptengine.core.object.ArrayEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.internal.ObjectException;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.Block;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
@@ -79,12 +80,12 @@ public class TryStatement implements Block {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(Try, parentMap);
-		off = parentMap.size();
-		List<String> catMap=new ArrayList<>(parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		Visitable.Visit(Try, context);
+		VisitContext catMap=context.child();
+		off = catMap.getOffset();
 		if(catchPar!=null)
-			catMap.add(catchPar);
+			catMap.allocLocal(catchPar);
 		Visitable.Visit(Catch,catMap);
 	}
 

@@ -19,7 +19,7 @@ public class InstanceOf extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(TypeInfo.forName(super.right.eval(env).toType(String.class)).getType()
+		return KVariant.valueOf(TypeInfo.forName(super.right.eval(env).asType(String.class)).getType()
 				.isInstance(super.left.eval(env).getValue()));
 	}
 

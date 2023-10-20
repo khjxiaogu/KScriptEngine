@@ -526,7 +526,7 @@ public class TokenDecider implements ASTParser {
 		for(int i=0;i<bytearr.length;++i) {
 			bytearr[i]=bytes.get(i);
 		}
-		return new ConstantNode(new KVariant(new KOctet(bytearr)));
+		return new ConstantNode(KVariant.valueOf(new KOctet(bytearr)));
 	}
 
 	public CodeNode parseRegEx(ParseReader reader) throws KSException {

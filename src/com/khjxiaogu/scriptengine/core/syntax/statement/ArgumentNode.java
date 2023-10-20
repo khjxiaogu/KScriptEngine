@@ -13,6 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.Equal;
 
@@ -75,13 +76,13 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext context) throws KSException {
 		for (int i = 0; i < subnodes.size(); i++) {
-			Visitable.Visit(subnodes.get(i), parentMap);
+			Visitable.Visit(subnodes.get(i), context);
 		}
 	}
 
-	public void VisitAsVar(List<String> parentMap) throws KSException {
+	public void VisitAsVar(VisitContext parentMap) throws KSException {
 		for (int i = 0; i < subnodes.size(); i++) {
 			CodeNode cur = subnodes.get(i);
 			// System.out.println(cur.getClass().getSimpleName());
@@ -89,11 +90,11 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 				LiteralNode tok = ((Equal) cur).getAssignToken();
 				if (tok != null) {
 					Visitable.Visit(((Equal) cur).getAssignExpression(), parentMap);
-					parentMap.add(tok.getToken());
+					parentMap.allocLocal(tok.getToken());
 					Visitable.Visit(tok, parentMap);
 				}
 			} else if (cur instanceof LiteralNode) {
-				parentMap.add(((LiteralNode) cur).getToken());
+				parentMap.allocLocal(((LiteralNode) cur).getToken());
 				Visitable.Visit(cur, parentMap);
 			}
 
@@ -128,7 +129,7 @@ public class ArgumentNode implements ASTParser, Visitable, CodeNode {
 		return result;
 	}
 
-	public void VisitAsVarChild(List<String> parentMap) throws KSException {
+	public void VisitAsVarChild(VisitContext parentMap) throws KSException {
 		for (int i = 0; i < subnodes.size(); i++) {
 			CodeNode cur = subnodes.get(i);
 			// System.out.println(cur.getClass().getSimpleName());

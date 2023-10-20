@@ -24,7 +24,7 @@ public class SetProperty extends SingleOperator {
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		KVariant prop = super.Child.eval(env);
-		prop.toType(KProperty.class);
+		prop.asType(KProperty.class);
 		return prop;
 	}
 

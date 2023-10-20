@@ -3,15 +3,18 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariantReference;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironmentReference;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 import com.khjxiaogu.scriptengine.core.syntax.statement.FuncCall;
@@ -48,12 +51,6 @@ public class Member extends DoubleOperator implements ObjectOperator, Assignable
 		return ".";
 	}
 
-	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		// TODO Auto-generated method stub
-		return  super.left.eval(env).toType(KObject.class).setMemberByName(((LiteralNode) super.right).getToken(), val,
-				KEnvironment.MUSTEXIST);
-	}
 
 	@Override
 	public KEnvironment getObject(KEnvironment env) throws KSException {
@@ -81,16 +78,14 @@ public class Member extends DoubleOperator implements ObjectOperator, Assignable
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(super.left, parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		Visitable.Visit(super.left, context);
 	}
 
 	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		if (super.left instanceof ObjectOperator) {
-			((ObjectOperator) super.right).VisitAsChild(parentMap);
-		} else {
-			Visitable.Visit(super.right, parentMap);
-		}
+	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
+		// TODO Auto-generated method stub
+		return new KEnvironmentReference(super.left.eval(env).asType(KObject.class),((LiteralNode) super.right).getToken());
 	}
+
 }

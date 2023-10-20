@@ -18,7 +18,7 @@ public class ParserRunner {
 	public static void main(String[] args) {
 		KhjScriptEngine eg=new KhjScriptEngine();
 		try {
-			GlobalEnvironment.getGlobal().setMemberByName("Reflection",new KVariant(new ObjectReflection()),KEnvironment.DEFAULT);
+			GlobalEnvironment.getGlobal().setMemberByName("Reflection",KVariant.valueOf(new ObjectReflection()),KEnvironment.DEFAULT);
 		} catch (KSException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

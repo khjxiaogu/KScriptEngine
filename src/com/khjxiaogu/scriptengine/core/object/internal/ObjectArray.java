@@ -23,6 +23,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.object.CallableFunction;
 import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironmentReference;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.object.NativeClassClosure;
@@ -90,7 +91,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		super.registerFunction("asOctet",(obj,args)->{
 			byte[] octs=new byte[obj.size()];
 			for(int i=0;i<obj.size();i++) {
-				octs[i]=(byte) obj.get(i).getInt();
+				octs[i]=(byte) obj.get(i).asInt();
 				System.out.println(octs[i]);
 			}
 			return KVariant.valueOf(new KOctet(octs));
@@ -99,25 +100,25 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.getMemberByNum(var.getInt(), flag);
+			return this.getMemberByNum(var.asInt(), flag);
 		return super.getMemberByVariant(var, flag);
 	}
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.setMemberByNum(var.getInt(),val, flag);
+			return this.setMemberByNum(var.asInt(),val, flag);
 		return super.setMemberByVariant(var, val, flag);
 	}
 	@Override
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.hasMemberByNum(var.getInt());
+			return this.hasMemberByNum(var.asInt());
 		return super.hasMemberByVariant(var);
 	}
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.deleteMemberByNum(var.getInt());
+			return this.deleteMemberByNum(var.asInt());
 		return super.deleteMemberByVariant(var);
 	}
 	@Override
@@ -170,14 +171,14 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		ArrayList<KVariant> al=super.getNativeInstance();
 		while(num>=al.size())
 			al.add(KVariant.valueOf());
-		return al.get(num).doOperation(op, opr);
+		return al.get(num).doOperation(op, opr,new KEnvironmentReference(this,num));
 	}
 	@Override
 	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
 		KVariant res = this.getMemberByNum(num, flag);
 		if (res == null)
 			throw new MemberNotFoundException(Integer.toString(num));
-		KObject obj = res.toType(KObject.class);
+		KObject obj = res.asType(KObject.class);
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
 		throw new ScriptException("呼叫的对象不是函数");

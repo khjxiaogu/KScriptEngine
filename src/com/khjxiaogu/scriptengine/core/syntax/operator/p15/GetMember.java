@@ -3,10 +3,12 @@ package com.khjxiaogu.scriptengine.core.syntax.operator.p15;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariantReference;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironmentReference;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
@@ -15,6 +17,7 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
 import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
@@ -53,23 +56,12 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 		return "(" + super.Child.toString() + "[" + under.toString() + "])";
 	}
 
-	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		// TODO Auto-generated method stub
-		return super.Child
-				.eval(env)
-				.toType(KObject.class)
-				.setMemberByVariant(
-						under.eval(env)
-						, val
-						,KEnvironment.DEFAULT);
-	}
 
 	@Override
 	public KObject getObject(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		return (KObject) ((ObjectOperator) super.Child).getObject(env)
-				.getMemberByVariant(under.eval(env), KEnvironment.DEFAULT).toType("Object");
+				.getMemberByVariant(under.eval(env), KEnvironment.DEFAULT).asType("Object");
 	}
 
 	@Override
@@ -82,7 +74,7 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return super.Child.eval(env).toType(KObject.class).doOperationByVariant(op, under.eval(env), val);
+		return super.Child.eval(env).asType(KObject.class).doOperationByVariant(op, under.eval(env), val);
 	}
 
 	@Override
@@ -91,23 +83,13 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(under, parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		Visitable.Visit(under, context);
 		if (!(super.Child instanceof LiteralNode)) {
-			Visitable.Visit(super.Child, parentMap);
+			Visitable.Visit(super.Child, context);
 		}
 	}
 
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		if (!(super.Child instanceof LiteralNode)) {
-			if (super.Child instanceof ObjectOperator) {
-				((ObjectOperator) super.Child).VisitAsChild(parentMap);
-			} else {
-				Visitable.Visit(super.Child, parentMap);
-			}
-		}
-	}
 
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
@@ -119,5 +101,11 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 	@Override
 	public Associative getAssociative() {
 		return Associative.RIGHT;
+	}
+
+	@Override
+	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
+		// TODO Auto-generated method stub
+		return new KEnvironmentReference(super.Child.eval(env).asType(KObject.class),under.eval(env));
 	}
 }
