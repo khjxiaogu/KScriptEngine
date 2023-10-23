@@ -26,11 +26,10 @@ public abstract class Closure implements KObject {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
 		if (name != null)
 			throw new MemberNotFoundException(name);
-		else
-			return KVariant.valueOf(this);
+		return KVariant.valueOf(this);
 	}
 
 	@Override
@@ -123,16 +122,16 @@ public abstract class Closure implements KObject {
 		throw new ContextException();
 	}
 	@Override
-	public void callConstructor(KVariant[] args, KEnvironment env) throws KSException {
+	public void callConstructor(KVariant[] args, KObject objthis) throws KSException {
 		throw new ContextException();
 	}
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
-		return null;
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
+		throw new MemberNotFoundException(num);
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
 		if (name == null && this instanceof CallableFunction)
 			return ((CallableFunction) this).FuncCall(args, objthis);
 		throw new MemberNotFoundException(name);

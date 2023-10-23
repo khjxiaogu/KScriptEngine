@@ -37,7 +37,7 @@ public class ObjectString  extends NativeClassClosure<String>{
 			if(args.length>2) {
 				b=!args[2].asBoolean();
 			}
-			String[] ss=toString().split("["+Pattern.quote("|^")+"]");
+			String[] ss=str.split("["+Pattern.quote(args[0].asString())+"]");
 			KObject arr=ObjectArray.createArray();
 			int i=0;
 			for(String s:ss) {
@@ -129,7 +129,7 @@ public class ObjectString  extends NativeClassClosure<String>{
 		throw new ScriptException("不支持的操作");
 	}
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		throw new ScriptException("不支持的操作");
 	}
 }

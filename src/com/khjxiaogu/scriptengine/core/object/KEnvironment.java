@@ -184,7 +184,7 @@ public interface KEnvironment {
 	 * @throws KSException Any Engine Exception occured<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException;
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException;
 
 	/**
 	 * Func call by num.<br />
@@ -199,7 +199,7 @@ public interface KEnvironment {
 	 * @throws KSException Any Engine Exception occured<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException;
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException;
 
 	/**
 	 * Gets the member by name.<br />
@@ -209,12 +209,13 @@ public interface KEnvironment {
 	 *             成员名
 	 * @param flag operation flag<br />
 	 *             操作标签
+	 * @param objthis TODO
 	 * @return value of member<br />
 	 *         成员值
 	 * @throws KSException Any Engine Exception occurred<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant getMemberByName(String name, int flag) throws KSException;
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException;
 
 	/**
 	 * Gets the member by index number.<br />

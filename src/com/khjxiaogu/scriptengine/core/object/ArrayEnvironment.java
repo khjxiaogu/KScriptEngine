@@ -46,8 +46,8 @@ public class ArrayEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
-		return parent.getMemberByName(name,KEnvironment.MUSTEXIST);
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
+		return parent.getMemberByName(name,KEnvironment.MUSTEXIST, null);
 		//throw new MemberNotFoundException(name);
 	}
 
@@ -159,7 +159,7 @@ public class ArrayEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		KVariant res = list[num];
 		if (res == null) {
 			if (parent != null)
@@ -168,14 +168,11 @@ public class ArrayEnvironment implements KEnvironment {
 		if (res == null)
 			throw new MemberNotFoundException("%" + num);
 		KObject obj = (KObject) res.asType("Object");
-		if (obj instanceof CallableFunction)
-			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
-		else
-			throw new ScriptException("呼叫的对象不是函数");
+		return obj.funcCallByName(null, args, objthis, KEnvironment.THISONLY);
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
 		return parent.funcCallByName(name, args, objthis, KEnvironment.MUSTEXIST);
 	}
 

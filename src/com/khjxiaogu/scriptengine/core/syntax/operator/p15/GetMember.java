@@ -15,7 +15,6 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
@@ -27,7 +26,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
  * @author khjxiaogu
  * @time 2020年2月16日 file:OperatorGetMember.java x[x]
  */
-public class GetMember extends SingleOperator implements ObjectOperator, Assignable,ASTParser {
+public class GetMember extends SingleOperator implements  Assignable,ASTParser {
 
 	/**
 	 *
@@ -58,17 +57,10 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 
 
 	@Override
-	public KObject getObject(KEnvironment env) throws KSException {
-		// TODO Auto-generated method stub
-		return (KObject) ((ObjectOperator) super.Child).getObject(env)
-				.getMemberByVariant(under.eval(env), KEnvironment.DEFAULT).asType("Object");
-	}
-
-	@Override
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
-		if (!(super.Child instanceof ObjectOperator))
+		if (!(super.Child instanceof Assignable))
 			throw new SyntaxError("错误的表达式");
 	}
 
@@ -77,10 +69,6 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 		return super.Child.eval(env).asType(KObject.class).doOperationByVariant(op, under.eval(env), val);
 	}
 
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
 
 	@Override
 	public void Visit(VisitContext context) throws KSException {
@@ -106,6 +94,6 @@ public class GetMember extends SingleOperator implements ObjectOperator, Assigna
 	@Override
 	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KEnvironmentReference(super.Child.eval(env).asType(KObject.class),under.eval(env));
+		return new KEnvironmentReference(super.Child.eval(env).asType(KObject.class),under.eval(env)).withFlag(KEnvironment.THISONLY);
 	}
 }

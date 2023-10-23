@@ -16,6 +16,7 @@ class NativeConstructorClosure<T> extends Closure implements CallableFunction {
 	public NativeConstructorClosure(NativeConstructor<T> functhis) {
 		super(null);
 		this.functhis = functhis;
+		
 	}
 
 
@@ -40,11 +41,11 @@ class NativeConstructorClosure<T> extends Closure implements CallableFunction {
 	}
 
 	@Override
-	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
+	public KVariant FuncCall(KVariant[] args, KObject objthis) throws KSException {
 		if (args != null) {
 			args = Arrays.copyOf(args, args.length);
 		}
-		env.putNativeInstance(functhis.call(env, args));
+		objthis.putNativeInstance(functhis.call(objthis, args));
 		return null;
 	}
 	@Override

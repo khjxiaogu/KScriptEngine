@@ -6,7 +6,7 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class GlobalEnvironment extends Closure {
 	private static GlobalEnvironment global = new GlobalEnvironment();
-	private static KVariant globalv=KVariant.valueOf(global); 
+	private static KVariant globalv; 
 	public static GlobalEnvironment getGlobal() {
 		return GlobalEnvironment.global;
 	}
@@ -21,6 +21,7 @@ public class GlobalEnvironment extends Closure {
 	public GlobalEnvironment() {
 		super(new MapEnvironment());
 		try {
+			globalv=KVariant.valueOf(this);
 			closure.setMemberByName("global",globalv, KEnvironment.DEFAULT);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
@@ -29,8 +30,8 @@ public class GlobalEnvironment extends Closure {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
-		return closure.getMemberByName(name, 0);
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
+		return closure.getMemberByName(name, 0, null);
 	}
 
 	@Override

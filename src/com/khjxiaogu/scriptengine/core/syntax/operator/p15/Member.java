@@ -13,7 +13,6 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
@@ -23,7 +22,7 @@ import com.khjxiaogu.scriptengine.core.syntax.statement.FuncCall;
  * @author khjxiaogu
  * @time 2020年2月16日
  */
-public class Member extends DoubleOperator implements ObjectOperator, Assignable {
+public class Member extends DoubleOperator implements Assignable {
 
 	/**
 	 *
@@ -36,7 +35,7 @@ public class Member extends DoubleOperator implements ObjectOperator, Assignable
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
 		return super.left.eval(env).asType(KObject.class).getMemberByName(((LiteralNode) super.right).getToken(),
-				KEnvironment.MUSTEXIST);
+				KEnvironment.MUSTEXIST, null);
 	}
 
 	@Override
@@ -52,30 +51,21 @@ public class Member extends DoubleOperator implements ObjectOperator, Assignable
 	}
 
 
-	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		// TODO Auto-generated method stub
-		return ((ObjectOperator) super.left).getObject(env);
-	}
 
 	@Override
 	public void setChildren(CodeNode... codeNodes) throws KSException {
 		// TODO Auto-generated method stub
 		super.setChildren(codeNodes);
-		if (!((super.left instanceof ObjectOperator||super.left==null)&&(super.right instanceof LiteralNode||super.right==null)))
+		if (!((super.left instanceof Assignable||super.left==null)&&(super.right instanceof LiteralNode||super.right==null)))
 			throw new SyntaxError("错误的表达式");
 	}
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return ((ObjectOperator) super.left).getObject(env).doOperationByName(op,
+		return super.left.eval(env).asType(KObject.class).doOperationByName(op,
 				((LiteralNode) super.right).getToken(), val);
 	}
 
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return ((LiteralNode) super.right).getPointing(env);
-	}
 
 	@Override
 	public void Visit(VisitContext context) throws KSException {

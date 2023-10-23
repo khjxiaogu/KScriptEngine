@@ -19,10 +19,10 @@ public class PropertyClosure extends Closure implements KProperty {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
 		if (name == null)
 			return getProp(null);
-		return super.getMemberByName(name, flag);
+		return super.getMemberByName(name, flag, objthis);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class PropertyClosure extends Closure implements KProperty {
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
 
 		return getProp(null).asType(KObject.class).funcCallByName(name, args, objthis, flag);
 	}
@@ -123,7 +123,7 @@ public class PropertyClosure extends Closure implements KProperty {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		return getProp(null).asType(KObject.class).funcCallByNum(num, args, objthis, flag);
 	}
 

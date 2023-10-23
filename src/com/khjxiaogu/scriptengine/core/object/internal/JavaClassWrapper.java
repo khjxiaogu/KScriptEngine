@@ -168,13 +168,14 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 			mets.removeIf(m->oc.isAssignableFrom(m.getReturnType()));
 		Map<String,ArrayList<Method>> mms=new HashMap<>();
 		for(Method m:mets) {
-			m.setAccessible(true);
-			ArrayList<Method> am=mms.get(m.getName());
-			if(am==null) {
-				am=new ArrayList<>();
-				mms.put(m.getName(),am);
+			if(m.trySetAccessible()) {
+				ArrayList<Method> am=mms.get(m.getName());
+				if(am==null) {
+					am=new ArrayList<>();
+					mms.put(m.getName(),am);
+				}
+				am.add(m);
 			}
-			am.add(m);
 		}
 		
 		for(Map.Entry<String,ArrayList<Method>> m:mms.entrySet()) {

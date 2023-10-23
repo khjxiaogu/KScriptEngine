@@ -6,8 +6,8 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
@@ -31,7 +31,7 @@ public class New extends FuncCall {
 			arg=new KVariant[0];
 		KObject obj = objv.asType(KObject.class);
 		KObject ni = obj.newInstance();
-		ni.callConstructor(arg, env);
+		ni.callConstructor(arg, ni);
 		return KVariant.valueOf(ni);
 	}
 	@Override
@@ -39,7 +39,7 @@ public class New extends FuncCall {
 		StatementParser parser=new StatementParser();
 		CodeNode cn=parser.parseUntil(reader,'(');
 		reader.eat();
-		if(!(cn instanceof ObjectOperator)) {
+		if(!(cn instanceof Assignable)) {
 			throw new SyntaxError("错误的new语句",reader);
 		}
 		//reader.eatAllSpace();

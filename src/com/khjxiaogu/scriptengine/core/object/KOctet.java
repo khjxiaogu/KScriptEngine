@@ -27,10 +27,10 @@ public final class KOctet {
 		}
 		
 		@Override
-		public KVariant getMemberByName(String var, int flag) throws KSException {
+		public KVariant getMemberByName(String var, int flag, KObject objthis) throws KSException {
 			if(var.equals("length"))
 				return KVariant.valueOf(this.getNativeInstance(byte[].class).length);
-			return super.getMemberByName(var, flag);
+			return super.getMemberByName(var, flag, objthis);
 		}
 		@Override
 		public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {

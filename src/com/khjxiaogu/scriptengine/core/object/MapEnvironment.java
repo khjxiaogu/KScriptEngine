@@ -17,7 +17,7 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
 		// TODO Auto-generated method stub
 		if(name==null||name.length()==0)
 			return KVariant.valueOf(this);
@@ -129,7 +129,7 @@ public class MapEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		KVariant v=this.getMemberByName(name,KEnvironment.DEFAULT);
+		KVariant v=this.getMemberByName(name,KEnvironment.DEFAULT, null);
 		return v.doOperation(op, opr,new KEnvironmentReference(this,name));
 	}
 
@@ -159,18 +159,18 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		throw new MemberNotFoundException("%" + num);
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
-		KVariant res = this.getMemberByName(name, flag);
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
+		KVariant res = this.getMemberByName(name, flag, null);
 		if (res == null)
 			throw new MemberNotFoundException(name);
 		KObject obj = res.asType(KObject.class);
 		if (obj instanceof CallableFunction)
-			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
+			return ((CallableFunction) obj).FuncCall(args,objthis);
 		else
 			throw new ScriptException("呼叫的对象不是函数");
 	}

@@ -26,7 +26,7 @@ public interface CallableFunction extends KObject {
 	 *
 	 * @param args the arguments<br />
 	 *             参数
-	 * @param env  the override environment,null to execute in default
+	 * @param objthis  the override environment,null to execute in default
 	 *             environment<br />
 	 *             覆写的环境，填入null以默认上下文执行
 	 * @return return result<br />
@@ -34,5 +34,5 @@ public interface CallableFunction extends KObject {
 	 * @throws KSException Any Engine Exception occurred<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException;
+	public KVariant FuncCall(KVariant[] args, KObject objthis) throws KSException;
 }

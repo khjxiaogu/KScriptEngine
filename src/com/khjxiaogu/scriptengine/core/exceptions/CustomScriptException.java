@@ -13,7 +13,7 @@ public class CustomScriptException extends KSException {
 	public String getMessage() {
 		if(KObject.class.isAssignableFrom(vars.getType().getType()))
 			try {
-				return vars.asType(KObject.class).getMemberByName("message",KEnvironment.DEFAULT).toString();
+				return vars.asType(KObject.class).getMemberByName("message",KEnvironment.DEFAULT, null).toString();
 			} catch (KSException e) {
 			}
 		return vars.toString();

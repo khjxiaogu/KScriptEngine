@@ -6,6 +6,7 @@
 package com.khjxiaogu.scriptengine.core;
 
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
@@ -41,7 +42,10 @@ public class KVariant implements Cloneable {
 	
 	private final static KVariant VOID = new KVariant();
 	private final static KVariant[] INT=new KVariant[509];
-	{
+	private static boolean initedInts=false;
+	private static void initInts(){
+		if(initedInts)return;
+		initedInts=true;
 		for(int i=-254;i<255;i++) {
 			INT[i+254]=new KVariant(i);
 		}
@@ -212,6 +216,7 @@ public class KVariant implements Cloneable {
 	}
 	public static KVariant valueOf(long d) {
 		if(d>-255&&d<255) {
+			initInts();
 			return INT[(int) (d+254)];
 		}
 		return new KVariant(d);
@@ -857,6 +862,10 @@ public class KVariant implements Cloneable {
 		if (value == null || value instanceof String && ((String) value).length() == 0)
 			return true;
 		return false;
+	}
+	public KVariant withStance(KEnvironment env) {
+		return null;
+		
 	}
 	public KVariant doOperation(AssignOperation op,KVariant opr,KVariantReference ref) throws KSException {
 		KVariant result=this;

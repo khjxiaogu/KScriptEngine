@@ -92,7 +92,6 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 			byte[] octs=new byte[obj.size()];
 			for(int i=0;i<obj.size();i++) {
 				octs[i]=(byte) obj.get(i).asInt();
-				System.out.println(octs[i]);
 			}
 			return KVariant.valueOf(new KOctet(octs));
 		});
@@ -174,14 +173,12 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		return al.get(num).doOperation(op, opr,new KEnvironmentReference(this,num));
 	}
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		KVariant res = this.getMemberByNum(num, flag);
 		if (res == null)
 			throw new MemberNotFoundException(Integer.toString(num));
 		KObject obj = res.asType(KObject.class);
-		if (obj instanceof CallableFunction)
-			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
-		throw new ScriptException("呼叫的对象不是函数");
+		return obj.funcCallByName(null, args, objthis == null ? this : objthis, KEnvironment.THISONLY);
 	}
 	
 }

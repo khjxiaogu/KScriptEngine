@@ -9,6 +9,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.object.ArrayEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 /**
@@ -129,10 +130,10 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(name);
-		return parent.getMemberByName(name, flag);
+		return parent.getMemberByName(name, flag, null);
 	}
 
 	@Override
@@ -216,7 +217,7 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
 		return parent.funcCallByName(name, args, objthis, flag);
 	}
 }

@@ -55,7 +55,7 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 	}
 
 	@Override
-	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
+	public KVariant FuncCall(KVariant[] args, KObject objthis) throws KSException {
 		KEnvironment tenv;
 		if (args.length < off) {
 			args = Arrays.copyOf(args, args.length);
@@ -67,8 +67,8 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 				args[i] = KVariant.valueOf();
 			}
 		}
-		if (env != null) {
-			tenv = new ArrayEnvironment(env, off, args);
+		if (objthis != null) {
+			tenv = new ArrayEnvironment(objthis, off, args);
 		} else {
 			tenv = new ArrayEnvironment(super.closure, off, args);
 		}

@@ -16,5 +16,5 @@ public interface KObject extends KEnvironment {
 	public boolean invalidate() throws KSException;
 
 	public KObject newInstance() throws KSException;
-	public void callConstructor(KVariant[] args,KEnvironment env) throws KSException;
+	public void callConstructor(KVariant[] args,KObject objthis) throws KSException;
 }

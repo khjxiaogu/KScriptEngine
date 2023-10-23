@@ -194,7 +194,7 @@ public class TokenDecider implements ASTParser {
 			} else
 				return new ByteAnd();
 		case '(':
-			if (last instanceof ObjectOperator)
+			if (last instanceof Assignable)
 				return new FuncCall().parse(reader);
 			return new Parentness().parse(reader);
 		case '*':
@@ -239,7 +239,7 @@ public class TokenDecider implements ASTParser {
 			if ('0' <= next && next <= '9') {
 				reader.rewind('.');
 				return new NumberNode().parse(reader);
-			} else if (last instanceof ObjectOperator)
+			} else if (last instanceof Assignable)
 				return new Member();
 			else
 				return new WithMember();

@@ -1,7 +1,5 @@
 package com.khjxiaogu.scriptengine.core.syntax.statement;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
@@ -9,12 +7,10 @@ import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.ScriptFunctionClosure;
 import com.khjxiaogu.scriptengine.core.syntax.BlockClosure;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
@@ -22,7 +18,7 @@ import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.Equal;
 
-public class FunctionStatement implements BlockClosure, ObjectOperator {
+public class FunctionStatement implements BlockClosure {
 	String name;
 	int itoken = -1;
 	String[] argnames;
@@ -122,15 +118,6 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 	public void init(KEnvironment env) throws KSException {
 	}
 
-	@Override
-	public KObject getObject(KEnvironment env) throws KSException {
-		return new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs);
-	}
-
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
 
 
 }
