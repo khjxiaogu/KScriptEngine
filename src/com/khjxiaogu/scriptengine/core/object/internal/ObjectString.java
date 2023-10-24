@@ -7,7 +7,7 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
-import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
+import com.khjxiaogu.scriptengine.core.object.KExtendableObject;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
@@ -18,7 +18,7 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 public class ObjectString  extends NativeClassClosure<String>{
 
 	@Override
-	protected ExtendableClosure getNewInstance() throws KSException {
+	protected KExtendableObject getNewInstance() throws KSException {
 		return new ObjectString();
 	}
 	public ObjectString() {
@@ -70,10 +70,10 @@ public class ObjectString  extends NativeClassClosure<String>{
 		super.registerFunction("endsWith",(str,arr)->KVariant.valueOf(str.endsWith(arr[0].toString())));
 	}
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 		if(var.getType().getType()==Long.class)
 			return this.getMemberByNum(var.asInt(), flag);
-		return super.getMemberByVariant(var, flag);
+		return super.getMemberByVariant(var, flag, objthis);
 	}
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {

@@ -34,7 +34,7 @@ public class Member extends DoubleOperator implements Assignable {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.left.eval(env).asType(KObject.class).getMemberByName(((LiteralNode) super.right).getToken(),
+		return super.left.eval(env).asObject().getMemberByName(((LiteralNode) super.right).getToken(),
 				KEnvironment.MUSTEXIST, null);
 	}
 
@@ -62,7 +62,7 @@ public class Member extends DoubleOperator implements Assignable {
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return super.left.eval(env).asType(KObject.class).doOperationByName(op,
+		return super.left.eval(env).asObject().doOperationByName(op,
 				((LiteralNode) super.right).getToken(), val);
 	}
 
@@ -75,7 +75,7 @@ public class Member extends DoubleOperator implements Assignable {
 	@Override
 	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KEnvironmentReference(super.left.eval(env).asType(KObject.class),((LiteralNode) super.right).getToken());
+		return new KEnvironmentReference(super.left.eval(env).asObject(),((LiteralNode) super.right).getToken());
 	}
 
 }

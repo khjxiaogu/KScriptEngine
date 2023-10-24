@@ -24,7 +24,7 @@ public class ObjectReflection extends NativeClassClosure<Object> {
 				String clsname=args[1].toString();
 				JavaClassWrapper<?> jcw=JavaClassWrapper.getWrapper(Class.forName(clsname));
 				KVariant kv=KVariant.valueOf(jcw);
-				args[0].asType(KObject.class).setMemberByName(clsname.substring(clsname.lastIndexOf(".")+1),kv,KEnvironment.DEFAULT);
+				args[0].asObject().setMemberByName(clsname.substring(clsname.lastIndexOf(".")+1),kv,KEnvironment.DEFAULT);
 				return kv;
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block

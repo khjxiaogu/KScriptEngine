@@ -23,7 +23,7 @@ public class Invalidate extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return KVariant.valueOf(super.Child.eval(env).asType(KObject.class).invalidate());
+		return KVariant.valueOf(super.Child.eval(env).asObject().invalidate());
 	}
 
 	@Override

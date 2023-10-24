@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.object;
+  package com.khjxiaogu.scriptengine.core.object;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;

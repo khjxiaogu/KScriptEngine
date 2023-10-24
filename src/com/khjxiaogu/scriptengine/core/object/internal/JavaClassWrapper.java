@@ -20,8 +20,8 @@ import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.object.NativeClassClosure;
 import com.khjxiaogu.scriptengine.core.object.NativeProperty;
-import com.khjxiaogu.scriptengine.core.object.Closure;
-import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
+import com.khjxiaogu.scriptengine.core.object.KAbstractObject;
+import com.khjxiaogu.scriptengine.core.object.KExtendableObject;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionManager;
 import com.khjxiaogu.scriptengine.core.typeconvert.TypeInfo;
 
@@ -56,7 +56,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		jvmType=resultmap.getOrDefault(jvmType,jvmType);
 		if(jvmType.isAssignableFrom(varType))
 			return true;
-		if(varType.equals(KObject.class)&&var.asType(KObject.class).getNativeInstance(jvmType)!=null)
+		if(var.isObject()&&var.asObject().getNativeInstance(jvmType)!=null)
 			return true;
 		return false;
 	}
@@ -67,7 +67,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 			return var.getValue();
 		if(ConversionManager.canConvert(jvmType,varType))
 			return var.asType(jvmType);
-		return ((Closure)var.asType(KObject.class)).getNativeInstance(jvmType);
+		return ((KAbstractObject)var.asObject()).getNativeInstance(jvmType);
 	}
 	private static KVariant revert(Object ret) throws KSException {
 		if(ret==null)
@@ -90,7 +90,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		return KVariant.valueOf(ko);
 	}
 	public static <T> KVariant wrapObject(Class<T> cls,T ret) throws KSException {
-		ExtendableClosure ko=(ExtendableClosure) getWrapper(cls).newInstance();
+		KExtendableObject ko=(KExtendableObject) getWrapper(cls).newInstance();
 		ko.putNativeInstance(cls,ret);
 		return KVariant.valueOf(ko);
 	}

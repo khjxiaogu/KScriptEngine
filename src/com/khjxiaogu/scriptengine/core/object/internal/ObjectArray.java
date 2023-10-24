@@ -21,7 +21,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.object.CallableFunction;
-import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
+import com.khjxiaogu.scriptengine.core.object.KExtendableObject;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KEnvironmentReference;
 import com.khjxiaogu.scriptengine.core.object.KObject;
@@ -32,7 +32,7 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	private static ArrayList<KVariant> arr=new ArrayList<>();
 	@Override
-	public ExtendableClosure getNewInstance() throws KSException {
+	public KExtendableObject getNewInstance() throws KSException {
 		return new ObjectArray(null);
 	}
 	private static ObjectArray arrcls;
@@ -97,10 +97,10 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		});
 	}
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 		if(var.getType().getType()==Long.class)
 			return this.getMemberByNum(var.asInt(), flag);
-		return super.getMemberByVariant(var, flag);
+		return super.getMemberByVariant(var, flag, objthis);
 	}
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
@@ -125,7 +125,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		return super.doOperationByVariant(op, var, opr);
 	}
 	public static KObject createArray() throws KSException {
-		ExtendableClosure sar=(ExtendableClosure) arrcls.newInstance();
+		KExtendableObject sar=(KExtendableObject) arrcls.newInstance();
 		sar.callConstructor(null,sar);
 		return sar;
 	}
@@ -177,7 +177,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		KVariant res = this.getMemberByNum(num, flag);
 		if (res == null)
 			throw new MemberNotFoundException(Integer.toString(num));
-		KObject obj = res.asType(KObject.class);
+		KObject obj = res.asObject();
 		return obj.funcCallByName(null, args, objthis == null ? this : objthis, KEnvironment.THISONLY);
 	}
 	

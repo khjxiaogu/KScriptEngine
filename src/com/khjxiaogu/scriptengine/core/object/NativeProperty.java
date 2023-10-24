@@ -23,7 +23,7 @@ public class NativeProperty<Type> implements KProperty {
 	}
 
 	@Override
-	public void setProp(KVariant x, KEnvironment env) throws KSException {
+	public void setProp(KVariant x, KObject env) throws KSException {
 		if(setter==null)
 			throw new AccessDeniedException();
 		if (superType != null)
@@ -33,7 +33,7 @@ public class NativeProperty<Type> implements KProperty {
 	}
 
 	@Override
-	public KVariant getProp(KEnvironment env) throws KSException {
+	public KVariant getProp(KObject env) throws KSException {
 		if(getter==null)
 			throw new AccessDeniedException();
 		if (superType != null)

@@ -39,8 +39,8 @@ public class GetMember extends SingleOperator implements  Assignable,ASTParser {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.Child.eval(env).asType(KObject.class).getMemberByVariant(under.eval(env),
-				KEnvironment.DEFAULT);
+		return super.Child.eval(env).asObject().getMemberByVariant(under.eval(env),
+				KEnvironment.DEFAULT, null);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class GetMember extends SingleOperator implements  Assignable,ASTParser {
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
-		return super.Child.eval(env).asType(KObject.class).doOperationByVariant(op, under.eval(env), val);
+		return super.Child.eval(env).asObject().doOperationByVariant(op, under.eval(env), val);
 	}
 
 
@@ -94,6 +94,6 @@ public class GetMember extends SingleOperator implements  Assignable,ASTParser {
 	@Override
 	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KEnvironmentReference(super.Child.eval(env).asType(KObject.class),under.eval(env)).withFlag(KEnvironment.THISONLY);
+		return new KEnvironmentReference(super.Child.eval(env).asObject(),under.eval(env)).withFlag(KEnvironment.THISONLY);
 	}
 }

@@ -442,7 +442,13 @@ public class KVariant implements Cloneable {
 			return (T) value;
 		return (T) ConversionManager.getConversion(toType).from(this);
 	}
-
+	public boolean isType(Class<?> type) {
+		if(type==getType().getType())return true;
+		return type.isInstance(value);
+	}
+	public boolean isObject() {
+		return isType(KObject.class);
+	}
 	/**
 	 * get the variant to specific type.
 	 *
@@ -851,6 +857,9 @@ public class KVariant implements Cloneable {
 		return asType(String.class);
 	}
 
+	public KObject asObject() throws KSException {
+		return asType(KObject.class);
+	}
 	/**
 	 * Checks if is null.<br />
 	 * 是否 null.

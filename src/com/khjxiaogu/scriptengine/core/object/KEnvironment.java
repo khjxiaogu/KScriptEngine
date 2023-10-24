@@ -240,12 +240,13 @@ public interface KEnvironment {
 	 *             变量
 	 * @param flag operation flag<br />
 	 *             操作标签
+	 * @param objthis TODO
 	 * @return value of member<br />
 	 *         成员值
 	 * @throws KSException Any Engine Exception occurred<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException;
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException;
 
 	/**
 	 * Gets the native instance.<br />

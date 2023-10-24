@@ -5,7 +5,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.NativeProperty.Getter;
 import com.khjxiaogu.scriptengine.core.object.NativeProperty.Setter;
 
-public class NativeClassClosure<T> extends ExtendableClosure {
+public class NativeClassClosure<T> extends KExtendableObject {
 	Class<T> nativecls;
 	public NativeClassClosure(Class<T> nativecls,String name) {
 		super(name);
@@ -32,7 +32,7 @@ public class NativeClassClosure<T> extends ExtendableClosure {
 	}
 	protected void registerProperty(String name,KProperty prop) {
 		try {
-			this.setMemberByName(name,KVariant.valueOf(new PropertyClosure(prop)), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
+			this.setMemberByName(name,KVariant.valueOf(new PropertyObject(prop)), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
@@ -40,7 +40,7 @@ public class NativeClassClosure<T> extends ExtendableClosure {
 	}
 	protected void registerProperty(String name,Getter<T> gtr,Setter<T> str) {
 		try {
-			this.setMemberByName(name,KVariant.valueOf(new PropertyClosure(new NativeProperty<T>(this.nativecls,gtr,str))), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
+			this.setMemberByName(name,KVariant.valueOf(new PropertyObject(new NativeProperty<T>(this.nativecls,gtr,str))), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);

@@ -6,12 +6,12 @@ import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
 
-public class FunctionClosure extends Closure implements CallableFunction {
+public class FunctionClosure extends KAbstractObject implements CallableFunction {
 	protected KObject objthis;
 	protected CallableFunction functhis;
 
 	public FunctionClosure(KObject functhis, KObject objthis) throws ConversionException {
-		super(objthis);
+		super();
 		if (!(functhis instanceof CallableFunction))
 			throw new ConversionException("Object", "Function");
 

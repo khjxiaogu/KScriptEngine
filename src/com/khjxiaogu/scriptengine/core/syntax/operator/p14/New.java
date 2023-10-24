@@ -11,7 +11,6 @@ import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
 import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 import com.khjxiaogu.scriptengine.core.syntax.statement.FuncCall;
 
 public class New extends FuncCall {
@@ -29,7 +28,7 @@ public class New extends FuncCall {
 			}
 		}else
 			arg=new KVariant[0];
-		KObject obj = objv.asType(KObject.class);
+		KObject obj = objv.asObject();
 		KObject ni = obj.newInstance();
 		ni.callConstructor(arg, ni);
 		return KVariant.valueOf(ni);

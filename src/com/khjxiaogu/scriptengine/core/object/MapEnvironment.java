@@ -7,6 +7,7 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.NotImplementedException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
@@ -28,8 +29,8 @@ public class MapEnvironment implements KEnvironment {
 			return KVariant.valueOf();
 		}
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
-			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
-				return ((KProperty) res.getValue()).getProp(null);
+			if (res != null && res.isObject())
+				return res.asObject().getMemberByName(null, flag, objthis);
 		}
 		return res;
 	}
@@ -41,7 +42,7 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 		// TODO Auto-generated method stub
 		KVariant res = null;
 		String name = var.toString();
@@ -52,8 +53,8 @@ public class MapEnvironment implements KEnvironment {
 			res = KVariant.valueOf();
 		}
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
-			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
-				return ((KProperty) res.getValue()).getProp(null);
+			if (res != null && res.isObject())
+				return res.asObject().getMemberByName(null, flag, objthis);
 		}
 		return res;
 	}
@@ -68,9 +69,10 @@ public class MapEnvironment implements KEnvironment {
 				throw new MemberNotFoundException(name);
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			KVariant va = map.get(name);
-			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-				((KProperty) va.getValue()).setProp(val, null);
-				return val;
+			if (va != null && va.isObject()) {
+				try {
+					return va.asObject().setMemberByName(null, val, flag);
+				}catch(NotImplementedException ignored) {}
 			}
 		}
 		map.put(name, val);
@@ -83,9 +85,10 @@ public class MapEnvironment implements KEnvironment {
 		String name = Integer.toString(num);
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			KVariant va = map.get(name);
-			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-				((KProperty) va.getValue()).setProp(val, null);
-				return val;
+			if (va != null && va.isObject()) {
+				try {
+					return va.asObject().setMemberByName(null, val, flag);
+				}catch(NotImplementedException ignored) {}
 			}
 		}
 		map.put(name, val);
@@ -101,9 +104,10 @@ public class MapEnvironment implements KEnvironment {
 			throw new MemberNotFoundException("");
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
 			KVariant va = map.get(name);
-			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-				((KProperty) va.getValue()).setProp(val, null);
-				return val;
+			if (va != null && va.isObject()) {
+				try {
+					return va.asObject().setMemberByName(null, val, flag);
+				}catch(NotImplementedException ignored) {}
 			}
 		}
 		map.put(name, val);
@@ -168,7 +172,7 @@ public class MapEnvironment implements KEnvironment {
 		KVariant res = this.getMemberByName(name, flag, null);
 		if (res == null)
 			throw new MemberNotFoundException(name);
-		KObject obj = res.asType(KObject.class);
+		KObject obj = res.asObject();
 		if (obj instanceof CallableFunction)
 			return ((CallableFunction) obj).FuncCall(args,objthis);
 		else
@@ -180,8 +184,8 @@ public class MapEnvironment implements KEnvironment {
 		for (Map.Entry<String, KVariant> me : map.entrySet()) {
 			KVariant va = me.getValue();
 			if ((flag & KEnvironment.IGNOREPROP) == 0) {
-				if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-					va = ((KProperty) va.getValue()).getProp(null);
+				if (va != null && va.isObject()) {
+					va = va.asObject().getMemberByName(null, flag, null);
 				}
 			}
 			if (!cosumer.execute(KVariant.valueOf(me.getKey()), va)) {

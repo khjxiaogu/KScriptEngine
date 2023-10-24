@@ -46,7 +46,7 @@ public class FuncCall extends SingleOperator implements ASTParser{
 			}
 		}else
 			arg=new KVariant[0];
-		KObject obj = func.asType(KObject.class);
+		KObject obj = func.asObject();
 		return obj.funcCallByName(null, arg, null,KEnvironment.DEFAULT);
 	}
 

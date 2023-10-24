@@ -13,7 +13,7 @@ public class ObjectScripts extends NativeClassClosure<Object> {
 	public ObjectScripts(KhjScriptEngine engine) {
 		super(Object.class,"Scripts");
 		super.registerFunction("getObjectKeys",(o,args)->{
-			KObject ko=args[0].asType(KObject.class);
+			KObject ko=args[0].asObject();
 			KObject arr=ObjectArray.createArray();
 			
 			ko.EnumMembers(new Enumerator() {
@@ -28,7 +28,7 @@ public class ObjectScripts extends NativeClassClosure<Object> {
 			return KVariant.valueOf(arr);
 		});
 		super.registerFunction("hasNativeInstance",(o,args)->{
-			KObject ko=args[0].asType(KObject.class);
+			KObject ko=args[0].asObject();
 			try {
 				return KVariant.valueOf(ko.getNativeInstance(Class.forName(args[1].toString()))!=null);
 			} catch (ClassNotFoundException e) {

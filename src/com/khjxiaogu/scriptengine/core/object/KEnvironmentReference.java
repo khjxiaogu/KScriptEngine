@@ -53,7 +53,7 @@ public class KEnvironmentReference implements KVariantReference {
 	@Override
 	public KVariant getValue(int cflag) throws KSException {
 		if(eval!=null)
-			env.getMemberByVariant(eval, flag|cflag);
+			env.getMemberByVariant(eval, flag|cflag, null);
 		else if(key!=null)
 			return env.getMemberByName(key, flag|cflag, null);
 		return env.getMemberByNum(idx, flag|cflag);

@@ -23,7 +23,7 @@ public class IsValid extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return KVariant.valueOf(((KObject) super.Child.eval(env).asType("Object")).isValid());
+		return KVariant.valueOf(((KObject) super.Child.eval(env).asObject()).isValid());
 	}
 
 	@Override

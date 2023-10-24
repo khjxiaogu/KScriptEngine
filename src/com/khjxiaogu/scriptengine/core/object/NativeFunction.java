@@ -7,18 +7,18 @@ import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 
-public class NativeFunction<T> extends Closure implements CallableFunction {
+public class NativeFunction<T> extends KAbstractObject implements CallableFunction {
 	NativeMethod<T> functhis;
 	Class<T> nativecls;
 
 	public NativeFunction(Class<T> objtype, NativeMethod<T> functhis) {
-		super(null);
+		super();
 		nativecls = objtype;
 		this.functhis = functhis;
 	}
 
 	public NativeFunction(NativeMethod<T> functhis) {
-		super(null);
+		super();
 		nativecls = null;
 		this.functhis = functhis;
 	}
@@ -26,13 +26,12 @@ public class NativeFunction<T> extends Closure implements CallableFunction {
 
 	@Override
 	public boolean isValid() {
-		return super.closure == null;
+		return functhis != null;
 	}
 
 	@Override
 	public boolean invalidate() {
-		if (super.closure != null) {
-			super.closure = null;
+		if (functhis != null) {
 			functhis = null;
 			return true;
 		}
@@ -66,10 +65,6 @@ public class NativeFunction<T> extends Closure implements CallableFunction {
 		return super.hasMemberByName(name, flag);
 	}
 
-	@Override
-	public String toString() {
-		return "(Function)"+super.getInstancePointer();
-	}
 	@Override
 	public String getInstanceName() {
 		return "Function";

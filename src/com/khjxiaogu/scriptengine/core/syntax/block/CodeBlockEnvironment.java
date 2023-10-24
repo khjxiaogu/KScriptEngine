@@ -32,7 +32,7 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 		Arrays.fill(getSymbol(), "");
 		this.block =null;
 		this.attr = CodeBlockAttribute.BREAKABLE;
-		// TODO Auto-generated constructor stub
+		// TODO Auto-generated constructor stub 
 	}
 	/**
 	 * @param parent
@@ -137,10 +137,10 @@ public class CodeBlockEnvironment extends ArrayEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 		if (parent == null)
 			throw new MemberNotFoundException(var.toString());
-		return parent.getMemberByVariant(var, flag);
+		return parent.getMemberByVariant(var, flag, null);
 	}
 
 	@Override

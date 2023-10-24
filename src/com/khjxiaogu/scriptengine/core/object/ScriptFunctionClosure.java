@@ -13,7 +13,7 @@ import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
  * @time 2020年3月5日
  *       project:khjScriptEngine
  */
-public class ScriptFunctionClosure extends Closure implements CallableFunction {
+public class ScriptFunctionClosure extends KAbstractObject implements CallableFunction {
 
 	/**
 	 *
@@ -21,29 +21,25 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 	CodeBlock functionBody;
 	CodeNode[] defargs;
 	int off;
-
+	KEnvironment env;
 	public ScriptFunctionClosure(KEnvironment env, CodeBlock functionBody, int off, CodeNode[] args) {
-		super(env);
+		super();
+		this.env=env;
 		this.functionBody = functionBody;
 		this.off = off;
 		defargs = args;
 	}
 
-	@Override
-	public String toString() {
-		return "(Function)"+super.getInstancePointer();
-	}
 
 	@Override
 	public boolean isValid() {
-		return functionBody == null;
+		return functionBody != null;
 	}
 
 	@Override
 	public boolean invalidate() {
 		if (functionBody != null) {
 			functionBody = null;
-			closure = null;
 			return true;
 		}
 		return false;
@@ -62,7 +58,7 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 		}
 		for (int i = 0; i < args.length; i++) {
 			if ((args[i] == null || args[i].getType().getType() == Void.class) && defargs[i] != null) {
-				args[i] = defargs[i].eval(closure);
+				args[i] = defargs[i].eval(env);
 			} else if (args[i] == null) {
 				args[i] = KVariant.valueOf();
 			}
@@ -70,7 +66,7 @@ public class ScriptFunctionClosure extends Closure implements CallableFunction {
 		if (objthis != null) {
 			tenv = new ArrayEnvironment(objthis, off, args);
 		} else {
-			tenv = new ArrayEnvironment(super.closure, off, args);
+			tenv = new ArrayEnvironment(env, off, args);
 		}
 		return functionBody.eval(tenv);
 	}
