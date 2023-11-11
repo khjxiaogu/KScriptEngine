@@ -15,7 +15,7 @@ public class GlobalEnvironment extends KAbstractObject {
 	}
 	public static KEnvironment createGlobal() throws KSException {
 		MapEnvironment me=new MapEnvironment();
-		GlobalEnvironment.getGlobal().EnumMembers((k,v)->{me.setMemberByName(k.toString(), v, IGNOREPROP);return true;}, IGNOREPROP);
+		GlobalEnvironment.getGlobal().EnumMembers((k,f,v)->{me.setMemberByName(k.toString(), v, IGNOREPROP);return true;}, IGNOREPROP);
 		return me;
 	}
 	private MapEnvironment map=new MapEnvironment();
@@ -32,12 +32,12 @@ public class GlobalEnvironment extends KAbstractObject {
 
 	@Override
 	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
-		return map.getMemberByName(name, 0, null);
+		return map.getMemberByName(name, 0, objthis);
 	}
 
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
-		return map.getMemberByVariant(var,0, null);
+		return map.getMemberByVariant(var,0, objthis);
 	}
 
 	@Override

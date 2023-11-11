@@ -48,7 +48,7 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
-		return parent.getMemberByName(name,KEnvironment.MUSTEXIST, null);
+		return parent.getMemberByName(name,KEnvironment.MUSTEXIST, objthis);
 		//throw new MemberNotFoundException(name);
 	}
 
@@ -70,7 +70,7 @@ public class ArrayEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
-		return parent.getMemberByVariant(var,KEnvironment.MUSTEXIST, null);
+		return parent.getMemberByVariant(var,KEnvironment.MUSTEXIST, objthis);
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class ArrayEnvironment implements KEnvironment {
 					va = va.asObject().getMemberByName(null, flag, null);
 				}
 			}
-			if (!cosumer.execute(KVariant.valueOf(i), va)) {
+			if (!cosumer.execute(KVariant.valueOf(i),flag, va)) {
 				break;
 			}
 		}

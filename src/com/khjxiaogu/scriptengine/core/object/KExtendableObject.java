@@ -43,17 +43,17 @@ public class KExtendableObject extends KAbstractObject {
 		if (!map.hasMemberByName(name, KEnvironment.THISONLY))
 			if (SuperClass != null) {
 				if (SuperClass.hasMemberByName(name, KEnvironment.THISONLY))
-					return SuperClass.getMemberByName(name, flag, null).withStance(this);
+					return SuperClass.getMemberByName(name, flag, objthis).withStance(this);
 			} else if ((flag & KEnvironment.THISONLY) ==0)
-				return GlobalEnvironment.getGlobal().getMemberByName(name, flag, null);
-		return map.getMemberByName(name, flag, null);
+				return GlobalEnvironment.getGlobal().getMemberByName(name, flag, objthis);
+		return map.getMemberByName(name, flag, objthis);
 	}
 
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
-		if (SuperClass != null && !map.hasMemberByVariant(var) && SuperClass.hasMemberByVariant(var))
-			return SuperClass.getMemberByVariant(var, flag, null).withStance(this);
-		return map.getMemberByVariant(var, flag, null);
+		if (SuperClass != null && SuperClass.hasMemberByVariant(var)&&!map.hasMemberByVariant(var))
+			return SuperClass.getMemberByVariant(var, flag, objthis).withStance(this);
+		return map.getMemberByVariant(var, flag, objthis);
 	}
 
 	@Override
@@ -185,7 +185,10 @@ public class KExtendableObject extends KAbstractObject {
 	public KObject newInstance() throws KSException {
 		KExtendableObject newInst = getNewInstance();
 		newInst.SuperClass=this;
-		map.EnumMembers((k, v) -> {
+		map.EnumMembers((k,f, v) -> {
+			if((f&KEnvironment.STATIC_MEMBER)!=0)return true;
+			
+			
 			try {
 				if (v.isObject()) {
 					KObject obj = v.asObject();
@@ -246,7 +249,7 @@ public class KExtendableObject extends KAbstractObject {
 	@Override
 	public void callConstructor(KVariant[] args, KObject objthis) throws KSException {
 		//this.funcCallByName(this.clsname, args, env, DEFAULT);
-		KVariant ctor=this.getMemberByName(this.clsname,KEnvironment.DEFAULT, null);
+		KVariant ctor=this.getMemberByName(this.clsname,KEnvironment.DEFAULT, objthis);
 		if(KObject.class.isAssignableFrom(ctor.getType().getType())) {
 			KObject ctorfunc=ctor.asObject();
 			if(ctorfunc instanceof CallableFunction) {

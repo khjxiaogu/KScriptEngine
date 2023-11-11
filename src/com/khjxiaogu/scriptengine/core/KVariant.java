@@ -8,6 +8,7 @@ package com.khjxiaogu.scriptengine.core;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.object.KObjectClosure;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
@@ -872,8 +873,8 @@ public class KVariant implements Cloneable {
 			return true;
 		return false;
 	}
-	public KVariant withStance(KEnvironment env) {
-		return null;
+	public KVariant withStance(KObject env) throws KSException {
+		return KVariant.valueOf(new KObjectClosure(this.asObject(),env));
 		
 	}
 	public KVariant doOperation(AssignOperation op,KVariant opr,KVariantReference ref) throws KSException {

@@ -44,6 +44,7 @@ public class PropertyObject extends KAbstractObject{
 				return true;
 			return getProp(null).asObject().hasMemberByName(name, flag);
 		}
+		return name==null;
 	}
 
 	@Override
@@ -54,12 +55,13 @@ public class PropertyObject extends KAbstractObject{
 
 	@Override
 	public KVariant getMemberByNum(int num, int flag) throws KSException {
+		if((flag&KEnvironment.IGNOREPROP)!=0) throw new MemberNotFoundException(num);
 		return getProp(null).asObject().getMemberByNum(num, flag);
 	}
 
 	@Override
 	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
-		return getProp(null).asObject().getMemberByVariant(var, flag, null);
+		return getProp(null).asObject().getMemberByVariant(var, flag, objthis);
 	}
 
 	@Override
@@ -137,19 +139,17 @@ public class PropertyObject extends KAbstractObject{
 		getProp(null).asObject().EnumMembers(cosumer, flag);
 	}
 
-	@Override
 	public void setProp(KVariant x, KObject env) throws KSException {
 		if (env == null) {
-			backed.setProp(x, this);
+			backed.setProp(x, null);
 		} else {
 			backed.setProp(x, env);
 		}
 	}
 
-	@Override
 	public KVariant getProp(KObject env) throws KSException {
 		if (env == null)
-			return backed.getProp(this);
+			return backed.getProp(null);
 		return backed.getProp(env);
 	}
 

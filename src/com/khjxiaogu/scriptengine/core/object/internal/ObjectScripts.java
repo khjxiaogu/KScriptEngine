@@ -19,7 +19,7 @@ public class ObjectScripts extends NativeClassClosure<Object> {
 			ko.EnumMembers(new Enumerator() {
 				int i=0;
 				@Override
-				public boolean execute(KVariant k, KVariant v) throws KSException {
+				public boolean execute(KVariant k,int flag, KVariant v) throws KSException {
 					arr.setMemberByNum(i++,k,KEnvironment.DEFAULT);
 					return true;
 				}
