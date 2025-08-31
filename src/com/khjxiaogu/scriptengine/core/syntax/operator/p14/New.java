@@ -1,18 +1,16 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p14;
 
-import java.util.List;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
+import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
-import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
 import com.khjxiaogu.scriptengine.core.syntax.statement.FuncCall;
 
 public class New extends FuncCall {
@@ -30,17 +28,17 @@ public class New extends FuncCall {
 			}
 		}else
 			arg=new KVariant[0];
-		KObject obj = objv.toType(KObject.class);
+		KObject obj = objv.asObject();
 		KObject ni = obj.newInstance();
-		ni.callConstructor(arg, env);
-		return new KVariant(ni);
+		ni.callConstructor(arg, ni);
+		return KVariant.valueOf(ni);
 	}
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
 		StatementParser parser=new StatementParser();
 		CodeNode cn=parser.parseUntil(reader,'(');
 		reader.eat();
-		if(!(cn instanceof ObjectOperator)) {
+		if(!(cn instanceof Assignable)) {
 			throw new SyntaxError("错误的new语句",reader);
 		}
 		//reader.eatAllSpace();
@@ -49,9 +47,9 @@ public class New extends FuncCall {
 		return this;
 	}
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		super.Visit(parentMap);
-		Visitable.Visit(ncls,parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		super.Visit(context);
+		Visitable.Visit(ncls,context);
 		
 	}
 	@Override

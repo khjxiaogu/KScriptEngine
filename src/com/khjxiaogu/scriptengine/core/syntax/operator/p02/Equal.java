@@ -25,7 +25,7 @@ public class Equal extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return ((Assignable) super.left).assign(env, super.right.eval(env));
+		return ((Assignable) super.left).evalAsRef(env).setValue( super.right.eval(env));
 	}
 
 	@Override

@@ -1,8 +1,10 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p14;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariantReference;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
@@ -22,7 +24,8 @@ public class SelfDecrementLeft extends SingleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return super.Child.eval(env).selfDecrement(Associative.LEFT);
+		KVariantReference ref=((Assignable)super.Child).evalAsRef(env);
+		return ref.getValue().selfDecrement(Associative.LEFT,ref);
 	}
 
 	@Override

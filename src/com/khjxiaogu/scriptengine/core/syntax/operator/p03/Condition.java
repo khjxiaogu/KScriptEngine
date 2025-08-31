@@ -1,8 +1,7 @@
 package com.khjxiaogu.scriptengine.core.syntax.operator.p03;
 
-import java.util.List;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
+import com.khjxiaogu.scriptengine.core.KVariantReference;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
@@ -11,8 +10,8 @@ import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 import com.khjxiaogu.scriptengine.core.syntax.Assignable;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
@@ -23,7 +22,7 @@ import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
  *       file:Conditon.java
  *       x?x:x
  */
-public class Condition implements Operator, ASTParser, ObjectOperator, Assignable {
+public class Condition implements Operator, ASTParser, Assignable {
 	CodeNode cond;
 	CodeNode first;
 	CodeNode other;
@@ -87,32 +86,6 @@ public class Condition implements Operator, ASTParser, ObjectOperator, Assignabl
 		return "(" + cond.toString() + "?(" + first.toString() + "):(" + other.toString() + "))";
 	}
 
-	@Override
-	public KVariant assign(KEnvironment env, KVariant val) throws KSException {
-		// TODO Auto-generated method stub
-		CodeNode cn;
-		if (cond.eval(env).asBoolean()) {
-			cn = first;
-		} else {
-			cn = other;
-		}
-		if (cn instanceof Assignable)
-			return ((Assignable) cn).assign(env, val);
-		throw new ScriptException("错误的赋值表达式");
-	}
-
-	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		CodeNode cn;
-		if (cond.eval(env).asBoolean()) {
-			cn = first;
-		} else {
-			cn = other;
-		}
-		if (cn instanceof ObjectOperator)
-			return ((ObjectOperator) cn).getObject(env);
-		throw new ScriptException("错误的赋值表达式");
-	}
 
 	@Override
 	public KVariant assignOperation(KEnvironment env, KVariant val, AssignOperation op) throws KSException {
@@ -127,20 +100,27 @@ public class Condition implements Operator, ASTParser, ObjectOperator, Assignabl
 		throw new ScriptException("错误的赋值表达式");
 	}
 
+
 	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		throw new ScriptException("条件运算符不能使用在delete以后");
+	public void Visit(VisitContext context) throws KSException {
+		Visitable.Visit(cond, context);
+		Visitable.Visit(first, context);
+		Visitable.Visit(other, context);
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(cond, parentMap);
-		Visitable.Visit(first, parentMap);
-		Visitable.Visit(other, parentMap);
+	public KVariantReference evalAsRef(KEnvironment env) throws KSException {
+
+		CodeNode cn;
+		if (cond.eval(env).asBoolean()) {
+			cn = first;
+		} else {
+			cn = other;
+		}
+		if (cn instanceof Assignable)
+			return ((Assignable) cn).evalAsRef(env);
+		throw new ScriptException("错误的赋值表达式");
+
 	}
 
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		Visit(parentMap);
-	}
 }

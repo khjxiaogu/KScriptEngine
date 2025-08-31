@@ -7,6 +7,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.NotImplementedException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
@@ -46,8 +47,8 @@ public class ArrayEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
-		return parent.getMemberByName(name,KEnvironment.MUSTEXIST);
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
+		return parent.getMemberByName(name,KEnvironment.MUSTEXIST, objthis);
 		//throw new MemberNotFoundException(name);
 	}
 
@@ -61,15 +62,15 @@ public class ArrayEnvironment implements KEnvironment {
 		if ((v = list[num - offset]) == null)
 			throw new MemberNotFoundException("%" + num);
 		if ((flag & KEnvironment.IGNOREPROP) ==0) {
-			if (v.getType().getType() == KObject.class && v.getValue() instanceof KProperty)
-				return ((KProperty) v.getValue()).getProp(null);
+			if (v.getType().getType() == KObject.class)
+				return v.asObject().getMemberByName(null, flag, null);
 		}
 		return v;
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
-		return parent.getMemberByVariant(var,KEnvironment.MUSTEXIST);
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
+		return parent.getMemberByVariant(var,KEnvironment.MUSTEXIST, objthis);
 	}
 
 	@Override
@@ -83,8 +84,10 @@ public class ArrayEnvironment implements KEnvironment {
 			return parent.setMemberByNum(num, val, flag);
 		KVariant va = list[num - offset];
 		if ((flag & KEnvironment.IGNOREPROP) ==0) {
-			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-				((KProperty) va.getValue()).setProp(val, null);
+			if (va != null && va.getType().getType() == KObject.class) {
+				try {
+					return va.asObject().setMemberByName(null, val, flag);
+				}catch(NotImplementedException ignored) {}
 			}
 		}
 		return list[num - offset] = val;
@@ -145,7 +148,7 @@ public class ArrayEnvironment implements KEnvironment {
 		KVariant v = list[num - offset];
 		if (v == null)
 			throw new MemberNotFoundException("%" + num);
-		return v.doOperation(op, opr);
+		return v.doOperation(op, opr,new KEnvironmentReference(this,num));
 	}
 
 	@Override
@@ -159,7 +162,7 @@ public class ArrayEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		KVariant res = list[num];
 		if (res == null) {
 			if (parent != null)
@@ -167,15 +170,12 @@ public class ArrayEnvironment implements KEnvironment {
 		}
 		if (res == null)
 			throw new MemberNotFoundException("%" + num);
-		KObject obj = (KObject) res.toType("Object");
-		if (obj instanceof CallableFunction)
-			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
-		else
-			throw new ScriptException("呼叫的对象不是函数");
+		KObject obj = (KObject) res.asType("Object");
+		return obj.funcCallByName(null, args, objthis, KEnvironment.THISONLY);
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
 		return parent.funcCallByName(name, args, objthis, KEnvironment.MUSTEXIST);
 	}
 
@@ -184,11 +184,11 @@ public class ArrayEnvironment implements KEnvironment {
 		for (int i = 0; i < list.length; i++) {
 			KVariant va = list[i];
 			if ((flag & KEnvironment.IGNOREPROP) ==0) {
-				if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-					va = ((KProperty) va.getValue()).getProp(null);
+				if (va != null && va.isObject()) {
+					va = va.asObject().getMemberByName(null, flag, null);
 				}
 			}
-			if (!cosumer.execute(new KVariant(i), va)) {
+			if (!cosumer.execute(KVariant.valueOf(i),flag, va)) {
 				break;
 			}
 		}

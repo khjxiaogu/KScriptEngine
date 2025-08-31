@@ -21,7 +21,7 @@ public class NotEquals extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(!new KVariant(super.left.eval(env)).equals(super.right.eval(env)));
+		return KVariant.valueOf(!super.left.eval(env).equals(super.right.eval(env)));
 	}
 
 	@Override

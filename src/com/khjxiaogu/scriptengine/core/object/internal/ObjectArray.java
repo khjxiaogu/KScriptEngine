@@ -21,8 +21,9 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.object.CallableFunction;
-import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
+import com.khjxiaogu.scriptengine.core.object.KExtendableObject;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
+import com.khjxiaogu.scriptengine.core.object.KEnvironmentReference;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.object.NativeClassClosure;
@@ -31,7 +32,7 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	private static ArrayList<KVariant> arr=new ArrayList<>();
 	@Override
-	public ExtendableClosure getNewInstance() throws KSException {
+	public KExtendableObject getNewInstance() throws KSException {
 		return new ObjectArray(null);
 	}
 	private static ObjectArray arrcls;
@@ -47,9 +48,9 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		super((Class<ArrayList<KVariant>>) arr.getClass(),"Array");
 		arrcls=this;
 		super.registerConstructor((env,args)->new ArrayList<KVariant>());
-		super.registerFunction("add",(obj,args)->{obj.add(args[0]);return new KVariant(obj.size()-1);});
-		super.registerFunction("clear",(obj,args)->{obj.clear();return new KVariant();});
-		super.registerFunction("find",(obj,args)->new KVariant(obj.indexOf(args[0])));
+		super.registerFunction("add",(obj,args)->{obj.add(args[0]);return KVariant.valueOf(obj.size()-1);});
+		super.registerFunction("clear",(obj,args)->{obj.clear();return KVariant.valueOf();});
+		super.registerFunction("find",(obj,args)->KVariant.valueOf(obj.indexOf(args[0])));
 		super.registerFunction("join",(obj,args)->{
 			StringBuilder sb=new StringBuilder();
 			Iterator<KVariant> itv=obj.iterator();
@@ -58,22 +59,22 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 				if(itv.hasNext())
 					sb.append(args[0].toString());
 			}
-			return new KVariant(sb.toString());
+			return KVariant.valueOf(sb.toString());
 			});
-		super.registerProperty("length",obj->new KVariant(obj.size()),null);
-		super.registerProperty("count",obj->new KVariant(obj.size()),null);
+		super.registerProperty("length",obj->KVariant.valueOf(obj.size()),null);
+		super.registerProperty("count",obj->KVariant.valueOf(obj.size()),null);
 		super.registerFunction("load",(obj,args)->{
 			try(FileReader fis=new FileReader(args[0].asString());BufferedReader rd=new BufferedReader(fis)){
 				;
 				obj.clear();
 				String s;
 				while((s=rd.readLine())!=null) {
-					obj.add(new KVariant(s));
+					obj.add(KVariant.valueOf(s));
 				}
 			} catch (IOException e) {
 				obj.clear();
 			}
-			return new KVariant(this);
+			return KVariant.valueOf(this);
 		});
 		super.registerFunction("save",(obj,args)->{
 			try(OutputStream os=new FileOutputStream(new File(args[0].toString()));
@@ -85,39 +86,38 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 			} catch (IOException e) {
 				obj.clear();
 			}
-			return new KVariant(this);
+			return KVariant.valueOf(this);
 		});
 		super.registerFunction("asOctet",(obj,args)->{
 			byte[] octs=new byte[obj.size()];
 			for(int i=0;i<obj.size();i++) {
-				octs[i]=(byte) obj.get(i).getInt();
-				System.out.println(octs[i]);
+				octs[i]=(byte) obj.get(i).asInt();
 			}
-			return new KVariant(new KOctet(octs));
+			return KVariant.valueOf(new KOctet(octs));
 		});
 	}
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.getMemberByNum(var.getInt(), flag);
-		return super.getMemberByVariant(var, flag);
+			return this.getMemberByNum(var.asInt(), flag);
+		return super.getMemberByVariant(var, flag, objthis);
 	}
 	@Override
 	public KVariant setMemberByVariant(KVariant var, KVariant val, int flag) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.setMemberByNum(var.getInt(),val, flag);
+			return this.setMemberByNum(var.asInt(),val, flag);
 		return super.setMemberByVariant(var, val, flag);
 	}
 	@Override
 	public boolean hasMemberByVariant(KVariant var) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.hasMemberByNum(var.getInt());
+			return this.hasMemberByNum(var.asInt());
 		return super.hasMemberByVariant(var);
 	}
 	@Override
 	public boolean deleteMemberByVariant(KVariant var) throws KSException {
 		if(var.getType().getType()==Long.class)
-			return this.deleteMemberByNum(var.getInt());
+			return this.deleteMemberByNum(var.asInt());
 		return super.deleteMemberByVariant(var);
 	}
 	@Override
@@ -125,7 +125,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 		return super.doOperationByVariant(op, var, opr);
 	}
 	public static KObject createArray() throws KSException {
-		ExtendableClosure sar=(ExtendableClosure) arrcls.newInstance();
+		KExtendableObject sar=(KExtendableObject) arrcls.newInstance();
 		sar.callConstructor(null,sar);
 		return sar;
 	}
@@ -133,7 +133,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	public KVariant getMemberByNum(int num, int flag) throws KSException {
 		ArrayList<KVariant> al=super.getNativeInstance();
 		if((flag&KEnvironment.MUSTEXIST)==0)while(num>=al.size())
-				al.add(new KVariant());
+				al.add(KVariant.valueOf());
 		else if(num>=al.size())
 			throw new MemberNotFoundException(Integer.toString(num));
 		return al.get(num);
@@ -146,7 +146,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 				al.add(val);
 				return val;
 			}while(num>=al.size())
-				al.add(new KVariant());
+				al.add(KVariant.valueOf());
 		}else if(num>=al.size())
 			throw new MemberNotFoundException(Integer.toString(num));
 		al.set(num,val);
@@ -160,7 +160,7 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	public boolean deleteMemberByNum(int num) throws KSException {
 		ArrayList<KVariant> al=super.getNativeInstance();
 		if(al.size()<num) {
-			al.set(num,new KVariant());
+			al.set(num,KVariant.valueOf());
 			return true;
 		}return false;
 		
@@ -169,18 +169,16 @@ public class ObjectArray extends NativeClassClosure<ArrayList<KVariant>>{
 	public KVariant doOperationByNum(AssignOperation op, int num, KVariant opr) throws KSException {
 		ArrayList<KVariant> al=super.getNativeInstance();
 		while(num>=al.size())
-			al.add(new KVariant());
-		return al.get(num).doOperation(op, opr);
+			al.add(KVariant.valueOf());
+		return al.get(num).doOperation(op, opr,new KEnvironmentReference(this,num));
 	}
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		KVariant res = this.getMemberByNum(num, flag);
 		if (res == null)
 			throw new MemberNotFoundException(Integer.toString(num));
-		KObject obj = res.toType(KObject.class);
-		if (obj instanceof CallableFunction)
-			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
-		throw new ScriptException("呼叫的对象不是函数");
+		KObject obj = res.asObject();
+		return obj.funcCallByName(null, args, objthis == null ? this : objthis, KEnvironment.THISONLY);
 	}
 	
 }

@@ -1,13 +1,12 @@
 package com.khjxiaogu.scriptengine.core.syntax.statement;
 
-import java.util.List;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.Block;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
@@ -78,10 +77,10 @@ public class IfStatement implements Block {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(Condition, parentMap);
-		Visitable.Visit(If, parentMap);
-		Visitable.Visit(Else, parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		Visitable.Visit(Condition, context);
+		Visitable.Visit(If, context);
+		Visitable.Visit(Else, context);
 	}
 
 	@Override

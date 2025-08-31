@@ -1,7 +1,5 @@
 package com.khjxiaogu.scriptengine.core.syntax.statement;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
@@ -9,19 +7,18 @@ import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
-import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.ScriptFunctionClosure;
 import com.khjxiaogu.scriptengine.core.syntax.BlockClosure;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
 import com.khjxiaogu.scriptengine.core.syntax.LiteralNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 import com.khjxiaogu.scriptengine.core.syntax.operator.p02.Equal;
 
-public class FunctionStatement implements BlockClosure, ObjectOperator {
+public class FunctionStatement implements BlockClosure {
 	String name;
 	int itoken = -1;
 	String[] argnames;
@@ -35,15 +32,15 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		if (itoken != -1) {
-			env.setMemberByNum(itoken, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
+			env.setMemberByNum(itoken, KVariant.valueOf(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
 					KEnvironment.DEFAULT);
 			return null;
 		} else if (name != null) {
-			env.setMemberByName(name, new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
+			env.setMemberByName(name, KVariant.valueOf(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs)),
 					KEnvironment.THISONLY);
 			return null;
 		} else
-			return new KVariant(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
+			return KVariant.valueOf(new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs));
 	}
 	@Override
 	public CodeNode parse(ParseReader reader) throws KSException {
@@ -87,15 +84,14 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		List<String> allnodes = new ArrayList<String>(parentMap);
-		off = parentMap.size();
+	public void Visit(VisitContext context) throws KSException {
+		VisitContext allnodes = context.child();
+		off = allnodes.getOffset();
 		if(argnames!=null)
-			allnodes.addAll(Arrays.asList(argnames));
+			allnodes.allocLocals(argnames);
 		Visitable.Visit(body, allnodes);
-		if (name != null) {
-			parentMap.add(name);
-			itoken = parentMap.size() - 1;
+		if (name != null&&!context.hasFlag(VisitContext.NOT_LOCAL_BLOCK)) {
+			itoken = context.allocLocal(name);
 		}
 	}
 
@@ -122,23 +118,6 @@ public class FunctionStatement implements BlockClosure, ObjectOperator {
 	public void init(KEnvironment env) throws KSException {
 	}
 
-	@Override
-	public KObject getObject(KEnvironment env) throws KSException {
-		return new ScriptFunctionClosure(env, (CodeBlock) body, off, defargs);
-	}
 
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		List<String> allnodes = new ArrayList<String>(parentMap);
-		off = parentMap.size();
-		if(argnames!=null)
-			allnodes.addAll(Arrays.asList(argnames));
-		Visitable.Visit(body, allnodes);
-	}
 
 }

@@ -48,7 +48,7 @@ public final class TypeInfo {
 		if ((ti = TypeInfo.forTypeConstant(type)) != null)
 			return ti;
 		for (Map.Entry<Class<?>, TypeInfo> entry : TypeInfo.typeclasses.entrySet()) {
-			if (type.isAssignableFrom(entry.getKey()))
+			if (entry.getKey().isAssignableFrom(type))
 				return entry.getValue();
 		}
 		return TypeInfo.forTypeConstant(Void.class);

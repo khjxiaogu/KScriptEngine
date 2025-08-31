@@ -5,19 +5,20 @@ import java.util.Arrays;
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
+import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 
-public class NativeFunction<T> extends Closure implements CallableFunction {
+public class NativeFunction<T> extends KAbstractObject implements CallableFunction {
 	NativeMethod<T> functhis;
 	Class<T> nativecls;
 
 	public NativeFunction(Class<T> objtype, NativeMethod<T> functhis) {
-		super(null);
+		super();
 		nativecls = objtype;
 		this.functhis = functhis;
 	}
 
 	public NativeFunction(NativeMethod<T> functhis) {
-		super(null);
+		super();
 		nativecls = null;
 		this.functhis = functhis;
 	}
@@ -25,13 +26,12 @@ public class NativeFunction<T> extends Closure implements CallableFunction {
 
 	@Override
 	public boolean isValid() {
-		return super.closure == null;
+		return functhis != null;
 	}
 
 	@Override
 	public boolean invalidate() {
-		if (super.closure != null) {
-			super.closure = null;
+		if (functhis != null) {
 			functhis = null;
 			return true;
 		}
@@ -44,18 +44,27 @@ public class NativeFunction<T> extends Closure implements CallableFunction {
 	}
 
 	@Override
-	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
+	public KVariant FuncCall(KVariant[] args, KObject objthis) throws KSException {
 		if (args != null) {
 			args = Arrays.copyOf(args, args.length);
 		}
 		if (nativecls != null)
-			return functhis.call(env.getNativeInstance(nativecls), args);
+			return functhis.call(objthis.getNativeInstance(nativecls), args);
 		return functhis.call(null, args);
 	}
 	@Override
-	public String toString() {
-		return "(Function)"+super.getInstancePointer();
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
+		if(name==null)
+			return KVariant.valueOf(new FunctionClosure(this,objthis));
+		throw new MemberNotFoundException(name);
 	}
+
+	@Override
+	public boolean hasMemberByName(String name, int flag) throws KSException {
+		if(name==null)return true;
+		return super.hasMemberByName(name, flag);
+	}
+
 	@Override
 	public String getInstanceName() {
 		return "Function";

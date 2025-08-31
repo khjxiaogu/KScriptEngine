@@ -1,35 +1,44 @@
 package com.khjxiaogu.scriptengine.core.object;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.NotImplementedException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
 public class MapEnvironment implements KEnvironment {
-	private Map<String, KVariant> map = new ConcurrentHashMap<>();
+	private Map<String, VariantSymbolInfo> map = new ConcurrentHashMap<>();
 
 	public MapEnvironment() {
 	}
-
+	public KVariant getMemberOfFlag(String key,int flag) throws KSException {
+		VariantSymbolInfo sym=map.get(key);
+		if((flag&KEnvironment.STATIC_MEMBER)!=0) {
+			if((sym.getFlag()&KEnvironment.STATIC_MEMBER)!=0) {
+				return sym.getVal();
+			}
+			if ((flag & KEnvironment.MUSTEXIST) != 0)
+				throw new MemberNotFoundException(key);
+			map.put(key, new VariantSymbolInfo(KVariant.valueOf(),0));
+			return KVariant.valueOf();
+		}
+		return sym.getVal();
+	}
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
 		// TODO Auto-generated method stub
 		if(name==null||name.length()==0)
-			return new KVariant(this);
-		KVariant res = map.get(name);
-		if (res == null) {
-			if ((flag & KEnvironment.MUSTEXIST) != 0)
-				throw new MemberNotFoundException(name);
-			return new KVariant();
-		}
+			return KVariant.valueOf(this);
+		KVariant res = getMemberOfFlag(name,flag);
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
-			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
-				return ((KProperty) res.getValue()).getProp(null);
+			if (res != null && res.isObject())
+				return res.asObject().getMemberByName(null, flag, objthis);
 		}
 		return res;
 	}
@@ -41,19 +50,16 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 		// TODO Auto-generated method stub
 		KVariant res = null;
 		String name = var.toString();
 		if(name.length()==0)
-			return new KVariant(this);
-		res = map.get(name);
-		if (res == null) {
-			res = new KVariant();
-		}
+			return KVariant.valueOf(this);
+		res = getMemberOfFlag(name,flag);
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
-			if (res != null && res.getType().getType() == KObject.class && res.getValue() instanceof KProperty)
-				return ((KProperty) res.getValue()).getProp(null);
+			if (res != null && res.isObject())
+				return res.asObject().getMemberByName(null, flag, objthis);
 		}
 		return res;
 	}
@@ -67,13 +73,14 @@ public class MapEnvironment implements KEnvironment {
 			if (!map.containsKey(name))
 				throw new MemberNotFoundException(name);
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
-			KVariant va = map.get(name);
-			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-				((KProperty) va.getValue()).setProp(val, null);
-				return val;
+			KVariant va = getMemberOfFlag(name,flag);
+			if (va != null && va.isObject()) {
+				try {
+					return va.asObject().setMemberByName(null, val, flag);
+				}catch(NotImplementedException ignored) {}
 			}
 		}
-		map.put(name, val);
+		map.put(name, new VariantSymbolInfo(val,flag));
 		return val;
 	}
 
@@ -82,13 +89,14 @@ public class MapEnvironment implements KEnvironment {
 		// TODO Auto-generated method stub
 		String name = Integer.toString(num);
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
-			KVariant va = map.get(name);
-			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-				((KProperty) va.getValue()).setProp(val, null);
-				return val;
+			KVariant va = getMemberOfFlag(name,flag);
+			if (va != null && va.isObject()) {
+				try {
+					return va.asObject().setMemberByName(null, val, flag);
+				}catch(NotImplementedException ignored) {}
 			}
 		}
-		map.put(name, val);
+		map.put(name, new VariantSymbolInfo(val,flag));
 		return val;
 	}
 
@@ -100,13 +108,14 @@ public class MapEnvironment implements KEnvironment {
 		if(name==null||name.length()==0)
 			throw new MemberNotFoundException("");
 		if ((flag & KEnvironment.IGNOREPROP) == 0) {
-			KVariant va = map.get(name);
-			if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-				((KProperty) va.getValue()).setProp(val, null);
-				return val;
+			KVariant va = getMemberOfFlag(name,flag);
+			if (va != null && va.isObject()) {
+				try {
+					return va.asObject().setMemberByName(null, val, flag);
+				}catch(NotImplementedException ignored) {}
 			}
 		}
-		map.put(name, val);
+		map.put(name, new VariantSymbolInfo(val,flag));
 		return val;
 	}
 
@@ -129,8 +138,8 @@ public class MapEnvironment implements KEnvironment {
 
 	@Override
 	public KVariant doOperationByName(AssignOperation op, String name, KVariant opr) throws KSException {
-		KVariant v=this.getMemberByName(name,KEnvironment.DEFAULT);
-		return v.doOperation(op, opr);
+		KVariant v=this.getMemberByName(name,KEnvironment.DEFAULT, null);
+		return v.doOperation(op, opr,new KEnvironmentReference(this,name));
 	}
 
 	@Override
@@ -159,32 +168,33 @@ public class MapEnvironment implements KEnvironment {
 	}
 
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
 		throw new MemberNotFoundException("%" + num);
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
-		KVariant res = this.getMemberByName(name, flag);
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
+		KVariant res = this.getMemberByName(name, flag, null);
 		if (res == null)
 			throw new MemberNotFoundException(name);
-		KObject obj = res.toType(KObject.class);
+		KObject obj = res.asObject();
 		if (obj instanceof CallableFunction)
-			return ((CallableFunction) obj).FuncCall(args, objthis == null ? this : objthis);
+			return ((CallableFunction) obj).FuncCall(args,objthis);
 		else
 			throw new ScriptException("呼叫的对象不是函数");
 	}
 
 	@Override
 	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
-		for (Map.Entry<String, KVariant> me : map.entrySet()) {
-			KVariant va = me.getValue();
+		for (Entry<String, VariantSymbolInfo> me : map.entrySet()) {
+			VariantSymbolInfo va = me.getValue();
+			KVariant kv=va.getVal();
 			if ((flag & KEnvironment.IGNOREPROP) == 0) {
-				if (va != null && va.getType().getType() == KObject.class && va.getValue() instanceof KProperty) {
-					va = ((KProperty) va.getValue()).getProp(null);
+				if (va != null && kv.isObject()) {
+					kv = kv.asObject().getMemberByName(null, flag, null);
 				}
 			}
-			if (!cosumer.execute(new KVariant(me.getKey()), va)) {
+			if (!cosumer.execute(KVariant.valueOf(me.getKey()),va.getFlag(), kv)) {
 				break;
 			}
 		}

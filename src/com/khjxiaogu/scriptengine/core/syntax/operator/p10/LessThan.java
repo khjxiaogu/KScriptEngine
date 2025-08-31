@@ -21,7 +21,7 @@ public class LessThan extends DoubleOperator {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		// TODO Auto-generated method stub
-		return new KVariant(super.left.eval(env)).LT(super.right.eval(env));
+		return super.left.eval(env).LT(super.right.eval(env));
 	}
 
 	@Override

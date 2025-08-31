@@ -10,6 +10,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
@@ -93,8 +94,8 @@ public class SwitchStatement extends CodeBlock {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		Visitable.Visit(cond, parentMap);
-		super.Visit(parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		Visitable.Visit(cond, context);
+		super.Visit(context);
 	}
 }

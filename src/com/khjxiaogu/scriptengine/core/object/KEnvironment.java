@@ -43,7 +43,7 @@ public interface KEnvironment {
 		 * @throws KSException Any Engine Exception occured<br />
 		 *                     引擎执行发生的异常。
 		 */
-		boolean execute(KVariant k, KVariant v) throws KSException;
+		boolean execute(KVariant k,int flag, KVariant v) throws KSException;
 	}
 
 	/**
@@ -51,26 +51,28 @@ public interface KEnvironment {
 	 * scope.<br />
 	 * 常量 DEFAULT.表示确保成员存在并且会在全局搜索
 	 */
-	public final static int DEFAULT = 0;
+	public final static int DEFAULT = 0x0;
 
 	/**
 	 * Constant THISONLY.Means don't search in global scope.<br />
 	 * 常量 THISONLY.表示不在全局范围搜索。
 	 */
-	public final static int THISONLY = 1;
+	public final static int THISONLY = 0x1;
 
 	/**
 	 * Constant IGNOREPROP.Means don't trigger setter or getter of property.<br />
 	 * 常量 IGNOREPROP.表示不触发属性的setter或者getter方法
 	 */
-	public final static int IGNOREPROP = 2;
+	public final static int IGNOREPROP = 0x2;
 
 	/**
 	 * Constant MUSTEXIST.Means throw exception if not exist.<br />
 	 * 常量 MUSTEXIST.表示当成员不存在时抛出异常
 	 */
-	public final static int MUSTEXIST = 4;
-
+	public final static int MUSTEXIST = 0x4;
+	public final static int VAR_DATA_MASK=0x0000FFFF;
+	public final static int STATIC_MEMBER=0x00010000;
+	public final static int VAR_MODI_MASK=0xFFFF0000;
 	/**
 	 * Delete member by name.<br />
 	 * 根据名字删除成员
@@ -184,7 +186,7 @@ public interface KEnvironment {
 	 * @throws KSException Any Engine Exception occured<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException;
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException;
 
 	/**
 	 * Func call by num.<br />
@@ -199,7 +201,7 @@ public interface KEnvironment {
 	 * @throws KSException Any Engine Exception occured<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException;
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException;
 
 	/**
 	 * Gets the member by name.<br />
@@ -209,12 +211,13 @@ public interface KEnvironment {
 	 *             成员名
 	 * @param flag operation flag<br />
 	 *             操作标签
+	 * @param objthis TODO
 	 * @return value of member<br />
 	 *         成员值
 	 * @throws KSException Any Engine Exception occurred<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant getMemberByName(String name, int flag) throws KSException;
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException;
 
 	/**
 	 * Gets the member by index number.<br />
@@ -239,12 +242,13 @@ public interface KEnvironment {
 	 *             变量
 	 * @param flag operation flag<br />
 	 *             操作标签
+	 * @param objthis TODO
 	 * @return value of member<br />
 	 *         成员值
 	 * @throws KSException Any Engine Exception occurred<br />
 	 *                     引擎执行发生的异常。
 	 */
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException;
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException;
 
 	/**
 	 * Gets the native instance.<br />

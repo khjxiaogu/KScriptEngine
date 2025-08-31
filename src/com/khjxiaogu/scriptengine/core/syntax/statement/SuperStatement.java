@@ -6,34 +6,21 @@ import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
+import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
-public class SuperStatement implements ObjectOperator, CodeNode {
+public class SuperStatement implements Visitable, CodeNode {
 
 	public SuperStatement() {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext parentMap) throws KSException {
 	}
 
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
-		return new KVariant(env.getSuper());
-	}
-
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-	}
-
-	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		return env.getSuper();
+		return KVariant.valueOf(env.getSuper());
 	}
 
 }

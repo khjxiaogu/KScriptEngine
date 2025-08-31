@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 
@@ -31,7 +32,7 @@ public class Parser {
 		ParseReader reader = new StringParseReader(s);
 		CodeBlock cb = (CodeBlock) new CodeBlock(CodeBlockAttribute.STATEMENT).parse(reader);
 		try {
-			cb.Visit(Arrays.asList(symbols));
+			cb.Visit(VisitContext.create());
 		} catch (UnsupportedOperationException e) {
 			throw new SyntaxError("var",reader);
 		}

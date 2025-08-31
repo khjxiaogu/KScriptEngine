@@ -11,12 +11,12 @@ import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.ASTParser;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
-public class ArrayNode implements CodeNode,ASTParser,ObjectOperator {
+public class ArrayNode implements CodeNode,ASTParser,Visitable {
 	@Override
 	public String toString() {
 		StringBuilder sb=new StringBuilder("[");
@@ -30,7 +30,7 @@ public class ArrayNode implements CodeNode,ASTParser,ObjectOperator {
 
 	private List<CodeNode> elms=new ArrayList<>();
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext parentMap) throws KSException {
 		for(CodeNode co:elms) {
 			Visitable.Visit(co, parentMap);
 		}
@@ -43,7 +43,7 @@ public class ArrayNode implements CodeNode,ASTParser,ObjectOperator {
 		for(CodeNode co:elms) {
 			ko.setMemberByNum(i++,co.eval(env),KEnvironment.DEFAULT);
 		}
-		return new KVariant(ko);
+		return KVariant.valueOf(ko);
 	}
 
 	@Override
@@ -63,23 +63,5 @@ public class ArrayNode implements CodeNode,ASTParser,ObjectOperator {
 		return this;
 	}
 
-	@Override
-	public KVariant getPointing(KEnvironment env) throws KSException {
-		return null;
-	}
-
-	@Override
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-	}
-
-	@Override
-	public KEnvironment getObject(KEnvironment env) throws KSException {
-		KObject ko=ObjectArray.createArray();
-		int i=0;
-		for(CodeNode co:elms) {
-			ko.setMemberByNum(i++,co.eval(env),KEnvironment.DEFAULT);
-		}
-		return ko;
-	}
 
 }

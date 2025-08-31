@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
-import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
+import com.khjxiaogu.scriptengine.core.object.KExtendableObject;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KProperty;
 import com.khjxiaogu.scriptengine.core.object.internal.ObjectString;
@@ -70,30 +70,30 @@ public class ConversionManager {
 		});
 		new TypeConverter<>(String.class, KOctet.class, obj -> new KOctet(obj.getBytes()));
 		new TypeConverter<>(String.class,KObject.class, obj ->{
-			ExtendableClosure sar=(ExtendableClosure) sobj.newInstance();
+			KExtendableObject sar=(KExtendableObject) sobj.newInstance();
 			sar.putNativeInstance(String.class,obj);
 			return sar;
 		});
 
 		new TypeConverter<>(KObject.class, String.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(String.class);
+				return ((KProperty) obj).getProp(null).asType(String.class);
 			return obj.toString();
 		});
 		
 		new TypeConverter<>(KObject.class, Long.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(Long.class);
+				return ((KProperty) obj).getProp(null).asType(Long.class);
 			throw new ConversionException("Object", "Integer");
 		});
 		new TypeConverter<>(KObject.class, Double.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(Double.class);
+				return ((KProperty) obj).getProp(null).asType(Double.class);
 			throw new ConversionException("Object", "Real");
 		});
 		new TypeConverter<>(KObject.class, KOctet.class, obj -> {
 			if (obj instanceof KProperty)
-				return ((KProperty) obj).getProp(null).toType(KOctet.class);
+				return ((KProperty) obj).getProp(null).asType(KOctet.class);
 			throw new ConversionException("Object", "Octet");
 		});
 		new TypeConverter<>(KOctet.class, String.class, obj -> {

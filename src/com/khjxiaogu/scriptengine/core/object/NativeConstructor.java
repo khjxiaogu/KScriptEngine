@@ -10,24 +10,24 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 public interface NativeConstructor<T> {
 	public T call(KEnvironment objthis, KVariant... arg)throws KSException;
 }
-class NativeConstructorClosure<T> extends Closure implements CallableFunction {
+class NativeConstructorClosure<T> extends KAbstractObject implements CallableFunction {
 	NativeConstructor<T> functhis;
 
 	public NativeConstructorClosure(NativeConstructor<T> functhis) {
-		super(null);
+		super();
 		this.functhis = functhis;
+		
 	}
 
 
 	@Override
 	public boolean isValid() {
-		return super.closure == null;
+		return functhis != null;
 	}
 
 	@Override
 	public boolean invalidate() {
-		if (super.closure != null) {
-			super.closure = null;
+		if (functhis != null) {
 			functhis = null;
 			return true;
 		}
@@ -40,17 +40,14 @@ class NativeConstructorClosure<T> extends Closure implements CallableFunction {
 	}
 
 	@Override
-	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
+	public KVariant FuncCall(KVariant[] args, KObject objthis) throws KSException {
 		if (args != null) {
 			args = Arrays.copyOf(args, args.length);
 		}
-		env.putNativeInstance(functhis.call(env, args));
+		objthis.putNativeInstance(functhis.call(objthis, args));
 		return null;
 	}
-	@Override
-	public String toString() {
-		return "(Function)"+super.getInstancePointer();
-	}
+
 	@Override
 	public String getInstanceName() {
 		return "Function";

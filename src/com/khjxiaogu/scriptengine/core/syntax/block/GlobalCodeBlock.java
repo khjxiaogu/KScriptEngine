@@ -9,6 +9,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.GlobalEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 
 public class GlobalCodeBlock extends CodeBlock {
 
@@ -40,7 +41,7 @@ public class GlobalCodeBlock extends CodeBlock {
 		while (reader.has()) {
 			put(parser.parseUntilOrEnd(reader, ';'));
 		}
-		super.VisitAsChild(new ArrayList<String>());
+		super.Visit(VisitContext.create(VisitContext.NOT_LOCAL_BLOCK));
 		return this;
 	}
 }

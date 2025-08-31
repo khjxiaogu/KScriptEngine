@@ -6,12 +6,12 @@ import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionException;
 
-public class FunctionClosure extends Closure implements CallableFunction {
+public class FunctionClosure extends KAbstractObject implements CallableFunction {
 	protected KObject objthis;
 	protected CallableFunction functhis;
 
 	public FunctionClosure(KObject functhis, KObject objthis) throws ConversionException {
-		super(objthis);
+		super();
 		if (!(functhis instanceof CallableFunction))
 			throw new ConversionException("Object", "Function");
 
@@ -23,7 +23,7 @@ public class FunctionClosure extends Closure implements CallableFunction {
 	}
 
 	@Override
-	public KVariant FuncCall(KVariant[] args, KEnvironment env) throws KSException {
+	public KVariant FuncCall(KVariant[] args, KObject objthis) throws KSException {
 		return functhis.FuncCall(args, objthis);
 	}
 
@@ -44,7 +44,7 @@ public class FunctionClosure extends Closure implements CallableFunction {
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
 		if (name != null)
 			throw new MemberNotFoundException(name);
 		return FuncCall(args, objthis);

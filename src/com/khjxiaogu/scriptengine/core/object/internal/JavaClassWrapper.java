@@ -20,8 +20,8 @@ import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.object.KOctet;
 import com.khjxiaogu.scriptengine.core.object.NativeClassClosure;
 import com.khjxiaogu.scriptengine.core.object.NativeProperty;
-import com.khjxiaogu.scriptengine.core.object.Closure;
-import com.khjxiaogu.scriptengine.core.object.ExtendableClosure;
+import com.khjxiaogu.scriptengine.core.object.KAbstractObject;
+import com.khjxiaogu.scriptengine.core.object.KExtendableObject;
 import com.khjxiaogu.scriptengine.core.typeconvert.ConversionManager;
 import com.khjxiaogu.scriptengine.core.typeconvert.TypeInfo;
 
@@ -56,7 +56,7 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		jvmType=resultmap.getOrDefault(jvmType,jvmType);
 		if(jvmType.isAssignableFrom(varType))
 			return true;
-		if(varType.equals(KObject.class)&&var.toType(KObject.class).getNativeInstance(jvmType)!=null)
+		if(var.isObject()&&var.asObject().getNativeInstance(jvmType)!=null)
 			return true;
 		return false;
 	}
@@ -66,12 +66,12 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		if(jvmType.isAssignableFrom(varType))
 			return var.getValue();
 		if(ConversionManager.canConvert(jvmType,varType))
-			return var.toType(jvmType);
-		return ((Closure)var.toType(KObject.class)).getNativeInstance(jvmType);
+			return var.asType(jvmType);
+		return ((KAbstractObject)var.asObject()).getNativeInstance(jvmType);
 	}
 	private static KVariant revert(Object ret) throws KSException {
 		if(ret==null)
-			return new KVariant();
+			return KVariant.valueOf();
 		Class<?> jvmType=ret.getClass();
 		jvmType=typemap.getOrDefault(jvmType,jvmType);
 		Class<?> varType=resultmap.getOrDefault(jvmType,jvmType);
@@ -79,20 +79,20 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 		if(ti==null) {
 			KObject ko=getWrapper(ret.getClass()).newInstance();
 			ko.putNativeInstance(ret);
-			return new KVariant(ko);
+			return KVariant.valueOf(ko);
 		}
-		return new KVariant(ConversionManager.getConversion(jvmType,varType).from(ret),ti);
+		return KVariant.valueOf(ConversionManager.getConversion(jvmType,varType).from(ret),ti);
 	}
 	private static final Map<Class<?>,JavaClassWrapper<?>> cache=new HashMap<>();
 	public static KVariant wrapObject(Object ret) throws KSException {
 		KObject ko=getWrapper(ret.getClass()).newInstance();
 		ko.putNativeInstance(ret);
-		return new KVariant(ko);
+		return KVariant.valueOf(ko);
 	}
 	public static <T> KVariant wrapObject(Class<T> cls,T ret) throws KSException {
-		ExtendableClosure ko=(ExtendableClosure) getWrapper(cls).newInstance();
+		KExtendableObject ko=(KExtendableObject) getWrapper(cls).newInstance();
 		ko.putNativeInstance(cls,ret);
-		return new KVariant(ko);
+		return KVariant.valueOf(ko);
 	}
 	public synchronized static JavaClassWrapper<?> getWrapper(Class<?> cls) {
 		JavaClassWrapper<?> jcw=cache.get(cls);
@@ -168,13 +168,14 @@ public class JavaClassWrapper<T> extends NativeClassClosure<T> {
 			mets.removeIf(m->oc.isAssignableFrom(m.getReturnType()));
 		Map<String,ArrayList<Method>> mms=new HashMap<>();
 		for(Method m:mets) {
-			m.setAccessible(true);
-			ArrayList<Method> am=mms.get(m.getName());
-			if(am==null) {
-				am=new ArrayList<>();
-				mms.put(m.getName(),am);
+			if(m.trySetAccessible()) {
+				ArrayList<Method> am=mms.get(m.getName());
+				if(am==null) {
+					am=new ArrayList<>();
+					mms.put(m.getName(),am);
+				}
+				am.add(m);
 			}
-			am.add(m);
 		}
 		
 		for(Map.Entry<String,ArrayList<Method>> m:mms.entrySet()) {

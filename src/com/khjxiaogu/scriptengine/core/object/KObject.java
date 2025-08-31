@@ -1,4 +1,4 @@
-package com.khjxiaogu.scriptengine.core.object;
+  package com.khjxiaogu.scriptengine.core.object;
 
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
@@ -16,5 +16,5 @@ public interface KObject extends KEnvironment {
 	public boolean invalidate() throws KSException;
 
 	public KObject newInstance() throws KSException;
-	public void callConstructor(KVariant[] args,KEnvironment env) throws KSException;
+	public void callConstructor(KVariant[] args,KObject objthis) throws KSException;
 }

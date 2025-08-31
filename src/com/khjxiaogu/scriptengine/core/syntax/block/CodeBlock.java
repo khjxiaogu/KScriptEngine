@@ -11,9 +11,9 @@ import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
-import com.khjxiaogu.scriptengine.core.syntax.ObjectOperator;
 import com.khjxiaogu.scriptengine.core.syntax.Nop;
 import com.khjxiaogu.scriptengine.core.syntax.StatementParser;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.Visitable;
 
 public class CodeBlock implements Block, Visitable {
@@ -38,7 +38,7 @@ public class CodeBlock implements Block, Visitable {
 		if (nodes.size() == 0)
 			return null;
 		try {
-			KVariant result = new KVariant();
+			KVariant result = KVariant.valueOf();
 			for (; i < nodes.size(); i++) {
 				result = nodes.get(i).eval(cbenv);
 				if (cbenv.isSkipped()) {
@@ -159,29 +159,14 @@ public class CodeBlock implements Block, Visitable {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
-		off = parentMap.size();
-		List<String> curmap = new ArrayList<>(parentMap);
+	public void Visit(VisitContext context) throws KSException {
+		VisitContext cur=context.child();
+		off = cur.getOffset();
 		for (int i = 0; i < nodes.size(); i++) {
 			CodeNode node = nodes.get(i);
-			Visitable.Visit(node, curmap);
+			Visitable.Visit(node, cur);
 		}
-		siz = curmap.size() - off;
-		symbol = curmap.toArray(new String[curmap.size()]);
-	}
-
-	public void VisitAsChild(List<String> parentMap) throws KSException {
-		off = parentMap.size();
-		List<String> curmap = new ArrayList<>(parentMap);
-		for (int i = 0; i < nodes.size(); i++) {
-			CodeNode node = nodes.get(i);
-			if (node instanceof ObjectOperator) {
-				((ObjectOperator) node).VisitAsChild(parentMap);
-			} else {
-				Visitable.Visit(node, curmap);
-			}
-		}
-		siz = curmap.size() - off;
-		symbol = curmap.toArray(new String[curmap.size()]);
+		siz = cur.getCurrentSize();
+		symbol = cur.getSymbols();
 	}
 }

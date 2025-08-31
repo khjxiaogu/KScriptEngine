@@ -1,7 +1,5 @@
 package com.khjxiaogu.scriptengine.core.syntax.statement;
 
-import java.util.List;
-
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.ParseReader;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
@@ -10,6 +8,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.SyntaxError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
 import com.khjxiaogu.scriptengine.core.object.KObject;
 import com.khjxiaogu.scriptengine.core.syntax.CodeNode;
+import com.khjxiaogu.scriptengine.core.syntax.VisitContext;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlock;
 import com.khjxiaogu.scriptengine.core.syntax.block.CodeBlockAttribute;
 
@@ -23,7 +22,7 @@ public class WithStatement extends CodeBlock {
 	@Override
 	public KVariant eval(KEnvironment env) throws KSException {
 		WithEnvironment cbenv = new WithEnvironment(env, off, siz, this, attr, symbol);
-		cbenv.setWith((KObject) cond.eval(env).toType("Object"));
+		cbenv.setWith((KObject) cond.eval(env).asType("Object"));
 		int i = 0;
 		if (nodes.size() == 0)
 			return null;
@@ -62,7 +61,7 @@ public class WithStatement extends CodeBlock {
 	}
 
 	@Override
-	public void Visit(List<String> parentMap) throws KSException {
+	public void Visit(VisitContext context) throws KSException {
 	}
 
 	@Override

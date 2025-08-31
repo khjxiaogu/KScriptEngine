@@ -58,10 +58,10 @@ public class Converter {
 	public KVariant convert(KVariant in) throws KSException {
 		TypeInfo t = in.getType();
 		if (t.equals(type))
-			return new KVariant(in);
+			return in;
 		TypeConverter<?, ?> converter;
 		if ((converter = converters.get(t.getType())) != null)
-			return new KVariant(converter.from(in.getValue()),TypeInfo.forType(type));
+			return KVariant.valueOf(converter.from(in.getValue()),TypeInfo.forType(type));
 		throw new ConversionException(t.getName(),type.getSimpleName());
 	}
 

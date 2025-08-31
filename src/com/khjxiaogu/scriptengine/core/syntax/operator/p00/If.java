@@ -25,7 +25,7 @@ public class If extends DoubleOperator {
 		if (super.right.eval(env).asBoolean()) {
 			super.left.eval(env);
 		}
-		return new KVariant();
+		return KVariant.valueOf();
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 
 public final class KOctet {
 	final byte[] intern;
-	ExtendableClosure backed;
+	KExtendableObject backed;
 	public final static KOctet NullOctet=new KOctet(0);
 	public KOctet(byte[] intern){
 		this.intern=intern;
@@ -15,7 +15,7 @@ public final class KOctet {
 	public KOctet(int size) {
 		this(new byte[size]);
 	}
-	static class OctetObject extends ExtendableClosure {
+	static class OctetObject extends KExtendableObject {
 		public OctetObject(byte[] intern){
 			super("Octet");
 			try {
@@ -27,18 +27,18 @@ public final class KOctet {
 		}
 		
 		@Override
-		public KVariant getMemberByName(String var, int flag) throws KSException {
+		public KVariant getMemberByName(String var, int flag, KObject objthis) throws KSException {
 			if(var.equals("length"))
-				return new KVariant(this.getNativeInstance(byte[].class).length);
-			return super.getMemberByName(var, flag);
+				return KVariant.valueOf(this.getNativeInstance(byte[].class).length);
+			return super.getMemberByName(var, flag, objthis);
 		}
 		@Override
-		public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+		public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 			if(var.getType().getType().equals(Long.class))
-				return new KVariant(this.getNativeInstance(byte[].class)[var.getInt()]);
+				return KVariant.valueOf(this.getNativeInstance(byte[].class)[var.asInt()]);
 			if(var.toString().equals("length"))
-				return new KVariant(this.getNativeInstance(byte[].class).length);
-			return super.getMemberByVariant(var, flag);
+				return KVariant.valueOf(this.getNativeInstance(byte[].class).length);
+			return super.getMemberByVariant(var, flag, objthis);
 		}
 
 		/*@Override

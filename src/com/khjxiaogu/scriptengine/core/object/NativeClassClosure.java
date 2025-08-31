@@ -5,7 +5,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.object.NativeProperty.Getter;
 import com.khjxiaogu.scriptengine.core.object.NativeProperty.Setter;
 
-public class NativeClassClosure<T> extends ExtendableClosure {
+public class NativeClassClosure<T> extends KExtendableObject {
 	Class<T> nativecls;
 	public NativeClassClosure(Class<T> nativecls,String name) {
 		super(name);
@@ -16,7 +16,7 @@ public class NativeClassClosure<T> extends ExtendableClosure {
 	}
 	protected void registerFunction(String name,NativeMethod<T> func) {
 		try {
-			this.setMemberByName(name,new KVariant(new NativeFunction<T>(nativecls,func)),KEnvironment.THISONLY);
+			this.setMemberByName(name,KVariant.valueOf(new NativeFunction<T>(nativecls,func)),KEnvironment.THISONLY);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
@@ -24,7 +24,7 @@ public class NativeClassClosure<T> extends ExtendableClosure {
 	}
 	protected void registerConstructor(NativeConstructor<T> ctor) {
 		try {
-			this.setMemberByName(clsname,new KVariant(new NativeConstructorClosure<T>(ctor)), KEnvironment.THISONLY);
+			this.setMemberByName(clsname,KVariant.valueOf(new NativeConstructorClosure<T>(ctor)), KEnvironment.THISONLY);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
@@ -32,7 +32,7 @@ public class NativeClassClosure<T> extends ExtendableClosure {
 	}
 	protected void registerProperty(String name,KProperty prop) {
 		try {
-			this.setMemberByName(name,new KVariant(new PropertyClosure(prop)), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
+			this.setMemberByName(name,KVariant.valueOf(new PropertyObject(prop)), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
@@ -40,7 +40,7 @@ public class NativeClassClosure<T> extends ExtendableClosure {
 	}
 	protected void registerProperty(String name,Getter<T> gtr,Setter<T> str) {
 		try {
-			this.setMemberByName(name,new KVariant(new PropertyClosure(new NativeProperty<T>(this.nativecls,gtr,str))), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
+			this.setMemberByName(name,KVariant.valueOf(new PropertyObject(new NativeProperty<T>(this.nativecls,gtr,str))), KEnvironment.IGNOREPROP|KEnvironment.THISONLY);
 		} catch (KSException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);

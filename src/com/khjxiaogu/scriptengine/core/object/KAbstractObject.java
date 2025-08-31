@@ -6,6 +6,7 @@ import com.khjxiaogu.scriptengine.core.exceptions.ContextException;
 import com.khjxiaogu.scriptengine.core.exceptions.InvalidSuperClassException;
 import com.khjxiaogu.scriptengine.core.exceptions.KSException;
 import com.khjxiaogu.scriptengine.core.exceptions.MemberNotFoundException;
+import com.khjxiaogu.scriptengine.core.exceptions.NotImplementedException;
 import com.khjxiaogu.scriptengine.core.exceptions.ScriptException;
 import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
 
@@ -14,23 +15,17 @@ import com.khjxiaogu.scriptengine.core.syntax.AssignOperation;
  * @time 2020年3月5日
  *       project:khjScriptEngine
  */
-public abstract class Closure implements KObject {
+public abstract class KAbstractObject implements KObject {
 
-	/**
-	 *
-	 */
-	protected KEnvironment closure;
 
-	public Closure(KEnvironment env) {
-		closure = env;
+	public KAbstractObject() {
 	}
 
 	@Override
-	public KVariant getMemberByName(String name, int flag) throws KSException {
+	public KVariant getMemberByName(String name, int flag, KObject objthis) throws KSException {
 		if (name != null)
 			throw new MemberNotFoundException(name);
-		else
-			return new KVariant(this);
+		return KVariant.valueOf(this);
 	}
 
 	@Override
@@ -39,13 +34,13 @@ public abstract class Closure implements KObject {
 	}
 
 	@Override
-	public KVariant getMemberByVariant(KVariant var, int flag) throws KSException {
+	public KVariant getMemberByVariant(KVariant var, int flag, KObject objthis) throws KSException {
 		throw new MemberNotFoundException(var.toString());
 	}
 
 	@Override
 	public KVariant setMemberByName(String name, KVariant val, int flag) throws KSException {
-		throw new AccessDeniedException();
+		throw name==null?new NotImplementedException():new MemberNotFoundException(name);
 	}
 
 	@Override
@@ -107,6 +102,10 @@ public abstract class Closure implements KObject {
 	public boolean isInstanceOf(String str) throws KSException {
 		return str.equals(getInstanceName());
 	}
+	@Override
+	public String toString() {
+		return "("+getInstanceName()+")"+("0x"+Integer.toHexString(this.hashCode()));
+	}
 	public abstract String getInstanceName();
 	@Override
 	public boolean isValid() throws KSException {
@@ -123,31 +122,21 @@ public abstract class Closure implements KObject {
 		throw new ContextException();
 	}
 	@Override
-	public void callConstructor(KVariant[] args, KEnvironment env) throws KSException {
+	public void callConstructor(KVariant[] args, KObject objthis) throws KSException {
 		throw new ContextException();
 	}
 	@Override
-	public KVariant funcCallByNum(int num, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
-		return null;
+	public KVariant funcCallByNum(int num, KVariant[] args, KObject objthis, int flag) throws KSException {
+		throw new MemberNotFoundException(num);
 	}
 
 	@Override
-	public KVariant funcCallByName(String name, KVariant[] args, KEnvironment objthis, int flag) throws KSException {
+	public KVariant funcCallByName(String name, KVariant[] args, KObject objthis, int flag) throws KSException {
 		if (name == null && this instanceof CallableFunction)
 			return ((CallableFunction) this).FuncCall(args, objthis);
 		throw new MemberNotFoundException(name);
 	}
 
-	@Override
-	public String toString() {
-		return "(Unknown)"+getInstancePointer();
-	}
-	public String getInstancePointer() {
-		if(closure!=null)
-			return "(0x"+Integer.toHexString(super.hashCode())+")@(0x"+Integer.toHexString(closure.hashCode())+")";
-		else
-			return "(0x"+Integer.toHexString(super.hashCode())+")@static";
-	}
 	@Override
 	public void EnumMembers(Enumerator cosumer, int flag) throws KSException {
 	}
@@ -156,7 +145,7 @@ public abstract class Closure implements KObject {
 	public <T> T getNativeInstance(Class<T> cls) throws KSException {
 		return null;
 	}
-	public boolean hasNativeInstance(Class<?> cls) {
+	public boolean hasNativeInstance(Class<?> cls) throws KSException {
 		return false;
 	}
 
