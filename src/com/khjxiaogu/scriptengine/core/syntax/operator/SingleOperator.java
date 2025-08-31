@@ -50,4 +50,8 @@ public abstract class SingleOperator implements Operator {
 		Visitable.Visit(Child, parentMap);
 	}
 
+	public CodeNode getChild() {
+		return Child;
+	}
+
 }

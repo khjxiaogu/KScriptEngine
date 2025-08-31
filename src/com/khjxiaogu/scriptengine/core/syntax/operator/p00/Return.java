@@ -34,7 +34,7 @@ public class Return extends SingleOperator {
 	@Override
 	public int getPriority() {
 		// TODO Auto-generated method stub
-		return 0;
+		return -1;
 	}
 
 	@Override

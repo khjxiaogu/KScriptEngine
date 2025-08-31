@@ -99,10 +99,11 @@ public class ConversionManager {
 		new TypeConverter<>(KOctet.class, String.class, obj -> {
 			StringBuilder sb = new StringBuilder("<% ");
 			for (byte element : obj.getBytes()) {
-				if (element < 0x10) {
+				if ((element &0xF0)==0) {
 					sb.append("0");
 				}
-				sb.append(Integer.toHexString(element));
+				
+				sb.append(Integer.toUnsignedString(Byte.toUnsignedInt(element), 16));
 				sb.append(" ");
 			}
 			sb.append("%>");

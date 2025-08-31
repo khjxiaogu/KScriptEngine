@@ -268,11 +268,11 @@ public class TokenDecider implements ASTParser {
 				if (reader.eat('=')) {
 					reader.eat();
 					return new LSHEqual();
-				} else if (reader.eat('%'))
-					return parseOctet(reader);
-				else
+				}else
 					return new LeftShift();
-			} else if (next == '=') {
+			} else if (next==('%'))
+				return parseOctet(reader);
+			else if (next == '=') {
 				reader.eat();
 				return new LessOrEqualThan();
 			} else if (next == '-' && reader.read(1) == '>') {
@@ -515,17 +515,20 @@ public class TokenDecider implements ASTParser {
 	public CodeNode parseOctet(ParseReader reader) throws KSException {
 		// TODO Auto-generated method stub
 		char[] chs=new char[2];
-		ArrayList<Byte> bytes=new ArrayList<>(20);
+		ArrayList<Integer> bytes=new ArrayList<>(20);
+		reader.eat();
 		while((chs[0] =reader.eat())!='%') {
 			while(Character.isSpace(chs[0])) 
 				chs[0]=reader.eat();
 			chs[1]=reader.eat();
-			bytes.add(Byte.parseByte(new String(chs),16));
+			bytes.add(Integer.parseInt(new String(chs),16));
 		}
 		byte[] bytearr=new byte[bytes.size()];
 		for(int i=0;i<bytearr.length;++i) {
-			bytearr[i]=bytes.get(i);
+			bytearr[i]=(byte)(int)bytes.get(i);
 		}
+		reader.eat();
+		reader.eat();
 		return new ConstantNode(new KVariant(new KOctet(bytearr)));
 	}
 

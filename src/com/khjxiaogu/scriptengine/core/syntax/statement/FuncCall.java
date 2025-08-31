@@ -64,8 +64,9 @@ public class FuncCall extends SingleOperator implements ASTParser,ObjectOperator
 	@Override
 	public String toString() {
 		String pardesc = "";
-		if(args!=null)
+		if(args!=null&&args.length>0)
 			for (int i = 0; i < args.length; i++) {
+				
 				pardesc += args[i];
 				if (i != args.length - 1) {
 					pardesc += ",";

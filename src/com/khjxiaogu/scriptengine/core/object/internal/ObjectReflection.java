@@ -1,5 +1,7 @@
 package com.khjxiaogu.scriptengine.core.object.internal;
 
+import java.util.Base64;
+
 import com.khjxiaogu.scriptengine.core.KVariant;
 import com.khjxiaogu.scriptengine.core.exceptions.JVMError;
 import com.khjxiaogu.scriptengine.core.object.KEnvironment;
@@ -24,6 +26,7 @@ public class ObjectReflection extends NativeClassClosure<Object> {
 				String clsname=args[1].toString();
 				JavaClassWrapper<?> jcw=JavaClassWrapper.getWrapper(Class.forName(clsname));
 				KVariant kv=new KVariant(jcw);
+				
 				args[0].asType(KObject.class).setMemberByName(clsname.substring(clsname.lastIndexOf(".")+1),kv,KEnvironment.DEFAULT);
 				return kv;
 			} catch (ClassNotFoundException e) {

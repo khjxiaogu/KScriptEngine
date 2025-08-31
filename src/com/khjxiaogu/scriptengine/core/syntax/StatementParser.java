@@ -10,6 +10,7 @@ import com.khjxiaogu.scriptengine.core.syntax.block.Block;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Associative;
 import com.khjxiaogu.scriptengine.core.syntax.operator.DoubleOperator;
 import com.khjxiaogu.scriptengine.core.syntax.operator.Operator;
+import com.khjxiaogu.scriptengine.core.syntax.operator.SingleOperator;
 
 /**
  * @author khjxiaogu
@@ -60,9 +61,15 @@ public class StatementParser {
 							op.setChildren(ret, null);
 							ret = op;
 						}else {
-							CodeNode cnr=((DoubleOperator)ret).getRight();
-							op.setChildren(cnr,null);
-							ret.setChildren(null,op);
+							if(ret instanceof DoubleOperator) {
+								CodeNode cnr=((DoubleOperator)ret).getRight();
+								op.setChildren(cnr,null);
+								ret.setChildren(null,op);
+							}else {
+								CodeNode cnr=((SingleOperator)ret).getChild();
+								op.setChildren(cnr,null);
+								ret.setChildren(null,op);
+							}
 						}
 						last = null;
 					}else {
